@@ -43,16 +43,18 @@ import { createStackNavigator } from "@react-navigation/stack";
 
 import Home from '../screens/HomeScreen';
 import Details from '../screens/DetailScreen';
-import Map from '../screens/Map';
+import ReserveDate from "../screens/ReserveDate";
+import ReserveMap from '../screens/ReserveMap';
 
 const Stack = createStackNavigator();
 
 const StackNavigator = () => {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Home" component={Home} />
-      <Stack.Screen name="Details" component={Details} />
-      <Stack.Screen name="Map" component={Map} />
+      <Stack.Screen name="Home" component={Home}/>
+      <Stack.Screen name="Details" component={Details}/>
+      <Stack.Screen name="ReserveDate" component={ReserveDate}/>
+      <Stack.Screen name="ReserveMap" component={ReserveMap}/>
     </Stack.Navigator>
   );
 }

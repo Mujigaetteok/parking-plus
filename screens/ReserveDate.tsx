@@ -1,22 +1,3 @@
-// import React from "react";
-// import { Text, View } from "react-native";
-// import { Calendar } from 'react-native-calendars';
-// import { TouchableOpacity } from "react-native-gesture-handler";
-
-// export const MonthlyCalendar = () => {
-//     return (
-//         <View style={{marginTop: 50}}>
-//             <Calendar
-//                 minDate={Date()}/>
-//             <TouchableOpacity>
-//                 <Text>확인</Text>
-//             </TouchableOpacity>
-//         </View>
-//     );
-// };
-
-// export default MonthlyCalendar;
-
 import React, { Component } from 'react';
 import {
   StyleSheet,
@@ -29,7 +10,8 @@ import { Dimensions } from 'react-native';
 
 const {width:SCREEN_WIDTH, height:SCREEN_HEIGHT} = Dimensions.get('window')
 
-export default class App extends Component {
+
+class ReserveDate extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -43,7 +25,7 @@ export default class App extends Component {
       selectedStartDate: date,
     });
   }
-  render() {
+  render(navigation) {
     const { selectedStartDate } = this.state;
     const startDate = selectedStartDate ? selectedStartDate.toString() : '';
     return (
@@ -57,12 +39,9 @@ export default class App extends Component {
           scaleFactor={SCREEN_WIDTH}
         />
         </View>
-
-        <View style={{flex:1}}>
-          <TouchableOpacity>
-              <Text>확인</Text>
-          </TouchableOpacity>
-        </View>
+        <TouchableOpacity onPress={() => this.props.navigation.navigate('ReserveMap')} style={styles.confirm_btn}>
+          <Text style={styles.txt}>확인</Text>
+        </TouchableOpacity>
       </View>
     );
   }
@@ -72,9 +51,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#FFFFFF',
-    marginTop: 100,
   },
   confirm_btn: {
-
+    width:SCREEN_WIDTH,
+    backgroundColor:'#567DF4'
+  },
+  txt: {
+    fontSize:30,
+    color:'#FFFFFF'
   }
 });
+
+export default ReserveDate;
