@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Text, View, Button } from "react-native";
-import Drawer from "./Drawer";
+import {Drawer} from "./Drawer";
 import Assign_Stack from "./Assign_Stack";
 import MyInfo_Stack from "./MyInfo_Stack";
 
@@ -20,4 +20,4 @@ const Root = () => {
   );
 };
 
-export default Root;
+export {Root};

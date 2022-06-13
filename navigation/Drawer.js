@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { createDrawerNavigator } from "@react-navigation/drawer";
-import Tabs from "./Tabs";
+import {Tabs} from "./Tabs";
 import MyInfo_Stack from "./MyInfo_Stack";
 import Assign_Stack from "./Assign_Stack";
 
@@ -28,4 +28,4 @@ const Drawer = () => {
   );
 };
 
-export default Drawer;
+export {Drawer};
