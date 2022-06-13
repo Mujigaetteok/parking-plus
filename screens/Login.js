@@ -11,7 +11,7 @@ import {
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 
-function Login ({ navigation }) {
+function Login({ navigation: { navigate } }) {
   return (
     <View style={styles.container}>
       <View style={styles.titleArea}>
@@ -22,7 +22,10 @@ function Login ({ navigation }) {
         <TextInput style={styles.textForm} placeholder={"Password"} />
       </View>
       <View style={styles.buttonArea}>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigate("Root")}
+        >
           <Text style={styles.buttonTitle}>Login</Text>
         </TouchableOpacity>
       </View>

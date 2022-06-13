@@ -18,4 +18,4 @@ const Login_stack = () => {
   );
 };
 
-export  {Login_stack};
+export default Login_stack;
