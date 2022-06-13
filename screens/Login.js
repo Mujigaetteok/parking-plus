@@ -11,7 +11,7 @@ import {
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 
-export default ({ navigation }) => {
+function Login ({ navigation }) {
   return (
     <View style={styles.container}>
       <View style={styles.titleArea}>
@@ -28,7 +28,7 @@ export default ({ navigation }) => {
       </View>
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -74,3 +74,5 @@ const styles = StyleSheet.create({
     color: "white",
   },
 });
+
+export default Login;

@@ -6,9 +6,6 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-
-const Stack = createNativeStackNavigator();
 
 const Show_Assign = ({ navigation: { navigate } }) => {
   return (

@@ -54,4 +54,4 @@ function Tabs({ navigation }) {
   );
 }
 
-export default Tabs;
+export {Tabs };

@@ -4,7 +4,7 @@ import { Button, StyleSheet, Text, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import Root from "./navigation/Root";
 
-export default function App() {
+function Main() {
   return (
     <NavigationContainer>
       <Root />
@@ -20,3 +20,5 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 });
+
+export default Main;
