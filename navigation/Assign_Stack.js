@@ -29,4 +29,4 @@ const Assign_Stack = () => {
   );
 };
 
-export {Assign_Stack };
+export default Assign_Stack;
