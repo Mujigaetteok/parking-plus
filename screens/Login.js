@@ -11,7 +11,7 @@ import {
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 
-function Login ({ navigation }) {
+function Login({ navigation }) {
   return (
     <View style={styles.container}>
       <View style={styles.titleArea}>
