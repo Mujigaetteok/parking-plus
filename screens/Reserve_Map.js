@@ -10,58 +10,50 @@ const Spot = () => {
     </TouchableOpacity>
   )
 }
-
-const Car = () => {
-  return(
-    <View style={styles.btn}>
-      <Image source={require('../asset/car.png')}/>
-    </View>
-  )
-}
-const Blank = () => {
+const Empty = () => {
     return (
       <View style={styles.btn}></View>
     )
   }
 
-function Map() {
+function Reserve_Map() {
     return (
     <SafeAreaView>
       <ScrollView horizontal>
-        <View style={{width:170, height:SCREEN_HEIGHT, backgroundColor:'#DDDDDD'}}>
+        <View style={{width:170, height:SCREEN_HEIGHT, backgroundColor:'#FFFFFF'}}>
             <Spot></Spot><Text style={styles.txt}>A01</Text>
             <Spot></Spot><Text style={styles.txt}>A02</Text>
             <Spot></Spot><Text style={styles.txt}>A03</Text>
             <Spot></Spot><Text style={styles.txt}>A04</Text>
             <Spot></Spot><Text style={styles.txt}>A05</Text>
             <Spot></Spot><Text style={styles.txt}>A06</Text>
-            <Car></Car>
+            <Spot></Spot><Text style={styles.txt}>A07</Text>
         </View>
-        <View style={{width:170, height:SCREEN_HEIGHT, backgroundColor:'#DDDDDD'}}>
+        <View style={{width:170, height:SCREEN_HEIGHT, backgroundColor:'#FFFFFF'}}>
 
         </View>
-        <View style={{width:170, height:SCREEN_HEIGHT, backgroundColor:'#DDDDDD'}}>
-            <Blank></Blank>
-            <Blank></Blank>
+        <View style={{width:170, height:SCREEN_HEIGHT, backgroundColor:'#FFFFFF'}}>
+            <Empty></Empty>
+            <Empty></Empty>
             <Spot></Spot><Text style={styles.txt}>A08</Text>
-            <Car></Car>
+            <Spot></Spot><Text style={styles.txt}>A09</Text>
             <Spot></Spot><Text style={styles.txt}>A10</Text>
 
         </View>
-        <View style={{width:170, height:SCREEN_HEIGHT, backgroundColor:'#DDDDDD'}}>
-            <Blank></Blank>
-            <Blank></Blank>
+        <View style={{width:170, height:SCREEN_HEIGHT, backgroundColor:'#FFFFFF'}}>
+            <Empty></Empty>
+            <Empty></Empty>
             <Spot></Spot><Text style={styles.txt}>A11</Text>
             <Spot></Spot><Text style={styles.txt}>A12</Text>
             <Spot></Spot><Text style={styles.txt}>A13</Text>
 
         </View>
-        <View style={{width:170, height:SCREEN_HEIGHT, backgroundColor:'#DDDDDD'}}>
+        <View style={{width:170, height:SCREEN_HEIGHT, backgroundColor:'#FFFFFF'}}>
 
         </View>
-        <View style={{width:170, height:SCREEN_HEIGHT, backgroundColor:'#DDDDDD'}}>
+        <View style={{width:170, height:SCREEN_HEIGHT, backgroundColor:'#FFFFFF'}}>
             <Spot></Spot><Text style={styles.txt}>A14</Text>
-            <Car></Car>
+            <Spot></Spot><Text style={styles.txt}>A15</Text>
             <Spot></Spot><Text style={styles.txt}>A16</Text>
             <Spot></Spot><Text style={styles.txt}>A17</Text>
             <Spot></Spot><Text style={styles.txt}>A18</Text>
@@ -87,4 +79,4 @@ const styles = StyleSheet.create({
     },
   });
 
-export default Map;
+export default Reserve_Map;

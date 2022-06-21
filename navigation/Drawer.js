@@ -1,26 +1,34 @@
-import React from "react";
-
+import React, { useState } from "react";
 import { createDrawerNavigator } from "@react-navigation/drawer";
-import { StackNavigator } from "./Stack";
-import About from '../screens/AboutScreen';
-import ReserveDate from '../screens/ReserveDate';
-import Map from '../screens/Map';
+import Tabs from "./Tabs";
+import MyInfo_Stack from "./MyInfo_Stack";
+import Assign_Stack from "./Assign_Stack";
+import Show_Map from "../screens/Show_Map";
 
+const DrawerNav = createDrawerNavigator();
 
-const Drawer = createDrawerNavigator();
-
-const DrawerNavigator = () => {
+const Drawer = () => {
   return (
-    <Drawer.Navigator
-        initialRouteName="Home"
-        screenOptions={{}}
-    >
-      <Drawer.Screen name="Home" component={StackNavigator} options={{drawerLabel: 'HOME'}} />
-      <Drawer.Screen name="About" component={About} options={{drawerLabel: 'ABOUT'}} />
-      <Drawer.Screen name="주차공간 조회" component={Map} options={{drawerLabel: '주차공간 조회'}} />
-      <Drawer.Screen name="주차공간 예약" component={ReserveDate} options={{drawerLabel: '주차공간 예약'}} />
-    </Drawer.Navigator>
+    <>
+      <DrawerNav.Navigator
+        initialRouteName="DrawerMain"
+        drawerPosition="left"
+        backBehavior="history"
+        screenOptions={{
+          headerShown: true,
+          headerTitle: "",
+          headerShadowVisible: false,
+          headerStyle: { backgroundColor: "white" },
+        }}
+      >
+        <DrawerNav.Screen name="홈" component={Tabs} />
+        <DrawerNav.Screen name="내 정보 관리" component={MyInfo_Stack} />
+        <DrawerNav.Screen name="배정 신청 결과" component={Assign_Stack} />
+        <DrawerNav.Screen name="주차장 지도" component={Show_Map} />
+       
+      </DrawerNav.Navigator>
+    </>
   );
-}
+};
 
-export default DrawerNavigator;
+export default Drawer;
