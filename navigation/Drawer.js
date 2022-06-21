@@ -25,7 +25,6 @@ const Drawer = () => {
         <DrawerNav.Screen name="내 정보 관리" component={MyInfo_Stack} />
         <DrawerNav.Screen name="배정 신청 결과" component={Assign_Stack} />
         <DrawerNav.Screen name="주차장 지도" component={Show_Map} />
-       
       </DrawerNav.Navigator>
     </>
   );
