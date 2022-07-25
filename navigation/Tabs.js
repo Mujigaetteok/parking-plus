@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Text, View, Button } from "react-native";
+import React from "react";
+import { Text, View } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import MyInfo_Stack from "./MyInfo_Stack";
 import Assign_Stack from "./Assign_Stack";
@@ -9,7 +9,7 @@ const Tab = createBottomTabNavigator();
 
 const HomeScreen = ({ navigation }) => {
   return (
-    <View>
+    <View style={{ backgroundColor: "white", flex: 1 }}>
       <Text>Home</Text>
     </View>
   );

@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import { Text, StyleSheet, View, ScrollView, TextInput } from "react-native";
+import { Text, StyleSheet, View, ScrollView } from "react-native";
 
 const Show_Personal_Info = ({ navigation: { navigate } }) => {
-  const [text, setText] = useState("");
   return (
     <ScrollView style={styles.contain}>
       <View style={styles.top}>
@@ -48,20 +47,6 @@ const Show_Personal_Info = ({ navigation: { navigate } }) => {
             </View>
           </View>
         </View>
-      </View>
-      <View style={{ marginBottom: 20 }}>
-        <Text style={styles.textB}>차량 정보</Text>
-        <View style={styles.info}>
-          <Text style={{ fontWeight: "bold", fontSize: 16 }}>12가 3456</Text>
-        </View>
-        <TextInput
-          placeholder="차량을 입력하세요"
-          style={styles.info}
-          returnKeyType="done"
-          value={text}
-          onChangeText={setText}
-          onSubmitEditing={() => navigate("Car", { car: text })}
-        />
       </View>
     </ScrollView>
   );

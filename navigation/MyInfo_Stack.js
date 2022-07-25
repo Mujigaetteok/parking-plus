@@ -17,8 +17,8 @@ const MyInfo_Stack = () => {
       <StackNav.Screen name="InfoMain" component={Show_Info} />
       <StackNav.Screen name="Assignment" component={Show_Assign_Info} />
       <StackNav.Screen name="Reservation" component={Show_Reservation_Info} />
-      <StackNav.Screen name="Personal" component={Show_Personal_Info} />
       <StackNav.Screen name="Car" component={Show_Car} />
+      <StackNav.Screen name="Personal" component={Show_Personal_Info} />
     </StackNav.Navigator>
   );
 };
