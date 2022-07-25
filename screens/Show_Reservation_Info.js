@@ -16,6 +16,15 @@ const Show_Reservation_Info = ({ navigation: { navigate } }) => {
           Time : 10:00 ~ 21:00
         </Text>
       </View>
+      <Text style={styles.textB}>2022.06.26</Text>
+      <View style={styles.info}>
+        <Text style={{ paddingBottom: 10, fontWeight: "bold", fontSize: 20 }}>
+          Location : A11
+        </Text>
+        <Text style={{ fontWeight: "bold", fontSize: 20 }}>
+          Time : 7:00 ~ 24:00
+        </Text>
+      </View>
     </View>
   );
 };
@@ -38,6 +47,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#F3F6FF",
     paddingVertical: 15,
     paddingLeft: 30,
+    marginBottom: 40,
   },
   textB: {
     fontSize: 20,

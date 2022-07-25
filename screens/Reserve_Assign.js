@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useRef } from "react";
 import {
   Text,
   StyleSheet,
@@ -6,8 +6,127 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
+import BottomSheet from "react-native-gesture-bottom-sheet";
+import DropDownPicker from "react-native-dropdown-picker";
 
 const Reserve_Assign = ({ navigation: { navigate }, route }) => {
+  const [open, setOpen] = useState(false);
+  const [opent, setOpent] = useState(false);
+  const [items, setItems] = useState([...route.params.items]);
+  const [start, setStart] = useState(null);
+  const [end, setEnd] = useState(null);
+  const [keyv, setKeyv] = useState();
+
+  const ind = (v) => {
+    return items.findIndex((i) => i.value == v);
+  };
+
+  const [dayTime, setDayTime] = useState(
+    route.params.weekT.map((m) => ({
+      ...m,
+      start: items[ind(route.params.value)].label,
+      end: items[ind(route.params.valuet)].label,
+    }))
+  );
+
+  const changeTime = (key) => {
+    const newDay = [...dayTime];
+    start >= 0 && start <= 23 && end >= 0 && end <= 23
+      ? ((newDay[key].start = items[ind(start)].label),
+        (newDay[key].end = items[ind(end)].label),
+        setDayTime(newDay))
+      : null;
+    setStart(null);
+    setEnd(null);
+  };
+
+  const bottomSheetView = (key) => {
+    return (
+      <View style={styles.containBottom}>
+        <View style={{ marginTop: 40 }} />
+        <View style={{ marginBottom: 20 }}>
+          <Text style={styles.textB}>시간</Text>
+          <View style={styles.successLoc}>
+            <View style={{ width: 110 }}>
+              <DropDownPicker
+                open={open}
+                value={start}
+                items={items}
+                setOpen={setOpen}
+                setValue={setStart}
+                setItems={setItems}
+                placeholder="00:00"
+                placeholderStyle={{
+                  color: "#677191",
+                }}
+                style={{
+                  backgroundColor: "#F3F6FF",
+                  borderRadius: 21,
+                  borderColor: "#F3F6FF",
+                }}
+                textStyle={{
+                  fontSize: 18,
+                  fontWeight: "bold",
+                }}
+                dropDownContainerStyle={{
+                  backgroundColor: "#F3F6FF",
+                  borderColor: "#F3F6FF",
+                  borderRadius: 21,
+                }}
+              />
+            </View>
+            <View style={{ justifyContent: "center" }}>
+              <Text style={{ fontSize: 18 }}> ~ </Text>
+            </View>
+            <View style={{ width: 110 }}>
+              <DropDownPicker
+                open={opent}
+                value={end}
+                items={items}
+                setOpen={setOpent}
+                setValue={setEnd}
+                setItems={setItems}
+                placeholder="00:00"
+                placeholderStyle={{
+                  color: "#677191",
+                }}
+                style={{
+                  backgroundColor: "#F3F6FF",
+                  borderRadius: 21,
+                  borderColor: "#F3F6FF",
+                }}
+                textStyle={{
+                  fontSize: 18,
+                  fontWeight: "bold",
+                }}
+                dropDownContainerStyle={{
+                  backgroundColor: "#F3F6FF",
+                  borderColor: "#F3F6FF",
+                  borderRadius: 21,
+                }}
+              />
+            </View>
+          </View>
+        </View>
+        {start !== null && end !== null ? (
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => {
+              bottomSheet.current.close();
+              changeTime(key);
+            }}
+          >
+            <Text style={{ color: "white", fontWeight: "bold" }}>
+              시간 선택 완료
+            </Text>
+          </TouchableOpacity>
+        ) : null}
+      </View>
+    );
+  };
+
+  const bottomSheet = useRef();
+
   return (
     <ScrollView style={styles.contain}>
       <View style={styles.top}>
@@ -21,7 +140,7 @@ const Reserve_Assign = ({ navigation: { navigate }, route }) => {
           </Text>
         </View>
       </View>
-      <View style={{ marginBottom: 20 }}>
+      <View style={{ marginBottom: 30 }}>
         <Text style={styles.textB}>결과</Text>
         <View style={styles.successLoc}>
           <Text style={styles.textD}>success</Text>
@@ -29,16 +148,52 @@ const Reserve_Assign = ({ navigation: { navigate }, route }) => {
         </View>
       </View>
       <View style={{ marginBottom: 20 }}>
-        <Text style={styles.textB}>요일 선택</Text>
+        <Text style={styles.textB}>요일과 시간</Text>
         <View style={styles.successLoc}>
-          <Text style={styles.textE}>월</Text>
-          <Text style={styles.textE}>화</Text>
-          <Text style={styles.textE}>수</Text>
-          <Text style={styles.textE}>목</Text>
-          <Text style={styles.textE}>금</Text>
-          <Text style={styles.textE}>토</Text>
-          <Text style={styles.textE}>일</Text>
+          {Object.keys(route.params.week).map((key) => (
+            <View key={key}>
+              {route.params.week[key].status ? (
+                <Text style={styles.textP}>{route.params.week[key].day}</Text>
+              ) : (
+                <Text style={styles.textE}>{route.params.week[key].day}</Text>
+              )}
+            </View>
+          ))}
         </View>
+      </View>
+      <View style={{ marginBottom: 20 }}>
+        {Object.keys(dayTime).map((key) => (
+          <View key={key}>
+            <View style={styles.successLocS}>
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <Text style={styles.textDay}>
+                  {dayTime[key].day}
+                  {"  "}
+                </Text>
+                <Text style={styles.textDay}>{dayTime[key].start}</Text>
+                <Text style={styles.textDay}> ~ </Text>
+                <Text style={styles.textDay}>{dayTime[key].end}</Text>
+              </View>
+              <BottomSheet
+                hasDraggableIcon
+                ref={bottomSheet}
+                height={400}
+                sheetBackgroundColor="white"
+              >
+                {bottomSheetView(keyv)}
+              </BottomSheet>
+              <TouchableOpacity
+                style={{ alignItems: "center", justifyContent: "center" }}
+                onPress={() => {
+                  setKeyv(key);
+                  bottomSheet.current.show();
+                }}
+              >
+                <Text style={styles.editButton}>Edit</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        ))}
       </View>
       <TouchableOpacity
         style={styles.button}
@@ -93,6 +248,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
   },
+  successLocS: {
+    flexDirection: "row",
+    paddingHorizontal: 10,
+    marginBottom: 10,
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
   textD: {
     fontSize: 14,
     backgroundColor: "#AAF54B",
@@ -109,6 +271,15 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     fontWeight: "bold",
   },
+  textP: {
+    fontSize: 16,
+    backgroundColor: "#567DF4",
+    borderRadius: 21,
+    paddingHorizontal: 14,
+    paddingVertical: 10,
+    fontWeight: "bold",
+    color: "white",
+  },
   button: {
     backgroundColor: "#567DF4",
     borderRadius: 20,
@@ -124,6 +295,27 @@ const styles = StyleSheet.create({
     paddingHorizontal: 14,
     paddingVertical: 10,
     fontWeight: "bold",
+  },
+  textDay: {
+    color: "#677191",
+    fontWeight: "bold",
+    fontSize: 16,
+  },
+  textIn: {
+    color: "#677191",
+    fontWeight: "bold",
+    fontSize: 16,
+    borderBottomWidth: 2,
+    height: 24,
+    borderBottomColor: "#677191",
+  },
+  editButton: {
+    backgroundColor: "#D9D9D9",
+    color: "white",
+    borderRadius: 15,
+    paddingVertical: 6,
+    paddingHorizontal: 12,
+    height: 33,
   },
 });
 

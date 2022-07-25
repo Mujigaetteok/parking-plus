@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import Tabs from "./Tabs";
 import MyInfo_Stack from "./MyInfo_Stack";
@@ -12,13 +12,12 @@ const Drawer = () => {
     <>
       <DrawerNav.Navigator
         initialRouteName="DrawerMain"
-        drawerPosition="left"
-        backBehavior="history"
         screenOptions={{
           headerShown: true,
           headerTitle: "",
           headerShadowVisible: false,
           headerStyle: { backgroundColor: "white" },
+          backBehavior: "history",
         }}
       >
         <DrawerNav.Screen name="홈" component={Tabs} />

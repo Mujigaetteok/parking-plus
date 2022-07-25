@@ -1,69 +1,69 @@
-import React from "react";
-import { Text, StyleSheet, View, ScrollView, TextInput } from "react-native";
+import React, { useRef, useState } from "react";
+import {
+  Text,
+  StyleSheet,
+  View,
+  ScrollView,
+  TouchableOpacity,
+  TextInput,
+} from "react-native";
+import BottomSheet from "react-native-gesture-bottom-sheet";
 
-const Show_Car = ({ navigation: { navigate }, route }) => {
+const Show_Car = ({ navigation: { navigate } }) => {
+  const [car, setCar] = useState("");
+  const bottomSheetView = () => {
+    return (
+      <ScrollView>
+        <View style={styles.containBottom}>
+          <View style={{ marginTop: 40 }} />
+          <View style={{ marginBottom: 10 }}>
+            <Text style={styles.textB}>차량 번호</Text>
+            <TextInput
+              placeholder="차량 번호를 입력하세요"
+              style={styles.infoInput}
+              returnKeyType="done"
+              value={car}
+              onChangeText={setCar}
+            />
+          </View>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => bottomSheet.current.close()}
+          >
+            <Text style={{ color: "white", fontWeight: "bold" }}>등록</Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+    );
+  };
+  const bottomSheet = useRef();
   return (
     <ScrollView style={styles.contain}>
       <View style={styles.top}>
-        <Text style={styles.textA}>개인 정보</Text>
+        <Text style={styles.textA}>차량 정보</Text>
       </View>
       <View style={{ marginBottom: 20 }}>
-        <Text style={styles.textB}>이름</Text>
-        <View style={styles.info}>
-          <Text style={{ fontWeight: "bold", fontSize: 16 }}>홍길동</Text>
-        </View>
-      </View>
-      <View style={{ marginBottom: 20 }}>
-        <Text style={styles.textB}>ID</Text>
-        <View style={styles.info}>
-          <Text style={{ fontWeight: "bold", fontSize: 16 }}>01012345678</Text>
-        </View>
-      </View>
-      <View style={{ marginBottom: 20 }}>
-        <Text style={styles.textB}>아파트</Text>
-        <View style={styles.info}>
-          <Text style={{ fontWeight: "bold", fontSize: 16 }}>
-            파플아파트 1단지
-          </Text>
-        </View>
-      </View>
-      <View style={{ marginBottom: 20 }}>
-        <Text style={styles.textB}>주소</Text>
-        <View>
-          <View
-            style={{ flexDirection: "row", justifyContent: "space-between" }}
-          >
-            <View style={{ flexDirection: "row" }}>
-              <View style={styles.adressInfo}>
-                <Text style={{ fontWeight: "bold", fontSize: 16 }}>101</Text>
-              </View>
-              <Text style={styles.textC}>동</Text>
-            </View>
-            <View style={{ flexDirection: "row" }}>
-              <View style={styles.adressInfo}>
-                <Text style={{ fontWeight: "bold", fontSize: 16 }}>101</Text>
-              </View>
-              <Text style={styles.textC}>호</Text>
-            </View>
-          </View>
-        </View>
-      </View>
-      <View style={{ marginBottom: 20 }}>
-        <Text style={styles.textB}>차량 정보</Text>
+        <Text style={styles.textB}>차량 번호</Text>
         <View style={styles.info}>
           <Text style={{ fontWeight: "bold", fontSize: 16 }}>12가 3456</Text>
         </View>
-        <View style={styles.info}>
-          <Text style={{ fontWeight: "bold", fontSize: 16 }}>
-            {route.params.car}
-          </Text>
-        </View>
-        <TextInput
-          placeholder="차량을 입력하세요"
-          style={styles.info}
-          returnKeyType="done"
-        />
       </View>
+
+      <BottomSheet
+        hasDraggableIcon
+        ref={bottomSheet}
+        height={400}
+        enabledContentGestureInteraction={false}
+        sheetBackgroundColor="white"
+      >
+        {bottomSheetView()}
+      </BottomSheet>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => bottomSheet.current.show()}
+      >
+        <Text style={{ color: "white", fontWeight: "bold" }}>차량 등록</Text>
+      </TouchableOpacity>
     </ScrollView>
   );
 };
@@ -72,6 +72,11 @@ const styles = StyleSheet.create({
   top: {
     height: 100,
     justifyContent: "center",
+  },
+  containBottom: {
+    flex: 1,
+    backgroundColor: "white",
+    paddingHorizontal: 30,
   },
   textA: {
     fontSize: 24,
@@ -87,6 +92,13 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 20,
+  },
+  infoInput: {
+    backgroundColor: "#F3F6FF",
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 20,
+    marginBottom: 10,
   },
   adressInfo: {
     backgroundColor: "#F3F6FF",
@@ -104,6 +116,14 @@ const styles = StyleSheet.create({
     marginLeft: 20,
     paddingVertical: 10,
     fontWeight: "bold",
+  },
+  button: {
+    backgroundColor: "#567DF4",
+    borderRadius: 20,
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 10,
+    marginBottom: 20,
   },
 });
 export default Show_Car;

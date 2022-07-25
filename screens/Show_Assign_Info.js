@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Text, StyleSheet, View, Button, ScrollView } from "react-native";
+import React from "react";
+import { Text, StyleSheet, View } from "react-native";
 
 const Show_Assign_Info = ({ navigation }) => {
   return (
@@ -7,7 +7,7 @@ const Show_Assign_Info = ({ navigation }) => {
       <View style={styles.top}>
         <Text style={styles.textA}>배정 정보</Text>
       </View>
-      <Text style={styles.textB}>A03</Text>
+      <Text style={styles.textB}>배정구역 A03</Text>
       <View style={styles.info}>
         <Text style={{ paddingBottom: 10, fontWeight: "bold", fontSize: 20 }}>
           Day : 월,화,수,목,금
@@ -16,7 +16,7 @@ const Show_Assign_Info = ({ navigation }) => {
           Time : 24:00 ~ 9:00
         </Text>
       </View>
-      <Text style={styles.textB}>A09</Text>
+      <Text style={styles.textB}>배정구역 A09</Text>
       <View style={styles.info}>
         <Text style={{ paddingBottom: 10, fontWeight: "bold", fontSize: 20 }}>
           Day : 토,일
@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#F3F6FF",
     paddingVertical: 15,
     paddingLeft: 30,
-    marginBottom: 20,
+    marginBottom: 40,
   },
   textB: {
     fontSize: 20,

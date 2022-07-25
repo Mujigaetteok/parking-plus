@@ -10,7 +10,7 @@ const Show_Info = ({ navigation: { navigate } }) => {
       <TouchableOpacity
         style={styles.block}
         activeOpacity={0.8}
-        onPress={() => navigate("내 정보 관리", { screen: "Assignment" })}
+        onPress={() => navigate("Assignment")}
       >
         <Text style={styles.textA}>배정 정보</Text>
       </TouchableOpacity>
@@ -24,11 +24,18 @@ const Show_Info = ({ navigation: { navigate } }) => {
       <TouchableOpacity
         style={styles.block}
         activeOpacity={0.8}
+        onPress={() => navigate("Car")}
+      >
+        <Text style={styles.textA}>차량 정보</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.block}
+        activeOpacity={0.8}
         onPress={() => navigate("Personal")}
       >
         <Text style={styles.textA}>개인 정보</Text>
       </TouchableOpacity>
-      <View style={{ flex: 5 }} />
+      <View style={{ flex: 4 }} />
       <View />
     </View>
   );

@@ -26,7 +26,7 @@ const Show_Assign = ({ navigation: { navigate } }) => {
           <Text style={styles.textB}>기간</Text>
           <View style={styles.info}>
             <Text style={{ fontWeight: "bold", fontSize: 18 }}>
-              2022.03.01 ~ 2022.03.31
+              2022년 03월
             </Text>
           </View>
         </View>
