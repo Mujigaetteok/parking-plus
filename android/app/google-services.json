@@ -1,42 +1,49 @@
 {
   "project_info": {
-    "project_number": "215693932476",
-    "project_id": "parkingplus-b47d2",
-    "storage_bucket": "parkingplus-b47d2.appspot.com"
+    "project_number": "944760119235",
+    "project_id": "parking-plus-2e5bf",
+    "storage_bucket": "parking-plus-2e5bf.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:215693932476:android:9640d8022163a24a48ddb9",
+        "mobilesdk_app_id": "1:944760119235:android:2e226997a75e5a6ca6a776",
         "android_client_info": {
           "package_name": "com.parkingplus"
         }
       },
       "oauth_client": [
         {
-          "client_id": "215693932476-4i6puukh88bp3f283jvqdnhem6gqu4gb.apps.googleusercontent.com",
+          "client_id": "944760119235-ncs5vd6actu4mkpk02g1j45hqv1ul6pv.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.parkingplus",
-            "certificate_hash": "f83230f0108d2cd5b0b5215bc9519b5d04646497"
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
           }
         },
         {
-          "client_id": "215693932476-c9k419n7tuc31cp1fjq7o8i4ko49q424.apps.googleusercontent.com",
+          "client_id": "944760119235-cv0398bd6v52gimsq790vfgsdbplmhen.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBT-iTil0-LBhRwN2g8Xos4iAuJqT7kF70"
+          "current_key": "AIzaSyDKNdmXl9TrunVJhMKoGuhFPxH4sX8Ep9E"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "215693932476-c9k419n7tuc31cp1fjq7o8i4ko49q424.apps.googleusercontent.com",
+              "client_id": "944760119235-cv0398bd6v52gimsq790vfgsdbplmhen.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "944760119235-3ou8uojc38kkahvpe6mhjq46gc0fspom.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "org.name.parkingplus"
+              }
             }
           ]
         }
