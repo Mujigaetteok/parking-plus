@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Text, StyleSheet, View, ScrollView } from "react-native";
 
-const Show_Personal_Info = ({ navigation: { navigate } }) => {
+const InfoMember = ({ navigation: { navigate } }) => {
   return (
     <ScrollView style={styles.contain}>
       <View style={styles.top}>
@@ -90,4 +90,4 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
 });
-export default Show_Personal_Info;
+export default InfoMember;

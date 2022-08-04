@@ -9,7 +9,7 @@ import {
 import BottomSheet from "react-native-gesture-bottom-sheet";
 import DropDownPicker from "react-native-dropdown-picker";
 
-const Reserve_Assign = ({ navigation: { navigate }, route }) => {
+const AssignResult3 = ({ navigation: { navigate }, route }) => {
   const [open, setOpen] = useState(false);
   const [opent, setOpent] = useState(false);
   const [items, setItems] = useState([...route.params.items]);
@@ -319,4 +319,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Reserve_Assign;
+export default AssignResult3;

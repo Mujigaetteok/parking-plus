@@ -1,9 +1,9 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Drawer from "./Drawer";
-import Assign_Stack from "./Assign_Stack";
-import MyInfo_Stack from "./MyInfo_Stack";
-import Show_Success from "../screens/Show_Success";
+import AssignStack from "./AssignStack";
+import MyInfoStack from "./MyInfoStack";
+import AssignResultSuccess from "../screens/AssignResultSuccess";
 
 const Nav = createNativeStackNavigator();
 
@@ -12,9 +12,9 @@ const Root = () => {
     <>
       <Nav.Navigator screenOptions={{ headerShown: false }}>
         <Nav.Screen name="Drawer" component={Drawer} />
-        <Nav.Screen name="MyInfo" component={MyInfo_Stack} />
-        <Nav.Screen name="Assign" component={Assign_Stack} />
-        <Nav.Screen name="Success" component={Show_Success} />
+        <Nav.Screen name="MyInfo" component={MyInfoStack} />
+        <Nav.Screen name="Assign" component={AssignStack} />
+        <Nav.Screen name="Success" component={AssignResultSuccess} />
       </Nav.Navigator>
     </>
   );

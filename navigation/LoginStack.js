@@ -6,7 +6,7 @@ import Login from "../screens/Login";
 
 const Stack = createStackNavigator();
 
-const Login_stack = () => {
+const LoginStack = () => {
   return (
     <Stack.Navigator
       initialRouteName="Login"
@@ -18,4 +18,4 @@ const Login_stack = () => {
   );
 };
 
-export default Login_stack;
+export default LoginStack;

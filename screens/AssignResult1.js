@@ -7,7 +7,7 @@ import {
   ScrollView,
 } from "react-native";
 
-const Show_Assign = ({ navigation: { navigate } }) => {
+const AssignResult1 = ({ navigation: { navigate } }) => {
   return (
     <View style={styles.contain}>
       <View style={styles.top}>
@@ -115,4 +115,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Show_Assign;
+export default AssignResult1;

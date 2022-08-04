@@ -9,7 +9,7 @@ import {
 import BottomSheet from "react-native-gesture-bottom-sheet";
 import DropDownPicker from "react-native-dropdown-picker";
 
-const Reserve_Assign_Date = ({ navigation: { navigate }, route }) => {
+const AssignResult2 = ({ navigation: { navigate }, route }) => {
   const [week, setWeek] = useState([
     { id: 1, day: "월", status: false },
     { id: 2, day: "화", status: false },
@@ -341,4 +341,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Reserve_Assign_Date;
+export default AssignResult2;

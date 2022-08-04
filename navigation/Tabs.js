@@ -1,8 +1,8 @@
 import React from "react";
 import { Text, View } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import MyInfo_Stack from "./MyInfo_Stack";
-import Assign_Stack from "./Assign_Stack";
+import MyInfoStack from "./MyInfoStack";
+import AssignStack from "./AssignStack";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
 const Tab = createBottomTabNavigator();
@@ -33,7 +33,7 @@ function Tabs({ navigation }) {
         />
         <Tab.Screen
           name="내 정보 관리"
-          component={MyInfo_Stack}
+          component={MyInfoStack}
           options={{
             tabBarIcon: ({ color, size }) => (
               <Icon name="person" color={color} size={20} />
@@ -42,7 +42,7 @@ function Tabs({ navigation }) {
         />
         <Tab.Screen
           name="배정 신청 결과"
-          component={Assign_Stack}
+          component={AssignStack}
           options={{
             tabBarIcon: ({ color, size }) => (
               <Icon name="directions-car" color={color} size={20} />

@@ -1,7 +1,7 @@
 import React from "react";
 import { Text, StyleSheet, View, TouchableOpacity } from "react-native";
 
-const Show_Info = ({ navigation: { navigate } }) => {
+const InfoHome = ({ navigation: { navigate } }) => {
   return (
     <View style={styles.contain}>
       <View style={styles.top}>
@@ -70,4 +70,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Show_Info;
+export default InfoHome;

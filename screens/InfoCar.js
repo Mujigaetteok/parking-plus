@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import BottomSheet from "react-native-gesture-bottom-sheet";
 
-const Show_Car = ({ navigation: { navigate } }) => {
+const InfoCar = ({ navigation: { navigate } }) => {
   const [car, setCar] = useState("");
   const bottomSheetView = () => {
     return (
@@ -126,4 +126,4 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
 });
-export default Show_Car;
+export default InfoCar;

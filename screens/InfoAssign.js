@@ -1,7 +1,7 @@
 import React from "react";
 import { Text, StyleSheet, View } from "react-native";
 
-const Show_Assign_Info = ({ navigation }) => {
+const InfoAssign = ({ navigation }) => {
   return (
     <View style={styles.contain}>
       <View style={styles.top}>
@@ -57,4 +57,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Show_Assign_Info;
+export default InfoAssign;

@@ -2,7 +2,7 @@ import React from "react";
 import { Text, StyleSheet, TouchableOpacity } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
-const Show_Success = ({ navigation: { navigate, reset } }) => {
+const AssignResultSuccess = ({ navigation: { navigate, reset } }) => {
   const Home = () => {
     navigate("홈");
     reset({
@@ -42,4 +42,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Show_Success;
+export default AssignResultSuccess;
