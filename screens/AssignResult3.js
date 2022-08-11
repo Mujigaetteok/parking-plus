@@ -9,6 +9,8 @@ import {
 import BottomSheet from "react-native-gesture-bottom-sheet";
 import DropDownPicker from "react-native-dropdown-picker";
 
+DropDownPicker.setListMode("SCROLLVIEW");
+
 const AssignResult3 = ({ navigation: { navigate }, route }) => {
   const [open, setOpen] = useState(false);
   const [opent, setOpent] = useState(false);
@@ -43,11 +45,10 @@ const AssignResult3 = ({ navigation: { navigate }, route }) => {
   const bottomSheetView = (key) => {
     return (
       <View style={styles.containBottom}>
-        <View style={{ marginTop: 40 }} />
-        <View style={{ marginBottom: 20 }}>
+        <View style={{ flex: 3, justifyContent: "center" }}>
           <Text style={styles.textB}>시간</Text>
           <View style={styles.successLoc}>
-            <View style={{ width: 110 }}>
+            <View style={{ width: 120 }}>
               <DropDownPicker
                 open={open}
                 value={start}
@@ -72,13 +73,14 @@ const AssignResult3 = ({ navigation: { navigate }, route }) => {
                   backgroundColor: "#F3F6FF",
                   borderColor: "#F3F6FF",
                   borderRadius: 21,
+                  height: 140,
                 }}
               />
             </View>
             <View style={{ justifyContent: "center" }}>
               <Text style={{ fontSize: 18 }}> ~ </Text>
             </View>
-            <View style={{ width: 110 }}>
+            <View style={{ width: 120 }}>
               <DropDownPicker
                 open={opent}
                 value={end}
@@ -103,24 +105,34 @@ const AssignResult3 = ({ navigation: { navigate }, route }) => {
                   backgroundColor: "#F3F6FF",
                   borderColor: "#F3F6FF",
                   borderRadius: 21,
+                  height: 140,
                 }}
               />
             </View>
           </View>
         </View>
-        {start !== null && end !== null ? (
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => {
-              bottomSheet.current.close();
-              changeTime(key);
-            }}
-          >
-            <Text style={{ color: "white", fontWeight: "bold" }}>
-              시간 선택 완료
-            </Text>
-          </TouchableOpacity>
-        ) : null}
+        <View style={{ flex: 1.5 }} />
+        <View style={{ flex: 1, justifyContent: "center" }}>
+          {start !== null && end !== null && start < end ? (
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => {
+                bottomSheet.current.close();
+                changeTime(key);
+              }}
+            >
+              <Text style={{ color: "white", fontWeight: "bold" }}>
+                시간 수정 완료
+              </Text>
+            </TouchableOpacity>
+          ) : (
+            <View style={styles.buttonT}>
+              <Text style={{ color: "white", fontWeight: "bold" }}>
+                시간 수정 완료
+              </Text>
+            </View>
+          )}
+        </View>
       </View>
     );
   };
@@ -128,80 +140,91 @@ const AssignResult3 = ({ navigation: { navigate }, route }) => {
   const bottomSheet = useRef();
 
   return (
-    <ScrollView style={styles.contain}>
-      <View style={styles.top}>
-        <Text style={styles.textA}>주차 배정 결과</Text>
-      </View>
-      <View style={{ marginBottom: 20 }}>
-        <Text style={styles.textB}>주차 공간</Text>
-        <View style={styles.info}>
-          <Text style={{ fontWeight: "bold", fontSize: 18 }}>
-            {route.params.location}
-          </Text>
-        </View>
-      </View>
-      <View style={{ marginBottom: 30 }}>
-        <Text style={styles.textB}>결과</Text>
-        <View style={styles.successLoc}>
-          <Text style={styles.textD}>success</Text>
-          <View />
-        </View>
-      </View>
-      <View style={{ marginBottom: 20 }}>
-        <Text style={styles.textB}>요일과 시간</Text>
-        <View style={styles.successLoc}>
-          {Object.keys(route.params.week).map((key) => (
-            <View key={key}>
-              {route.params.week[key].status ? (
-                <Text style={styles.textP}>{route.params.week[key].day}</Text>
-              ) : (
-                <Text style={styles.textE}>{route.params.week[key].day}</Text>
-              )}
-            </View>
-          ))}
-        </View>
-      </View>
-      <View style={{ marginBottom: 20 }}>
-        {Object.keys(dayTime).map((key) => (
-          <View key={key}>
-            <View style={styles.successLocS}>
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <Text style={styles.textDay}>
-                  {dayTime[key].day}
-                  {"  "}
-                </Text>
-                <Text style={styles.textDay}>{dayTime[key].start}</Text>
-                <Text style={styles.textDay}> ~ </Text>
-                <Text style={styles.textDay}>{dayTime[key].end}</Text>
-              </View>
-              <BottomSheet
-                hasDraggableIcon
-                ref={bottomSheet}
-                height={400}
-                sheetBackgroundColor="white"
+    <View style={styles.contain}>
+      <View style={{ flex: 9, marginBottom: 20 }}>
+        <ScrollView>
+          <View style={{ marginBottom: 20, marginTop: 35 }}>
+            <Text style={styles.textB}>주차 공간</Text>
+            <View style={styles.info}>
+              <Text
+                style={{ fontSize: 16, color: "#677191", fontWeight: "bold" }}
               >
-                {bottomSheetView(keyv)}
-              </BottomSheet>
-              <TouchableOpacity
-                style={{ alignItems: "center", justifyContent: "center" }}
-                onPress={() => {
-                  setKeyv(key);
-                  bottomSheet.current.show();
-                }}
-              >
-                <Text style={styles.editButton}>Edit</Text>
-              </TouchableOpacity>
+                {route.params.location}
+              </Text>
             </View>
           </View>
-        ))}
+          <View style={{ marginBottom: 30 }}>
+            <Text style={styles.textB}>결과</Text>
+            <View style={styles.successLoc}>
+              <Text style={styles.textD}>success</Text>
+              <View />
+            </View>
+          </View>
+          <View style={{ marginBottom: 20 }}>
+            <Text style={styles.textB}>요일과 시간</Text>
+            <View style={styles.successLoc}>
+              {Object.keys(route.params.week).map((key) => (
+                <View key={key}>
+                  {route.params.week[key].status ? (
+                    <Text style={styles.textP}>
+                      {route.params.week[key].day}
+                    </Text>
+                  ) : (
+                    <Text style={styles.textE}>
+                      {route.params.week[key].day}
+                    </Text>
+                  )}
+                </View>
+              ))}
+            </View>
+          </View>
+          <View>
+            {Object.keys(dayTime).map((key) => (
+              <View key={key}>
+                <View style={styles.successLocS}>
+                  <View style={{ flexDirection: "row", alignItems: "center" }}>
+                    <Text style={styles.textDay}>
+                      {dayTime[key].day}
+                      {"  "}
+                    </Text>
+                    <Text style={styles.textDay}>{dayTime[key].start}</Text>
+                    <Text style={styles.textDay}> ~ </Text>
+                    <Text style={styles.textDay}>{dayTime[key].end}</Text>
+                  </View>
+                  <BottomSheet
+                    hasDraggableIcon
+                    ref={bottomSheet}
+                    height={400}
+                    sheetBackgroundColor="white"
+                  >
+                    {bottomSheetView(keyv)}
+                  </BottomSheet>
+                  <TouchableOpacity
+                    style={{ alignItems: "center", justifyContent: "center" }}
+                    onPress={() => {
+                      setKeyv(key);
+                      bottomSheet.current.show();
+                    }}
+                  >
+                    <Text style={styles.editButton}>Edit</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            ))}
+          </View>
+        </ScrollView>
       </View>
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => navigate("Success")}
-      >
-        <Text style={{ color: "white", fontWeight: "bold" }}>완료</Text>
-      </TouchableOpacity>
-    </ScrollView>
+      <View style={{ flex: 1, justifyContent: "center" }}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() =>
+            navigate("Success", { text: "배정 공간 스케줄 선택이" })
+          }
+        >
+          <Text style={{ color: "white", fontWeight: "bold" }}>완료</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
   );
 };
 
@@ -213,6 +236,7 @@ const styles = StyleSheet.create({
   textA: {
     fontSize: 24,
     fontWeight: "bold",
+    color: "#192342",
   },
   contain: {
     flex: 1,
@@ -226,23 +250,20 @@ const styles = StyleSheet.create({
   },
   info: {
     paddingVertical: 10,
-    paddingHorizontal: 20,
+    paddingHorizontal: 5,
   },
-  adressInfo: {
-    backgroundColor: "#F3F6FF",
-    borderRadius: 20,
-    paddingHorizontal: 30,
-    paddingVertical: 10,
-  },
+
   textB: {
     fontSize: 16,
     fontWeight: "bold",
     paddingBottom: 10,
+    color: "#192342",
   },
   textC: {
     marginLeft: 20,
     paddingVertical: 10,
     fontWeight: "bold",
+    color: "#192342",
   },
   successLoc: {
     flexDirection: "row",
@@ -270,6 +291,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 14,
     paddingVertical: 10,
     fontWeight: "bold",
+    color: "#192342",
   },
   textP: {
     fontSize: 16,
@@ -282,7 +304,7 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: "#567DF4",
-    borderRadius: 20,
+    borderRadius: 25,
     alignItems: "center",
     justifyContent: "center",
     paddingVertical: 10,
@@ -316,6 +338,14 @@ const styles = StyleSheet.create({
     paddingVertical: 6,
     paddingHorizontal: 12,
     height: 33,
+  },
+  buttonT: {
+    backgroundColor: "#D9D9D9",
+    borderRadius: 25,
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 10,
+    marginBottom: 20,
   },
 });
 

@@ -1,31 +1,35 @@
 import React from "react";
-import { Text, StyleSheet, View } from "react-native";
+import { Text, StyleSheet, View, ScrollView } from "react-native";
 
 const InfoAssign = ({ navigation }) => {
   return (
-    <View style={styles.contain}>
+    <ScrollView style={styles.contain}>
       <View style={styles.top}>
         <Text style={styles.textA}>배정 정보</Text>
       </View>
       <Text style={styles.textB}>배정구역 A03</Text>
       <View style={styles.info}>
-        <Text style={{ paddingBottom: 10, fontWeight: "bold", fontSize: 20 }}>
-          Day : 월,화,수,목,금
-        </Text>
-        <Text style={{ fontWeight: "bold", fontSize: 20 }}>
-          Time : 24:00 ~ 9:00
-        </Text>
+        <View style={{ flexDirection: "row", paddingBottom: 20 }}>
+          <Text style={styles.textC}>Day {"  "}: </Text>
+          <Text style={styles.textC}> 월,화,수,목,금</Text>
+        </View>
+        <View style={{ flexDirection: "row" }}>
+          <Text style={styles.textC}>Time : </Text>
+          <Text style={styles.textC}> 00:00 ~ 09:00</Text>
+        </View>
       </View>
       <Text style={styles.textB}>배정구역 A09</Text>
       <View style={styles.info}>
-        <Text style={{ paddingBottom: 10, fontWeight: "bold", fontSize: 20 }}>
-          Day : 토,일
-        </Text>
-        <Text style={{ fontWeight: "bold", fontSize: 20 }}>
-          Time : 12:00 ~ 24:00
-        </Text>
+        <View style={{ flexDirection: "row", paddingBottom: 20 }}>
+          <Text style={styles.textC}>Day {"  "}: </Text>
+          <Text style={styles.textC}> 토,일</Text>
+        </View>
+        <View style={{ flexDirection: "row" }}>
+          <Text style={styles.textC}>Time : </Text>
+          <Text style={styles.textC}> 12:00 ~ 24:00</Text>
+        </View>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
@@ -38,6 +42,7 @@ const styles = StyleSheet.create({
   textA: {
     fontSize: 24,
     fontWeight: "bold",
+    color: "#192342",
   },
   contain: {
     flex: 1,
@@ -54,6 +59,12 @@ const styles = StyleSheet.create({
     paddingLeft: 30,
     fontWeight: "bold",
     marginBottom: 10,
+    color: "#192342",
+  },
+  textC: {
+    fontWeight: "bold",
+    fontSize: 20,
+    color: "#192342",
   },
 });
 
