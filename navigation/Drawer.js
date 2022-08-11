@@ -4,6 +4,7 @@ import Tabs from "./Tabs";
 import MyInfoStack from "./MyInfoStack";
 import AssignStack from "./AssignStack";
 import Map from "../screens/Map";
+import ReserveStack from "./ReserveStack";
 
 const DrawerNav = createDrawerNavigator();
 
@@ -24,6 +25,7 @@ const Drawer = () => {
         <DrawerNav.Screen name="내 정보 관리" component={MyInfoStack} />
         <DrawerNav.Screen name="배정 신청 결과" component={AssignStack} />
         <DrawerNav.Screen name="주차장 지도" component={Map} />
+        <DrawerNav.Screen name="주차공간 예약" component={ReserveStack} />
       </DrawerNav.Navigator>
     </>
   );

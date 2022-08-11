@@ -4,6 +4,7 @@ import ReserveDate from "../screens/ReserveDate";
 import ReserveMap from "../screens/ReserveMap";
 import ReserveTime from "../screens/ReserveTime";
 import ReserveForm from "../screens/ReserveForm";
+import ReserveSuccess from "../screens/ReserveSuccess";
 
 const Stack = createNativeStackNavigator();
 
@@ -17,6 +18,7 @@ const AssignStack = () => {
       <Stack.Screen name="Map" component={ReserveMap} />
       <Stack.Screen name="Time" component={ReserveTime} />
       <Stack.Screen name="Form" component={ReserveForm} />
+      <Stack.Screen name="Success" component={ReserveSuccess}/>
     </Stack.Navigator>
   );
 };
