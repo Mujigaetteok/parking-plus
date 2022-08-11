@@ -1,64 +1,70 @@
-import React, { Component } from 'react';
-import {
-  StyleSheet,
-  Text,
-  View
-} from 'react-native';
-import CalendarPicker from 'react-native-calendar-picker';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import { Dimensions } from 'react-native';
+import React, { useContext, useState } from "react";
+import { format } from "date-fns";
+import { Calendar } from "react-native-calendars";
+import { StyleSheet, TouchableOpacity, View, Text } from "react-native";
 
-const {width:SCREEN_WIDTH, height:SCREEN_HEIGHT} = Dimensions.get('window')
+const ReserveDate = ({ navigation: { navigate }, route }) => {
+  const posts = [];
+  const markedDates = posts.reduce((acc, current) => {
+    const formattedDate = format(new Date(current.date), 'yyyy-MM-dd');
+    acc[formattedDate] = {marked: true};
+    return acc;
+  }, {});
 
-
-class ReserveDate extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      selectedStartDate: null,
-    };
-    this.onDateChange = this.onDateChange.bind(this);
+  const [selectedDate, setSelectedDate] = useState(
+    format(new Date(), "yyyy-MM-dd"),
+  );
+  const markedSelectedDates = {
+    ...markedDates,
+    [selectedDate]: {
+      selected: true,
+      marked: markedDates[selectedDate]?.marked,
+    }
   }
 
-  onDateChange(date) {
-    this.setState({
-      selectedStartDate: date,
-    });
-  }
-  render(navigation) {
-    const { selectedStartDate } = this.state;
-    const startDate = selectedStartDate ? selectedStartDate.toString() : '';
-    return (
-      <View style={styles.container}>
-        <View style={{flex:3}}>
-          <CalendarPicker
-          onDateChange={this.onDateChange}
-          minDate={Date()}
-          selectedDayColor={'#567DF4'}
-          textStyle={{}}
-          scaleFactor={SCREEN_WIDTH}
-        />
-        </View>
-        <TouchableOpacity onPress={() => this.props.navigation.navigate('ReserveMap')} style={styles.confirm_btn}>
-          <Text style={styles.txt}>확인</Text>
-        </TouchableOpacity>
-      </View>
-    );
-  }
+  return (
+    <View>
+      <Calendar 
+        style={styles.calendar} 
+        markedDates={markedSelectedDates}
+        theme={{
+          selectedDayBackgroundColor: '#009688',
+          arrowColor: '#009688',
+          dotColor: '#009688',
+          todayTextColor: '#009688',
+        }} 
+        onDayPress={(day) => {
+          setSelectedDate(day.dateString)
+        }} />
+        <TouchableOpacity
+            style={styles.button}
+            onPress={() => {
+              navigate("Map");
+            }}
+          >
+            <Text style={{ color: "white", fontWeight: "bold" }}>
+              날짜 선택 완료
+            </Text>
+          </TouchableOpacity>
+    </View>
+
+  );
+
+
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#FFFFFF',
+  calendar: {
+    borderBottomWidth: 1,
+    borderBottomColor: '#e0e0e0',
   },
-  confirm_btn: {
-    width:SCREEN_WIDTH,
-    backgroundColor:'#567DF4'
-  },
-  txt: {
-    fontSize:30,
-    color:'#FFFFFF'
+  button: {
+    backgroundColor: "#567DF4",
+    borderRadius: 20,
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 10,
+    marginBottom: 20,
   }
 });
 
