@@ -1,31 +1,35 @@
 import React from "react";
-import { Text, StyleSheet, View } from "react-native";
+import { Text, StyleSheet, View, ScrollView } from "react-native";
 
 const InfoReserve = ({ navigation: { navigate } }) => {
   return (
-    <View style={styles.contain}>
+    <ScrollView style={styles.contain}>
       <View style={styles.top}>
         <Text style={styles.textA}>예약 정보</Text>
       </View>
       <Text style={styles.textB}>2022.06.25</Text>
       <View style={styles.info}>
-        <Text style={{ paddingBottom: 10, fontWeight: "bold", fontSize: 20 }}>
-          Location : A07
-        </Text>
-        <Text style={{ fontWeight: "bold", fontSize: 20 }}>
-          Time : 10:00 ~ 21:00
-        </Text>
+        <View style={{ flexDirection: "row", paddingBottom: 20 }}>
+          <Text style={styles.textC}>Location : </Text>
+          <Text style={styles.textC}> A07</Text>
+        </View>
+        <View style={{ flexDirection: "row" }}>
+          <Text style={styles.textC}>Time {"       "}: </Text>
+          <Text style={styles.textC}> 10:00 ~ 21:00</Text>
+        </View>
       </View>
       <Text style={styles.textB}>2022.06.26</Text>
       <View style={styles.info}>
-        <Text style={{ paddingBottom: 10, fontWeight: "bold", fontSize: 20 }}>
-          Location : A11
-        </Text>
-        <Text style={{ fontWeight: "bold", fontSize: 20 }}>
-          Time : 7:00 ~ 24:00
-        </Text>
+        <View style={{ flexDirection: "row", paddingBottom: 20 }}>
+          <Text style={styles.textC}>Location : </Text>
+          <Text style={styles.textC}> A11</Text>
+        </View>
+        <View style={{ flexDirection: "row" }}>
+          <Text style={styles.textC}>Time {"       "}: </Text>
+          <Text style={styles.textC}> 07:00 ~ 24:00</Text>
+        </View>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
@@ -38,6 +42,7 @@ const styles = StyleSheet.create({
   textA: {
     fontSize: 24,
     fontWeight: "bold",
+    color: "#192342",
   },
   contain: {
     flex: 1,
@@ -51,9 +56,15 @@ const styles = StyleSheet.create({
   },
   textB: {
     fontSize: 20,
+    marginBottom: 10,
     paddingLeft: 30,
     fontWeight: "bold",
     color: "#567DF4",
+  },
+  textC: {
+    fontWeight: "bold",
+    fontSize: 20,
+    color: "#192342",
   },
 });
 

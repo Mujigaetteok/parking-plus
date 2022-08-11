@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
   },
 
   block: {
-    flex: 1,
+    flex: 1.3,
     backgroundColor: "#F3F6FF",
     justifyContent: "center",
     paddingLeft: 30,
@@ -63,10 +63,12 @@ const styles = StyleSheet.create({
   textA: {
     fontSize: 20,
     fontWeight: "bold",
+    color: "#192342",
   },
   textB: {
     fontSize: 24,
     fontWeight: "bold",
+    color: "#192342",
   },
 });
 

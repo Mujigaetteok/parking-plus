@@ -18,7 +18,6 @@ const AssignStack = () => {
       <Stack.Screen name="Map" component={ReserveMap} />
       <Stack.Screen name="Time" component={ReserveTime} />
       <Stack.Screen name="Form" component={ReserveForm} />
-      <Stack.Screen name="Success" component={ReserveSuccess}/>
     </Stack.Navigator>
   );
 };

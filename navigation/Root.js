@@ -4,7 +4,6 @@ import Drawer from "./Drawer";
 import AssignStack from "./AssignStack";
 import MyInfoStack from "./MyInfoStack";
 import AssignResultSuccess from "../screens/AssignResultSuccess";
-import ReserveSuccess from "../screens/ReserveSuccess";
 
 const Nav = createNativeStackNavigator();
 
@@ -15,8 +14,7 @@ const Root = () => {
         <Nav.Screen name="Drawer" component={Drawer} />
         <Nav.Screen name="MyInfo" component={MyInfoStack} />
         <Nav.Screen name="Assign" component={AssignStack} />
-        <Nav.Screen name="AssignSuccess" component={AssignResultSuccess} />
-        <Nav.Screen name="ReserveSuccess" component={ReserveSuccess} />
+        <Nav.Screen name="Success" component={AssignResultSuccess} />
       </Nav.Navigator>
     </>
   );

@@ -9,7 +9,6 @@ import {
 import DropDownPicker from "react-native-dropdown-picker";
 
 const ReserveForm = ({ navigation: { navigate } }) => {
-
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
   const [opent, setOpent] = useState(false);
@@ -18,7 +17,7 @@ const ReserveForm = ({ navigation: { navigate } }) => {
     { label: "1", value: 0 },
     { label: "2", value: 1 },
     { label: "3", value: 2 },
-    { label: "4", value: 3 }
+    { label: "4", value: 3 },
   ]);
 
   return (
@@ -37,67 +36,74 @@ const ReserveForm = ({ navigation: { navigate } }) => {
         </View>
         <View style={{ marginBottom: 20 }}>
           <Text style={styles.textB}>주차 공간</Text>
-          <View
-            style={styles.successLoc}
-            activeOpacity={0.5}
+          <View style={styles.successLoc} activeOpacity={0.5}>
+            <Text
+              style={{ fontWeight: "bold", paddingVertical: 10, fontSize: 18 }}
             >
-            <Text style={{ fontWeight: "bold", paddingVertical: 10, fontSize: 18 }}>A03</Text>
+              A03
+            </Text>
           </View>
         </View>
       </View>
       <View>
         <Text style={styles.textB}>시간</Text>
         <View style={styles.successLoc}>
-        <View style={{ justifyContent: "center" }}>
-              <Text
+          <View style={{ justifyContent: "center" }}>
+            <Text
               style={{
                 fontSize: 18,
                 fontWeight: "bold",
-              }}>13:00</Text>
-            </View>
-            <View style={{ justifyContent: "center" }}>
-              <Text style={{ fontSize: 18 }}> 부터 </Text>
-            </View>
-            <View style={{ width: 110 }}>
-              <DropDownPicker
-                open={opent}
-                value={valuet}
-                items={items}
-                setOpen={setOpent}
-                setValue={setValuet}
-                setItems={setItems}
-                placeholder="1"
-                placeholderStyle={{
-                  color: "#677191",
-                }}
-                style={{
-                  backgroundColor: "#F3F6FF",
-                  borderRadius: 21,
-                  borderColor: "#F3F6FF",
-                }}
-                textStyle={{
-                  fontSize: 18,
-                  fontWeight: "bold",
-                }}
-                dropDownContainerStyle={{
-                  backgroundColor: "#F3F6FF",
-                  borderColor: "#F3F6FF",
-                  borderRadius: 21,
-                }}
-              />
-            </View>
-            <View style={{ justifyContent: "center" }}>
-              <Text style={{ fontSize: 18 }}> 시간 </Text>
-            </View>
+              }}
+            >
+              13:00
+            </Text>
+          </View>
+          <View style={{ justifyContent: "center" }}>
+            <Text style={{ fontSize: 18 }}> 부터 </Text>
+          </View>
+          <View style={{ width: 110 }}>
+            <DropDownPicker
+              open={opent}
+              value={valuet}
+              items={items}
+              setOpen={setOpent}
+              setValue={setValuet}
+              setItems={setItems}
+              placeholder="1"
+              placeholderStyle={{
+                color: "#677191",
+              }}
+              style={{
+                backgroundColor: "#F3F6FF",
+                borderRadius: 21,
+                borderColor: "#F3F6FF",
+              }}
+              textStyle={{
+                fontSize: 18,
+                fontWeight: "bold",
+              }}
+              dropDownContainerStyle={{
+                backgroundColor: "#F3F6FF",
+                borderColor: "#F3F6FF",
+                borderRadius: 21,
+              }}
+            />
+          </View>
+          <View style={{ justifyContent: "center" }}>
+            <Text style={{ fontSize: 18 }}> 시간 </Text>
           </View>
         </View>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => {navigate("Success", {});}}>
-            <Text style={{ color: "white", fontWeight: "bold" }}>
-              시간 선택 완료
-            </Text>
-          </TouchableOpacity>
+      </View>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => {
+          navigate("Success", { text: "주차 예약이" });
+        }}
+      >
+        <Text style={{ color: "white", fontWeight: "bold" }}>
+          시간 선택 완료
+        </Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -161,7 +167,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     marginTop: 200,
     marginBottom: 20,
-  }
+  },
 });
 
 export default ReserveForm;
