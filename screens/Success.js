@@ -1,8 +1,8 @@
 import React from "react";
-import { Text, StyleSheet, TouchableOpacity } from "react-native";
+import { Text, StyleSheet, TouchableOpacity, View } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
-const ReserveSuccess = ({ navigation: { navigate, reset } }) => {
+const Success = ({ navigation: { navigate, reset }, route }) => {
   const Home = () => {
     navigate("홈");
     reset({
@@ -17,18 +17,13 @@ const ReserveSuccess = ({ navigation: { navigate, reset } }) => {
         style={{
           fontSize: 24,
           color: "white",
-          marginBottom: 20,
         }}
       >
         Success!
       </Text>
-
-      <Text style={{ fontSize: 16, color: "white" }}>
-        Yey, Your Reservation
-      </Text>
-      <Text style={{ fontSize: 16, color: "white" }}>
-        is registered successfully!
-      </Text>
+      <Text style={{ fontSize: 16 }} />
+      <Text style={styles.text}>{route.params.text}</Text>
+      <Text style={styles.text}>완료되었습니다!</Text>
     </TouchableOpacity>
   );
 };
@@ -40,6 +35,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  text: {
+    fontSize: 16,
+    color: "white",
+  },
 });
 
-export default ReserveSuccess;
+export default Success;
