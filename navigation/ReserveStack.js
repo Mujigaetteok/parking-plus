@@ -4,7 +4,6 @@ import ReserveDate from "../screens/ReserveDate";
 import ReserveMap from "../screens/ReserveMap";
 import ReserveTime from "../screens/ReserveTime";
 import ReserveForm from "../screens/ReserveForm";
-import ReserveSuccess from "../screens/ReserveSuccess";
 
 const Stack = createNativeStackNavigator();
 
