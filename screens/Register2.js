@@ -10,46 +10,28 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
-import Icon from "react-native-vector-icons/Feather";
+import { Feather } from "@expo/vector-icons";
 
-function Login({ navigation: { navigate } }) {
+function Register2({ navigation: { navigate } }) {
   return (
     <View style={styles.container}>
       <View style={styles.top}>
-        <Text style={styles.textA}>Login to</Text>
-        <Text style={styles.textA}>your account</Text>
+        <Text style={styles.textA}>Enter</Text>
+        <Text style={styles.textA}>verification code</Text>
       </View>
       <View style={styles.formArea}>
-        <Text style={styles.label}>ID</Text>
-        <TextInput style={styles.textForm}>
-          <Icon
-            name="smartphone"
-            color="#677191"
-            size={20}
-            style={{ marginRight: 15 }}
-          />
-        </TextInput>
-        <Text style={styles.label}>Password</Text>
-        <TextInput style={styles.textForm}>
-          <Icon
-            name="lock"
-            color="#677191"
-            size={20}
-            style={{ marginRight: 15 }}
-          />
-        </TextInput>
+        <Text style={styles.label}>Verification code</Text>
+        <TextInput style={styles.textForm} />
+        <Text style={styles.label}></Text>
+        <TextInput />
       </View>
-      <TouchableOpacity
-        onPress={() => navigate("RegisterStack", { screen: "Register1" })}
-      >
-        <Text style={styles.textB}>계정이 없으신가요?</Text>
-      </TouchableOpacity>
+      <Text style={styles.textB}>Resend Code</Text>
       <View style={styles.buttonArea}>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigate("Root")}
+          onPress={() => navigate("Register4")}
         >
-          <Text style={styles.buttonTitle}>Login</Text>
+          <Text style={styles.buttonTitle}>Verify</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -78,7 +60,6 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 14,
     fontWeight: "bold",
-    paddingTop: 10,
     paddingBottom: 10,
     color: "#192342",
   },
@@ -86,11 +67,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#F3F6FF",
     width: "100%",
     height: hp("6%"),
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 20,
-    flexDirection: "row",
-    fontSize: 16,
+    paddingLeft: 5,
+    paddingRight: 5,
+    marginBottom: 5,
+    borderRadius: 100,
   },
   buttonArea: {
     width: "100%",
@@ -118,4 +98,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Login;
+export default Register2;

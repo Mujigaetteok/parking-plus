@@ -12,11 +12,11 @@ import {
 } from "react-native-responsive-screen";
 import Icon from "react-native-vector-icons/Feather";
 
-function Login({ navigation: { navigate } }) {
+function Register1({ navigation: { navigate } }) {
   return (
     <View style={styles.container}>
       <View style={styles.top}>
-        <Text style={styles.textA}>Login to</Text>
+        <Text style={styles.textA}>Create</Text>
         <Text style={styles.textA}>your account</Text>
       </View>
       <View style={styles.formArea}>
@@ -29,27 +29,16 @@ function Login({ navigation: { navigate } }) {
             style={{ marginRight: 15 }}
           />
         </TextInput>
-        <Text style={styles.label}>Password</Text>
-        <TextInput style={styles.textForm}>
-          <Icon
-            name="lock"
-            color="#677191"
-            size={20}
-            style={{ marginRight: 15 }}
-          />
-        </TextInput>
+        <Text style={styles.label}></Text>
+        <Text />
       </View>
-      <TouchableOpacity
-        onPress={() => navigate("RegisterStack", { screen: "Register1" })}
-      >
-        <Text style={styles.textB}>계정이 없으신가요?</Text>
-      </TouchableOpacity>
+      <Text style={styles.textB}></Text>
       <View style={styles.buttonArea}>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigate("Root")}
+          onPress={() => navigate("Register2")}
         >
-          <Text style={styles.buttonTitle}>Login</Text>
+          <Text style={styles.buttonTitle}>Sign Up</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -118,4 +107,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Login;
+export default Register1;

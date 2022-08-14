@@ -4,6 +4,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Login from "./screens/Login";
 import Root from "./navigation/Root";
+import RegisterStack from "./navigation/RegisterStack";
 
 const Stack = createNativeStackNavigator();
 
@@ -19,6 +20,7 @@ function App() {
       >
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Root" component={Root} />
+        <Stack.Screen name="RegisterStack" component={RegisterStack} />
       </Stack.Navigator>
     </NavigationContainer>
   );
