@@ -45,25 +45,6 @@ const ReserveTime = ({ navigation: { navigate }, route }) => {
   }
 
 
-  // const TimeBlock = (start,end) => {
-  //   let sliced = timeList.slice(start,end);
-  //   return (
-  //     Object.keys(sliced).map((key,i) => {
-  //       if (isAvailable(i)) {
-  //         <TouchableOpacity style={getStyle(true)}
-  //           onPress={() => {navigate("Form");}}>
-  //           <Text style = {styles.textTime}>{sliced[key].time}</Text>
-  //         </TouchableOpacity>
-  //       }
-  //       else {
-  //         <View style={getStyle(false)}>
-  //           <Text style = {styles.textTime}>{sliced[key].time}</Text>
-  //         </View>
-  //       }
-  //   })
-  //   )
-  // }
-
   const TimeBlock = (start,end) => {
     let sliced = timeList.slice(start,end);
     return (

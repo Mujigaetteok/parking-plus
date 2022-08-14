@@ -23,7 +23,8 @@ const ReserveDate = ({ navigation: { navigate }, route }) => {
   }
 
   return (
-    <View>
+    <View style={styles.contain}>
+    <View style={{ flex: 9, marginBottom: 20 }}>
       <Calendar 
         style={styles.calendar} 
         markedDates={markedSelectedDates}
@@ -36,6 +37,8 @@ const ReserveDate = ({ navigation: { navigate }, route }) => {
         onDayPress={(day) => {
           setSelectedDate(day.dateString)
         }} />
+        </View>
+        <View style={{flex:1, justifyContent: "center" }}>
         <TouchableOpacity
             style={styles.button}
             onPress={() => {
@@ -46,14 +49,19 @@ const ReserveDate = ({ navigation: { navigate }, route }) => {
               날짜 선택 완료
             </Text>
           </TouchableOpacity>
+        </View>
     </View>
-
   );
 
 
 }
 
 const styles = StyleSheet.create({
+  contain: {
+    flex: 1,
+    backgroundColor: "white",
+    paddingHorizontal: 30,
+  },
   calendar: {
     borderBottomWidth: 1,
     borderBottomColor: '#e0e0e0',

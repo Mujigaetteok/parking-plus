@@ -1,56 +1,70 @@
 // 
-import React from 'react';
-import { Text, View, StyleSheet, TouchableOpacity, Image ,Dimensions, ScrollView, SafeAreaView, ImageBackground, Alert} from 'react-native';
+import React, {useState} from 'react';
+import {
+  Text,
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  Image ,Dimensions,
+  ScrollView,
+  SafeAreaView,
+  ImageBackground,
+  Alert} from 'react-native';
 
 const {width:SCREEN_WIDTH, height:SCREEN_HEIGHT} = Dimensions.get('window')
 
-// const Spot = () => {
-//   return (
-//     <TouchableOpacity 
-//     style={styles.btn}
-//     onPress={() => {
-//       navigate("Time");
-//     }}>
-//       <Image source={require('../asset/available_spot.png')}/>
 
-//     </TouchableOpacity>
-//   )
-// }
-
-// const Car = () => {
-//   return(
-//     <View style={styles.btn}>
-//       <Image source={require('../asset/car.png')}/>
-//     </View>
-//   )
-// }
-// const Blank = () => {
-//     return (
-//       <View style={styles.btn}></View>
-//     )
-//   }
 
 const ReserveMap = ({ navigation: { navigate }, route }) => {
 
-  const Spot = () => {
+  const [MapStatus, setStatus] = useState([
+    {id: "A01", status: false },
+    {id: "A02", status: false },
+    {id: "A03", status: true },
+    {id: "A04", status: true },
+    {id: "A05", status: true },
+    {id: "A06", status: true },
+    {id: "A07", status: true },
+    {id: "A08", status: true },
+    {id: "A09", status: true },
+    {id: "A10", status: true },
+    {id: "A11", status: true },
+    {id: "A12", status: true },
+    {id: "A13", status: true },
+    {id: "A14", status: true },
+    {id: "A15", status: true },
+    {id: "A16", status: true },
+    {id: "A17", status: true },
+    {id: "A18", status: true },
+    {id: "A19", status: true },
+    {id: "A20", status: true }
+  ]);
+
+  const isAvailable = (i) => {
+    return MapStatus[i].status? true : false;
+  };
+
+  const getImage = (available) => {
+    return available?  require('../asset/available_spot.png'): require('../asset/car.png');
+  }
+
+  const getId = (i) => {
+    return MapStatus[i].id;
+  }
+
+  const draw = (start,end) => {
+    let sliced = MapStatus.slice(start,end);
     return (
-      <TouchableOpacity 
-      style={styles.btn}
-      onPress={() => {
-        navigate("Time");
-      }}>
-        <Image source={require('../asset/available_spot.png')}/>
-      </TouchableOpacity>
+      Object.keys(sliced).map((key,i) => (
+        <TouchableOpacity disabled={!isAvailable(i+start)} style={styles.btn}
+            onPress={() => {navigate("Time");}}>
+            <Image source={getImage(isAvailable(i+start))}/>
+            <Text style = {styles.txt} disabled={true}>{sliced[key].id}</Text>
+        </TouchableOpacity>
+      ))
     )
   }
-  
-  const Car = () => {
-    return(
-      <View style={styles.btn}>
-        <Image source={require('../asset/car.png')}/>
-      </View>
-    )
-  }
+
   const Blank = () => {
       return (
         <View style={styles.btn}></View>
@@ -60,45 +74,29 @@ const ReserveMap = ({ navigation: { navigate }, route }) => {
     return (
     <SafeAreaView>
       <ScrollView horizontal>
-        <View style={{width:170, height:SCREEN_HEIGHT, backgroundColor:'#DDDDDD'}}>
-            <Spot></Spot><Text style={styles.txt}>A01</Text>
-            <Spot></Spot><Text style={styles.txt}>A02</Text>
-            <Spot></Spot><Text style={styles.txt}>A03</Text>
-            <Spot></Spot><Text style={styles.txt}>A04</Text>
-            <Spot></Spot><Text style={styles.txt}>A05</Text>
-            <Spot></Spot><Text style={styles.txt}>A06</Text>
-            <Car></Car>
+        <View style={styles.map}>
+            {draw(0,7)}
         </View>
-        <View style={{width:170, height:SCREEN_HEIGHT, backgroundColor:'#DDDDDD'}}>
+        <View style={styles.map}>
 
         </View>
-        <View style={{width:170, height:SCREEN_HEIGHT, backgroundColor:'#DDDDDD'}}>
+        <View style={styles.map}>
             <Blank></Blank>
             <Blank></Blank>
-            <Spot></Spot><Text style={styles.txt}>A08</Text>
-            <Car></Car>
-            <Spot></Spot><Text style={styles.txt}>A10</Text>
+            {draw(7,10)}
 
         </View>
-        <View style={{width:170, height:SCREEN_HEIGHT, backgroundColor:'#DDDDDD'}}>
+        <View style={styles.map}>
             <Blank></Blank>
             <Blank></Blank>
-            <Spot></Spot><Text style={styles.txt}>A11</Text>
-            <Spot></Spot><Text style={styles.txt}>A12</Text>
-            <Spot></Spot><Text style={styles.txt}>A13</Text>
+            {draw(10,13)}
 
         </View>
-        <View style={{width:170, height:SCREEN_HEIGHT, backgroundColor:'#DDDDDD'}}>
+        <View style={styles.map}>
 
         </View>
-        <View style={{width:170, height:SCREEN_HEIGHT, backgroundColor:'#DDDDDD'}}>
-            <Spot></Spot><Text style={styles.txt}>A14</Text>
-            <Car></Car>
-            <Spot></Spot><Text style={styles.txt}>A16</Text>
-            <Spot></Spot><Text style={styles.txt}>A17</Text>
-            <Spot></Spot><Text style={styles.txt}>A18</Text>
-            <Spot></Spot><Text style={styles.txt}>A19</Text>
-            <Spot></Spot><Text style={styles.txt}>A20</Text>
+        <View style={styles.map}>
+          {draw(13,20)}
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -106,17 +104,22 @@ const ReserveMap = ({ navigation: { navigate }, route }) => {
   }
 
 const styles = StyleSheet.create({
+    map: {
+        marginTop:20,
+        width:170,
+        height:SCREEN_HEIGHT
+    },
     btn: {
         width: 150,
         height:70,
-        margin:15
+        margin:12
     },
     txt: {
-        marginTop:-65,
-        marginBottom:30,
-        marginStart:40,
-        fontSize:20
-    },
+        fontSize:20,
+        marginStart: 35,
+        bottom: 50
+  }
+    
   });
 
 export default ReserveMap;

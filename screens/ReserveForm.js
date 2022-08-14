@@ -22,6 +22,7 @@ const ReserveForm = ({ navigation: { navigate } }) => {
 
   return (
     <View style={styles.contain}>
+      <View style={{ flex: 9}}>
       <View style={styles.top}>
         <Text style={styles.textA}>주차 예약</Text>
       </View>
@@ -94,16 +95,18 @@ const ReserveForm = ({ navigation: { navigate } }) => {
           </View>
         </View>
       </View>
+      </View>
+      <View style={{ flex: 1, justifyContent: "center"  }}>
       <TouchableOpacity
         style={styles.button}
         onPress={() => {
           navigate("Success", { text: "주차 예약이" });
-        }}
-      >
+        }}>
         <Text style={{ color: "white", fontWeight: "bold" }}>
           시간 선택 완료
         </Text>
       </TouchableOpacity>
+    </View>
     </View>
   );
 };
@@ -164,10 +167,8 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     alignItems: "center",
     justifyContent: "center",
-    paddingVertical: 10,
-    marginTop: 200,
-    marginBottom: 20,
-  },
+    paddingVertical: 10
+  }
 });
 
 export default ReserveForm;
