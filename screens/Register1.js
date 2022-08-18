@@ -15,31 +15,35 @@ import Icon from "react-native-vector-icons/Feather";
 function Register1({ navigation: { navigate } }) {
   return (
     <View style={styles.container}>
-      <View style={styles.top}>
-        <Text style={styles.textA}>Create</Text>
-        <Text style={styles.textA}>your account</Text>
+      <View style={{ flex: 9 }}>
+        <View style={styles.top}>
+          <Text style={styles.textA}>Create</Text>
+          <Text style={styles.textA}>your account</Text>
+        </View>
+        <View style={styles.formArea}>
+          <Text style={styles.label}>ID</Text>
+          <TextInput style={styles.textForm}>
+            <Icon
+              name="smartphone"
+              color="#677191"
+              size={20}
+              style={{ marginRight: 15 }}
+            />
+          </TextInput>
+          <Text style={styles.label}></Text>
+          <Text />
+        </View>
+        <Text style={styles.textB}></Text>
       </View>
-      <View style={styles.formArea}>
-        <Text style={styles.label}>ID</Text>
-        <TextInput style={styles.textForm}>
-          <Icon
-            name="smartphone"
-            color="#677191"
-            size={20}
-            style={{ marginRight: 15 }}
-          />
-        </TextInput>
-        <Text style={styles.label}></Text>
-        <Text />
-      </View>
-      <Text style={styles.textB}></Text>
-      <View style={styles.buttonArea}>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => navigate("Register2")}
-        >
-          <Text style={styles.buttonTitle}>Sign Up</Text>
-        </TouchableOpacity>
+      <View style={{ flex: 1 }}>
+        <View style={styles.buttonArea}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => navigate("Register2")}
+          >
+            <Text style={styles.buttonTitle}>Sign Up</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
@@ -92,7 +96,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 100,
-    marginTop: 30,
   },
   buttonTitle: {
     color: "white",
