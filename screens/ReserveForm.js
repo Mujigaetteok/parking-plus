@@ -23,73 +23,60 @@ const ReserveForm = ({ navigation: { navigate } }) => {
   return (
     <View style={styles.contain}>
       <View style={{ flex: 9}}>
-      <View style={styles.top}>
-        <Text style={styles.textA}>주차 예약</Text>
-      </View>
-      <View>
-        <View style={{ marginBottom: 20 }}>
-          <Text style={styles.textB}>예약 날짜</Text>
-          <View style={styles.info}>
-            <Text style={{ fontWeight: "bold", fontSize: 18 }}>
-              2022년 08월 11일
-            </Text>
+        <View style={styles.top}>
+          <Text style={styles.textA}>주차 예약</Text>
+        </View>
+        <View>
+          <View style={{ marginBottom: 20 }}>
+            <Text style={styles.textB}>예약 날짜</Text>
+            <View style={styles.info}>
+              <Text style={{ fontWeight: "bold", fontSize: 18 }}>
+                2022년 08월 11일
+              </Text>
+            </View>
+          </View>
+          <View style={{ marginBottom: 20 }}>
+            <Text style={styles.textB}>주차 공간</Text>
+            <View style={styles.successLoc} activeOpacity={0.5}>
+              <Text style={{ fontWeight: "bold", paddingVertical: 10, fontSize: 18 }}>A03</Text>
+            </View>
           </View>
         </View>
-        <View style={{ marginBottom: 20 }}>
-          <Text style={styles.textB}>주차 공간</Text>
-          <View style={styles.successLoc} activeOpacity={0.5}>
-            <Text
-              style={{ fontWeight: "bold", paddingVertical: 10, fontSize: 18 }}
-            >
-              A03
-            </Text>
-          </View>
-        </View>
-      </View>
-      <View>
-        <Text style={styles.textB}>시간</Text>
-        <View style={styles.successLoc}>
-          <View style={{ justifyContent: "center" }}>
-            <Text
-              style={{
-                fontSize: 18,
-                fontWeight: "bold",
-              }}
-            >
-              13:00
-            </Text>
-          </View>
-          <View style={{ justifyContent: "center" }}>
-            <Text style={{ fontSize: 18 }}> 부터 </Text>
-          </View>
-          <View style={{ width: 110 }}>
-            <DropDownPicker
-              open={opent}
-              value={valuet}
-              items={items}
-              setOpen={setOpent}
-              setValue={setValuet}
-              setItems={setItems}
-              placeholder="1"
-              placeholderStyle={{
-                color: "#677191",
-              }}
-              style={{
-                backgroundColor: "#F3F6FF",
-                borderRadius: 21,
-                borderColor: "#F3F6FF",
-              }}
-              textStyle={{
-                fontSize: 18,
-                fontWeight: "bold",
-              }}
-              dropDownContainerStyle={{
-                backgroundColor: "#F3F6FF",
-                borderColor: "#F3F6FF",
-                borderRadius: 21,
-              }}
-            />
-          </View>
+        <View>
+          <Text style={styles.textB}>시간</Text>
+          <View style={styles.successLoc}>
+            <View style={{ justifyContent: "center" }}>
+              <Text style={{fontSize: 18, fontWeight: "bold",}}>13:00</Text>
+            </View>
+            <View style={{ justifyContent: "center" }}>
+              <Text style={{ fontSize: 18 }}> 부터 </Text>
+            </View>
+            <View style={{ width: 110 }}>
+              <DropDownPicker
+                open={opent}
+                value={valuet}
+                items={items}
+                setOpen={setOpent}
+                setValue={setValuet}
+                setItems={setItems}
+                placeholder="1"
+                placeholderStyle={{color: "#677191",}}
+                style={{
+                  backgroundColor: "#F3F6FF",
+                  borderRadius: 21,
+                  borderColor: "#F3F6FF",
+                }}
+                textStyle={{
+                  fontSize: 18,
+                  fontWeight: "bold",
+                }}
+                dropDownContainerStyle={{
+                  backgroundColor: "#F3F6FF",
+                  borderColor: "#F3F6FF",
+                  borderRadius: 21,
+                }}
+              />
+            </View>
           <View style={{ justifyContent: "center" }}>
             <Text style={{ fontSize: 18 }}> 시간 </Text>
           </View>

@@ -5,9 +5,9 @@ import {
   DrawerItemList,
 } from "@react-navigation/drawer";
 import { Text, View } from "react-native";
-import Tabs from "./Tabs";
 import MyInfoStack from "./MyInfoStack";
 import AssignStack from "./AssignStack";
+import Main from "../screens/Main";
 import Map from "../screens/Map";
 import AssignForm from "../screens/AssignForm";
 import ReserveStack from "./ReserveStack";
@@ -55,7 +55,7 @@ const Drawer = () => {
           },
         }}
       >
-        <DrawerNav.Screen name="홈" component={Tabs} />
+        <DrawerNav.Screen name="홈" component={Main} />
         <DrawerNav.Screen name="내 정보 관리" component={MyInfoStack} />
         <DrawerNav.Screen name="배정 신청" component={AssignForm} />
         <DrawerNav.Screen name="배정 신청 결과" component={AssignStack} />
