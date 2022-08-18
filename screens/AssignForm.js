@@ -101,6 +101,7 @@ const AssignForm = ({ navigation: { navigate } }) => {
                     borderColor: "#F3F6FF",
                     borderRadius: 21,
                     paddingLeft: 10,
+                    height:140 
                   }}
                 />
               </View>
@@ -109,6 +110,7 @@ const AssignForm = ({ navigation: { navigate } }) => {
               </View>
             </View>
           </View>
+          <View style={{height:140}} />
         </ScrollView>
       </View>
       <View style={{ flex: 1 }}>
