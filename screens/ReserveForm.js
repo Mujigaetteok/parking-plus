@@ -23,6 +23,7 @@ const ReserveForm = ({ navigation: { navigate } }) => {
   return (
     <View style={styles.contain}>
       <View style={{ flex: 9}}>
+        <ScrollView>
         <View style={styles.top}>
           <Text style={styles.textA}>주차 예약</Text>
         </View>
@@ -82,6 +83,7 @@ const ReserveForm = ({ navigation: { navigate } }) => {
           </View>
         </View>
       </View>
+      </ScrollView>
       </View>
       <View style={{ flex: 1, justifyContent: "center"  }}>
       <TouchableOpacity
