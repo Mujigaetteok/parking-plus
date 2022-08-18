@@ -10,29 +10,32 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
-import { Feather } from "@expo/vector-icons";
 
 function Register2({ navigation: { navigate } }) {
   return (
     <View style={styles.container}>
-      <View style={styles.top}>
-        <Text style={styles.textA}>Enter</Text>
-        <Text style={styles.textA}>verification code</Text>
+      <View style={{ flex: 9 }}>
+        <View style={styles.top}>
+          <Text style={styles.textA}>Enter</Text>
+          <Text style={styles.textA}>verification code</Text>
+        </View>
+        <View style={styles.formArea}>
+          <Text style={styles.label}>Verification code</Text>
+          <TextInput style={styles.textForm} />
+          <Text style={styles.label}></Text>
+          <TextInput />
+        </View>
+        <Text style={styles.textB}>Resend Code</Text>
       </View>
-      <View style={styles.formArea}>
-        <Text style={styles.label}>Verification code</Text>
-        <TextInput style={styles.textForm} />
-        <Text style={styles.label}></Text>
-        <TextInput />
-      </View>
-      <Text style={styles.textB}>Resend Code</Text>
-      <View style={styles.buttonArea}>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => navigate("Register4")}
-        >
-          <Text style={styles.buttonTitle}>Verify</Text>
-        </TouchableOpacity>
+      <View style={{ flex: 1 }}>
+        <View style={styles.buttonArea}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => navigate("Register4")}
+          >
+            <Text style={styles.buttonTitle}>Verify</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
@@ -83,7 +86,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 100,
-    marginTop: 30,
   },
   buttonTitle: {
     color: "white",

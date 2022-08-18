@@ -15,42 +15,46 @@ import Icon from "react-native-vector-icons/Feather";
 function Login({ navigation: { navigate } }) {
   return (
     <View style={styles.container}>
-      <View style={styles.top}>
-        <Text style={styles.textA}>Login to</Text>
-        <Text style={styles.textA}>your account</Text>
-      </View>
-      <View style={styles.formArea}>
-        <Text style={styles.label}>ID</Text>
-        <TextInput style={styles.textForm}>
-          <Icon
-            name="smartphone"
-            color="#677191"
-            size={20}
-            style={{ marginRight: 15 }}
-          />
-        </TextInput>
-        <Text style={styles.label}>Password</Text>
-        <TextInput style={styles.textForm}>
-          <Icon
-            name="lock"
-            color="#677191"
-            size={20}
-            style={{ marginRight: 15 }}
-          />
-        </TextInput>
-      </View>
-      <TouchableOpacity
-        onPress={() => navigate("RegisterStack", { screen: "Register1" })}
-      >
-        <Text style={styles.textB}>계정이 없으신가요?</Text>
-      </TouchableOpacity>
-      <View style={styles.buttonArea}>
+      <View style={{ flex: 9 }}>
+        <View style={styles.top}>
+          <Text style={styles.textA}>Login to</Text>
+          <Text style={styles.textA}>your account</Text>
+        </View>
+        <View style={styles.formArea}>
+          <Text style={styles.label}>ID</Text>
+          <TextInput style={styles.textForm}>
+            <Icon
+              name="smartphone"
+              color="#677191"
+              size={20}
+              style={{ marginRight: 15 }}
+            />
+          </TextInput>
+          <Text style={styles.label}>Password</Text>
+          <TextInput style={styles.textForm}>
+            <Icon
+              name="lock"
+              color="#677191"
+              size={20}
+              style={{ marginRight: 15 }}
+            />
+          </TextInput>
+        </View>
         <TouchableOpacity
-          style={styles.button}
-          onPress={() => navigate("Root")}
+          onPress={() => navigate("RegisterStack", { screen: "Register1" })}
         >
-          <Text style={styles.buttonTitle}>Login</Text>
+          <Text style={styles.textB}>계정이 없으신가요?</Text>
         </TouchableOpacity>
+      </View>
+      <View style={{ flex: 1 }}>
+        <View style={styles.buttonArea}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => navigate("Root")}
+          >
+            <Text style={styles.buttonTitle}>Login</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
@@ -103,7 +107,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 100,
-    marginTop: 30,
   },
   buttonTitle: {
     color: "white",
