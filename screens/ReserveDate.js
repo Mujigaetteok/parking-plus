@@ -2,6 +2,10 @@ import React, { useContext, useState } from "react";
 import { format } from "date-fns";
 import { Calendar } from "react-native-calendars";
 import { StyleSheet, TouchableOpacity, View, Text } from "react-native";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
 
 const ReserveDate = ({ navigation: { navigate }, route }) => {
   const posts = [];
@@ -38,18 +42,16 @@ const ReserveDate = ({ navigation: { navigate }, route }) => {
           setSelectedDate(day.dateString)
         }} />
         </View>
-        <View style={{flex:1, justifyContent: "center" }}>
-        <TouchableOpacity
+        <View style={{ flex: 1 }}>
+        <View style={styles.buttonArea}>
+          <TouchableOpacity
             style={styles.button}
-            onPress={() => {
-              navigate("Map");
-            }}
+            onPress={() => navigate("Map")}
           >
-            <Text style={{ color: "white", fontWeight: "bold" }}>
-              날짜 선택 완료
-            </Text>
+            <Text style={styles.buttonTitle}>날짜 선택 완료</Text>
           </TouchableOpacity>
         </View>
+      </View>
     </View>
   );
 
@@ -66,14 +68,22 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#e0e0e0',
   },
+  buttonArea: {
+    width: "100%",
+    height: hp("5%"),
+  },
   button: {
     backgroundColor: "#567DF4",
-    borderRadius: 20,
-    alignItems: "center",
+    width: "100%",
+    height: "140%",
     justifyContent: "center",
-    paddingVertical: 10,
-    marginBottom: 20,
-  }
+    alignItems: "center",
+    borderRadius: 100,
+  },
+  buttonTitle: {
+    color: "white",
+    fontWeight: "bold",
+  },
 });
 
 export default ReserveDate;

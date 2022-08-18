@@ -7,6 +7,10 @@ import {
   ScrollView,
 } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
 
 const ReserveForm = ({ navigation: { navigate } }) => {
   const [open, setOpen] = useState(false);
@@ -24,68 +28,81 @@ const ReserveForm = ({ navigation: { navigate } }) => {
     <View style={styles.contain}>
       <View style={{ flex: 9}}>
         <ScrollView>
-        <View style={styles.top}>
-          <Text style={styles.textA}>주차 예약</Text>
-        </View>
-        <View>
-          <View style={{ marginBottom: 20 }}>
-            <Text style={styles.textB}>예약 날짜</Text>
-            <View style={styles.info}>
-              <Text style={{ fontWeight: "bold", fontSize: 18 }}>
-                2022년 08월 11일
-              </Text>
+          <View style={styles.top}>
+            <Text style={styles.textA}>주차 예약</Text>
+          </View>
+
+          <View>
+            <View style={{ marginBottom: 20 }}>
+              <Text style={styles.textB}>예약 날짜</Text>
+              <View style={styles.info}>
+                <Text style={{ fontWeight: "bold", fontSize: 18 }}>
+                  2022년 08월 11일
+                </Text>
+              </View>
+            </View>
+
+            <View style={{ marginBottom: 20 }}>
+              <Text style={styles.textB}>주차 공간</Text>
+              <View style={styles.successLoc} activeOpacity={0.5}>
+                <Text style={{ fontWeight: "bold", paddingVertical: 10, fontSize: 18 }}>A03</Text>
+              </View>
             </View>
           </View>
-          <View style={{ marginBottom: 20 }}>
-            <Text style={styles.textB}>주차 공간</Text>
-            <View style={styles.successLoc} activeOpacity={0.5}>
-              <Text style={{ fontWeight: "bold", paddingVertical: 10, fontSize: 18 }}>A03</Text>
-            </View>
-          </View>
-        </View>
-        <View>
-          <Text style={styles.textB}>시간</Text>
-          <View style={styles.successLoc}>
+
+          <View>
+            <Text style={styles.textB}>시간</Text>
+            <View style={styles.successLoc}>
+              <View style={{ justifyContent: "center" }}>
+                <Text style={{fontSize: 18, fontWeight: "bold",}}>13:00</Text>
+              </View>
+              <View style={{ justifyContent: "center" }}>
+                <Text style={{ fontSize: 18 }}> 부터 </Text>
+              </View>
+              <View style={{ width: 110 }}>
+                <DropDownPicker
+                  open={opent}
+                  value={valuet}
+                  items={items}
+                  setOpen={setOpent}
+                  setValue={setValuet}
+                  setItems={setItems}
+                  placeholder="1"
+                  placeholderStyle={{color: "#677191",}}
+                  style={{
+                    backgroundColor: "#F3F6FF",
+                    borderRadius: 21,
+                    borderColor: "#F3F6FF",
+                  }}
+                  textStyle={{
+                    fontSize: 18,
+                    fontWeight: "bold",
+                  }}
+                  dropDownContainerStyle={{
+                    backgroundColor: "#F3F6FF",
+                    borderColor: "#F3F6FF",
+                    borderRadius: 21,
+                  }}
+                />
+              </View>
             <View style={{ justifyContent: "center" }}>
-              <Text style={{fontSize: 18, fontWeight: "bold",}}>13:00</Text>
+              <Text style={{ fontSize: 18 }}> 시간 </Text>
             </View>
-            <View style={{ justifyContent: "center" }}>
-              <Text style={{ fontSize: 18 }}> 부터 </Text>
-            </View>
-            <View style={{ width: 110 }}>
-              <DropDownPicker
-                open={opent}
-                value={valuet}
-                items={items}
-                setOpen={setOpent}
-                setValue={setValuet}
-                setItems={setItems}
-                placeholder="1"
-                placeholderStyle={{color: "#677191",}}
-                style={{
-                  backgroundColor: "#F3F6FF",
-                  borderRadius: 21,
-                  borderColor: "#F3F6FF",
-                }}
-                textStyle={{
-                  fontSize: 18,
-                  fontWeight: "bold",
-                }}
-                dropDownContainerStyle={{
-                  backgroundColor: "#F3F6FF",
-                  borderColor: "#F3F6FF",
-                  borderRadius: 21,
-                }}
-              />
-            </View>
-          <View style={{ justifyContent: "center" }}>
-            <Text style={{ fontSize: 18 }}> 시간 </Text>
-          </View>
+          </View>  
         </View>
-      </View>
       </ScrollView>
       </View>
-      <View style={{ flex: 1, justifyContent: "center"  }}>
+      <View style={{ flex: 1 }}>
+        <View style={styles.buttonArea}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => navigate("Success", {text: "주차 예약이"})}
+          >
+            <Text style={styles.buttonTitle}>시간 선택 완료</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+      {/* <View style={{ flex: 1, justifyContent: "center"  }}>
       <TouchableOpacity
         style={styles.button}
         onPress={() => {
@@ -95,7 +112,7 @@ const ReserveForm = ({ navigation: { navigate } }) => {
           시간 선택 완료
         </Text>
       </TouchableOpacity>
-    </View>
+    </View> */}
     </View>
   );
 };
@@ -103,7 +120,6 @@ const ReserveForm = ({ navigation: { navigate } }) => {
 const styles = StyleSheet.create({
   top: {
     height: 100,
-
     justifyContent: "center",
   },
   textA: {
@@ -151,13 +167,22 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     borderRadius: 25,
   },
+  buttonArea: {
+    width: "100%",
+    height: hp("5%"),
+  },
   button: {
     backgroundColor: "#567DF4",
-    borderRadius: 20,
-    alignItems: "center",
+    width: "100%",
+    height: "140%",
     justifyContent: "center",
-    paddingVertical: 10
-  }
+    alignItems: "center",
+    borderRadius: 100,
+  },
+  buttonTitle: {
+    color: "white",
+    fontWeight: "bold",
+  },
 });
 
 export default ReserveForm;
