@@ -9,6 +9,7 @@ import {
 import DropDownPicker from "react-native-dropdown-picker";
 import Icon from "react-native-vector-icons/Ionicons";
 import Icon2 from "react-native-vector-icons/Feather";
+import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 
 DropDownPicker.setListMode("SCROLLVIEW");
 
@@ -74,62 +75,66 @@ const AssignForm = ({ navigation: { navigate } }) => {
                 size={20}
                 style={{ marginRight: 15, marginTop: 5 }}
               />
-              <View style={{ width: 130 }}>
-                <DropDownPicker
-                  open={open}
-                  value={value}
-                  items={items}
-                  setOpen={setOpen}
-                  setValue={setValue}
-                  setItems={setItems}
-                  placeholder="1"
-                  placeholderStyle={{
-                    color: "#677191",
-                  }}
-                  style={{
-                    backgroundColor: "#F3F6FF",
-                    borderRadius: 21,
-                    borderColor: "#F3F6FF",
-                    paddingLeft: 20,
-                  }}
-                  textStyle={{
-                    fontSize: 18,
-                    fontWeight: "bold",
-                  }}
-                  dropDownContainerStyle={{
-                    backgroundColor: "#F3F6FF",
-                    borderColor: "#F3F6FF",
-                    borderRadius: 21,
-                    paddingLeft: 10,
-                    height:140 
-                  }}
-                />
-              </View>
-              <View style={{ justifyContent: "center" }}>
-                <Text style={styles.textE}>{"   "}대</Text>
+              <View style={{ flexDirection: "row", flex: 1 }}>
+                <View style={{ flex: 1 }}>
+                  <DropDownPicker
+                    open={open}
+                    value={value}
+                    items={items}
+                    setOpen={setOpen}
+                    setValue={setValue}
+                    setItems={setItems}
+                    placeholder="1"
+                    placeholderStyle={{
+                      color: "#677191",
+                    }}
+                    style={{
+                      backgroundColor: "#F3F6FF",
+                      borderRadius: 21,
+                      borderColor: "#F3F6FF",
+                      paddingLeft: 20,
+                    }}
+                    textStyle={{
+                      fontSize: 18,
+                      fontWeight: "bold",
+                    }}
+                    dropDownContainerStyle={{
+                      backgroundColor: "#F3F6FF",
+                      borderColor: "#F3F6FF",
+                      borderRadius: 21,
+                      paddingLeft: 10,
+                      height: 100,
+                    }}
+                  />
+                </View>
+                <View style={{ justifyContent: "center", flex: 1.5 }}>
+                  <Text style={styles.textE}>{"   "}대</Text>
+                </View>
               </View>
             </View>
           </View>
-          <View style={{height:140}} />
+          <View style={{ height: 100 }} />
         </ScrollView>
       </View>
       <View style={{ flex: 1 }}>
-        {value !== null ? (
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => navigate("Success", { text: "배정 신청이" })}
-          >
-            <Text style={{ color: "white", fontWeight: "bold" }}>
-              배정 신청
-            </Text>
-          </TouchableOpacity>
-        ) : (
-          <View style={styles.buttonT}>
-            <Text style={{ color: "white", fontWeight: "bold" }}>
-              배정 신청
-            </Text>
-          </View>
-        )}
+        <View style={styles.buttonArea}>
+          {value !== null ? (
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => navigate("Success", { text: "배정 신청이" })}
+            >
+              <Text style={{ color: "white", fontWeight: "bold" }}>
+                배정 신청
+              </Text>
+            </TouchableOpacity>
+          ) : (
+            <View style={styles.buttonT}>
+              <Text style={{ color: "white", fontWeight: "bold" }}>
+                배정 신청
+              </Text>
+            </View>
+          )}
+        </View>
       </View>
     </View>
   );
@@ -173,21 +178,25 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: "#192342",
   },
+  buttonArea: {
+    width: "100%",
+    height: hp("5%"),
+  },
   button: {
     backgroundColor: "#567DF4",
-    borderRadius: 25,
-    alignItems: "center",
+    width: "100%",
+    height: "140%",
     justifyContent: "center",
-    paddingVertical: 10,
-    marginBottom: 20,
+    alignItems: "center",
+    borderRadius: 100,
   },
   buttonT: {
     backgroundColor: "#D9D9D9",
-    borderRadius: 25,
-    alignItems: "center",
+    width: "100%",
+    height: "140%",
     justifyContent: "center",
-    paddingVertical: 10,
-    marginBottom: 20,
+    alignItems: "center",
+    borderRadius: 100,
   },
   textE: {
     fontSize: 16,

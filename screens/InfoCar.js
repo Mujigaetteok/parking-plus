@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import BottomSheet from "react-native-gesture-bottom-sheet";
 import Icon from "react-native-vector-icons/Ionicons";
+import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 
 const InfoCar = ({ navigation: { navigate } }) => {
   const [car, setCar] = useState("");
@@ -35,12 +36,14 @@ const InfoCar = ({ navigation: { navigate } }) => {
         </View>
         <View style={{ flex: 1 }} />
         <View style={{ flex: 1 }}>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => bottomSheet.current.close()}
-          >
-            <Text style={{ color: "white", fontWeight: "bold" }}>등록</Text>
-          </TouchableOpacity>
+          <View style={styles.buttonArea}>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => bottomSheet.current.close()}
+            >
+              <Text style={{ color: "white", fontWeight: "bold" }}>등록</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     );
@@ -75,13 +78,17 @@ const InfoCar = ({ navigation: { navigate } }) => {
           </BottomSheet>
         </ScrollView>
       </View>
-      <View style={{ flex: 1, justifyContent: "center" }}>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => bottomSheet.current.show()}
-        >
-          <Text style={{ color: "white", fontWeight: "bold" }}>차량 등록</Text>
-        </TouchableOpacity>
+      <View style={{ flex: 1 }}>
+        <View style={styles.buttonArea}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => bottomSheet.current.show()}
+          >
+            <Text style={{ color: "white", fontWeight: "bold" }}>
+              차량 등록
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
@@ -127,13 +134,17 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#677191",
   },
+  buttonArea: {
+    width: "100%",
+    height: hp("5%"),
+  },
   button: {
     backgroundColor: "#567DF4",
-    borderRadius: 25,
-    alignItems: "center",
+    width: "100%",
+    height: "140%",
     justifyContent: "center",
-    paddingVertical: 10,
-    marginBottom: 20,
+    alignItems: "center",
+    borderRadius: 100,
   },
 });
 export default InfoCar;

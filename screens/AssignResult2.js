@@ -10,6 +10,7 @@ import BottomSheet from "react-native-gesture-bottom-sheet";
 import DropDownPicker from "react-native-dropdown-picker";
 import Icon from "react-native-vector-icons/Ionicons";
 import Icon2 from "react-native-vector-icons/Feather";
+import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 
 DropDownPicker.setListMode("SCROLLVIEW");
 
@@ -73,7 +74,7 @@ const AssignResult2 = ({ navigation: { navigate }, route }) => {
       <View style={styles.containBottom}>
         <View
           style={{
-            flex: 2,
+            flex: 2.5,
             justifyContent: "center",
           }}
         >
@@ -97,13 +98,13 @@ const AssignResult2 = ({ navigation: { navigate }, route }) => {
         </View>
         <View
           style={{
-            flex: 1.5,
+            flex: 1,
             justifyContent: "center",
           }}
         >
           <Text style={styles.textB}>시간</Text>
           <View style={styles.successLoc}>
-            <View style={{ width: 120 }}>
+            <View style={{ flex: 2 }}>
               <DropDownPicker
                 open={open}
                 value={value}
@@ -128,14 +129,20 @@ const AssignResult2 = ({ navigation: { navigate }, route }) => {
                   backgroundColor: "#F3F6FF",
                   borderColor: "#F3F6FF",
                   borderRadius: 21,
-                  height: 140,
+                  height: 120,
                 }}
               />
             </View>
-            <View style={{ justifyContent: "center" }}>
+            <View
+              style={{
+                flex: 1,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
               <Text style={{ fontSize: 18 }}> ~ </Text>
             </View>
-            <View style={{ width: 120 }}>
+            <View style={{ flex: 2 }}>
               <DropDownPicker
                 open={opent}
                 value={valuet}
@@ -160,7 +167,7 @@ const AssignResult2 = ({ navigation: { navigate }, route }) => {
                   backgroundColor: "#F3F6FF",
                   borderColor: "#F3F6FF",
                   borderRadius: 21,
-                  height: 140,
+                  height: 120,
                 }}
               />
             </View>
@@ -169,35 +176,37 @@ const AssignResult2 = ({ navigation: { navigate }, route }) => {
         <View style={{ flex: 1 }} />
         <View
           style={{
-            flex: 1,
+            flex: 1.5,
             justifyContent: "center",
           }}
         >
-          {value !== null && valuet !== null && value < valuet ? (
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() => {
-                navigate("Detail", {
-                  location: loc,
-                  items: items,
-                  value: value,
-                  valuet: valuet,
-                  week: week,
-                  weekT: week.filter((m) => m.status !== false),
-                });
-              }}
-            >
-              <Text style={{ color: "white", fontWeight: "bold" }}>
-                시간 선택 완료
-              </Text>
-            </TouchableOpacity>
-          ) : (
-            <View style={styles.buttonT}>
-              <Text style={{ color: "white", fontWeight: "bold" }}>
-                시간 선택 완료
-              </Text>
-            </View>
-          )}
+          <View style={styles.buttonArea}>
+            {value !== null && valuet !== null && value < valuet ? (
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => {
+                  navigate("Detail", {
+                    location: loc,
+                    items: items,
+                    value: value,
+                    valuet: valuet,
+                    week: week,
+                    weekT: week.filter((m) => m.status !== false),
+                  });
+                }}
+              >
+                <Text style={{ color: "white", fontWeight: "bold" }}>
+                  시간 선택 완료
+                </Text>
+              </TouchableOpacity>
+            ) : (
+              <View style={styles.buttonT}>
+                <Text style={{ color: "white", fontWeight: "bold" }}>
+                  시간 선택 완료
+                </Text>
+              </View>
+            )}
+          </View>
         </View>
       </View>
     );
@@ -281,22 +290,24 @@ const AssignResult2 = ({ navigation: { navigate }, route }) => {
         >
           {bottomSheetView(loc)}
         </BottomSheet>
-        {countDay() > 0 ? (
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => bottomSheet.current.show()}
-          >
-            <Text style={{ color: "white", fontWeight: "bold" }}>
-              요일 선택 완료
-            </Text>
-          </TouchableOpacity>
-        ) : (
-          <View style={styles.buttonT}>
-            <Text style={{ color: "white", fontWeight: "bold" }}>
-              요일 선택 완료
-            </Text>
-          </View>
-        )}
+        <View style={styles.buttonArea}>
+          {countDay() > 0 ? (
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => bottomSheet.current.show()}
+            >
+              <Text style={{ color: "white", fontWeight: "bold" }}>
+                요일 선택 완료
+              </Text>
+            </TouchableOpacity>
+          ) : (
+            <View style={styles.buttonT}>
+              <Text style={{ color: "white", fontWeight: "bold" }}>
+                요일 선택 완료
+              </Text>
+            </View>
+          )}
+        </View>
       </View>
     </View>
   );
@@ -378,14 +389,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "white",
   },
-  button: {
-    backgroundColor: "#567DF4",
-    borderRadius: 25,
-    alignItems: "center",
-    justifyContent: "center",
-    paddingVertical: 10,
-    marginBottom: 20,
-  },
   time: {
     fontSize: 18,
     backgroundColor: "#F3F6FF",
@@ -394,13 +397,25 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     fontWeight: "bold",
   },
+  buttonArea: {
+    width: "100%",
+    height: hp("5%"),
+  },
+  button: {
+    backgroundColor: "#567DF4",
+    width: "100%",
+    height: "140%",
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 100,
+  },
   buttonT: {
     backgroundColor: "#D9D9D9",
-    borderRadius: 25,
-    alignItems: "center",
+    width: "100%",
+    height: "140%",
     justifyContent: "center",
-    paddingVertical: 10,
-    marginBottom: 20,
+    alignItems: "center",
+    borderRadius: 100,
   },
 });
 
