@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import BottomSheet from "react-native-gesture-bottom-sheet";
 import DropDownPicker from "react-native-dropdown-picker";
+import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 
 DropDownPicker.setListMode("SCROLLVIEW");
 
@@ -48,7 +49,7 @@ const AssignResult3 = ({ navigation: { navigate }, route }) => {
         <View style={{ flex: 3, justifyContent: "center" }}>
           <Text style={styles.textB}>시간</Text>
           <View style={styles.successLoc}>
-            <View style={{ width: 120 }}>
+            <View style={{ flex: 2 }}>
               <DropDownPicker
                 open={open}
                 value={start}
@@ -73,14 +74,20 @@ const AssignResult3 = ({ navigation: { navigate }, route }) => {
                   backgroundColor: "#F3F6FF",
                   borderColor: "#F3F6FF",
                   borderRadius: 21,
-                  height: 140,
+                  height: 120,
                 }}
               />
             </View>
-            <View style={{ justifyContent: "center" }}>
+            <View
+              style={{
+                flex: 1,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
               <Text style={{ fontSize: 18 }}> ~ </Text>
             </View>
-            <View style={{ width: 120 }}>
+            <View style={{ flex: 2 }}>
               <DropDownPicker
                 open={opent}
                 value={end}
@@ -105,33 +112,35 @@ const AssignResult3 = ({ navigation: { navigate }, route }) => {
                   backgroundColor: "#F3F6FF",
                   borderColor: "#F3F6FF",
                   borderRadius: 21,
-                  height: 140,
+                  height: 120,
                 }}
               />
             </View>
           </View>
         </View>
-        <View style={{ flex: 1.5 }} />
+
         <View style={{ flex: 1, justifyContent: "center" }}>
-          {start !== null && end !== null && start < end ? (
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() => {
-                bottomSheet.current.close();
-                changeTime(key);
-              }}
-            >
-              <Text style={{ color: "white", fontWeight: "bold" }}>
-                시간 수정 완료
-              </Text>
-            </TouchableOpacity>
-          ) : (
-            <View style={styles.buttonT}>
-              <Text style={{ color: "white", fontWeight: "bold" }}>
-                시간 수정 완료
-              </Text>
-            </View>
-          )}
+          <View style={styles.buttonArea}>
+            {start !== null && end !== null && start < end ? (
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => {
+                  bottomSheet.current.close();
+                  changeTime(key);
+                }}
+              >
+                <Text style={{ color: "white", fontWeight: "bold" }}>
+                  시간 수정 완료
+                </Text>
+              </TouchableOpacity>
+            ) : (
+              <View style={styles.buttonT}>
+                <Text style={{ color: "white", fontWeight: "bold" }}>
+                  시간 수정 완료
+                </Text>
+              </View>
+            )}
+          </View>
         </View>
       </View>
     );
@@ -214,15 +223,17 @@ const AssignResult3 = ({ navigation: { navigate }, route }) => {
           </View>
         </ScrollView>
       </View>
-      <View style={{ flex: 1, justifyContent: "center" }}>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() =>
-            navigate("Success", { text: "배정 공간 스케줄 선택이" })
-          }
-        >
-          <Text style={{ color: "white", fontWeight: "bold" }}>완료</Text>
-        </TouchableOpacity>
+      <View style={{ flex: 1 }}>
+        <View style={styles.buttonArea}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() =>
+              navigate("Success", { text: "배정 공간 스케줄 선택이" })
+            }
+          >
+            <Text style={{ color: "white", fontWeight: "bold" }}>완료</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
@@ -302,14 +313,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "white",
   },
-  button: {
-    backgroundColor: "#567DF4",
-    borderRadius: 25,
-    alignItems: "center",
-    justifyContent: "center",
-    paddingVertical: 10,
-    marginBottom: 20,
-  },
   time: {
     fontSize: 18,
     backgroundColor: "#F3F6FF",
@@ -339,13 +342,25 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     height: 33,
   },
+  buttonArea: {
+    width: "100%",
+    height: hp("5%"),
+  },
+  button: {
+    backgroundColor: "#567DF4",
+    width: "100%",
+    height: "140%",
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 100,
+  },
   buttonT: {
     backgroundColor: "#D9D9D9",
-    borderRadius: 25,
-    alignItems: "center",
+    width: "100%",
+    height: "140%",
     justifyContent: "center",
-    paddingVertical: 10,
-    marginBottom: 20,
+    alignItems: "center",
+    borderRadius: 100,
   },
 });
 
