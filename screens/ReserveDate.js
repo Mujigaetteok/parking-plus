@@ -46,7 +46,7 @@ const ReserveDate = ({ navigation: { navigate }, route }) => {
         <View style={styles.buttonArea}>
           <TouchableOpacity
             style={styles.button}
-            onPress={() => navigate("Map")}
+            onPress={() => {navigate("Map", {date:{selectedDate}});}}
           >
             <Text style={styles.buttonTitle}>날짜 선택 완료</Text>
           </TouchableOpacity>

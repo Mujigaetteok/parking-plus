@@ -1,57 +1,63 @@
-import React, { useRef, useState } from "react";
+import React, { useState, useRef } from "react";
 import {
   Text,
   StyleSheet,
   View,
   TouchableOpacity,
-  ScrollView,
 } from "react-native";
 
 const ReserveTime = ({ navigation: { navigate }, route }) => {
+  const [date, setDate] = useState(route.params.date);
+  const [spotId, setSpot] = useState(route.params.spotId);
 
-  const [timeList, setTime] = useState([
-    {cnt: 0, time: "00", status: false },
-    {cnt: 1, time: "01", status: false },
-    {cnt: 2, time: "02", status: false },
-    {cnt: 3, time: "03", status: true },
-    {cnt: 4, time: "04", status: true },
-    {cnt: 5, time: "05", status: true },
-    {cnt: 6, time: "06", status: true },
-    {cnt: 7, time: "07", status: true },
-    {cnt: 8, time: "08", status: true },
-    {cnt: 9, time: "09", status: true },
-    {cnt: 10, time: "10", status: true },
-    {cnt: 11, time: "11", status: true },
-    {cnt: 12, time: "12", status: true },
-    {cnt: 13, time: "13", status: true },
-    {cnt: 14, time: "14", status: true },
-    {cnt: 15, time: "15", status: true },
-    {cnt: 16, time: "16", status: true },
-    {cnt: 17, time: "17", status: true },
-    {cnt: 18, time: "18", status: true },
-    {cnt: 19, time: "19", status: true },
-    {cnt: 20, time: "20", status: true },
-    {cnt: 21, time: "21", status: true },
-    {cnt: 22, time: "22", status: true },
-    {cnt: 23, time: "23", status: true },
+  const [timeList, setTimeList] = useState([
+    {time: "00", status: false },
+    {time: "01", status: false },
+    {time: "02", status: false },
+    {time: "03", status: true },
+    {time: "04", status: true },
+    {time: "05", status: true },
+    {time: "06", status: true },
+    {time: "07", status: true },
+    {time: "08", status: true },
+    {time: "09", status: true },
+    {time: "10", status: true },
+    {time: "11", status: true },
+    {time: "12", status: true },
+    {time: "13", status: true },
+    {time: "14", status: true },
+    {time: "15", status: true },
+    {time: "16", status: true },
+    {time: "17", status: true },
+    {time: "18", status: true },
+    {time: "19", status: true },
+    {time: "20", status: true },
+    {time: "21", status: true },
+    {time: "22", status: true },
+    {time: "23", status: true },
   ]);
 
-  const isAvailable = (i) => {
+  const isUse = (i) => {
     return timeList[i].status? true : false;
   };
 
-  const getStyle = (available) => {
-    return available? styles.availableTime : styles.unavailableTime;
+  const getStyle = (isUse) => {
+    return isUse? styles.availableTime : styles.unavailableTime;
   }
 
+  const getTime = (i) => {
+    return timeList[i].time;
+  }
 
-  const TimeBlock = (start,end) => {
+  const drawTimeBlock = (start,end) => {
     let sliced = timeList.slice(start,end);
     return (
       Object.keys(sliced).map((key,i) => (
-        <TouchableOpacity disabled={!isAvailable(i+start)} style={getStyle(isAvailable(i+start))}
-            onPress={() => {navigate("Form");}}>
-            <Text style = {styles.textTime}>{sliced[key].time}</Text>
+        <TouchableOpacity disabled={isUse(i+start)} style={getStyle(!isUse(i+start))}
+            onPress={() => {navigate("Form",
+              {date:date, spotId:spotId, startTime:getTime(i+start)}
+            );}}>
+            <Text style = {styles.textTime}>{getTime(i+start)}</Text>
         </TouchableOpacity>
       ))
     )
@@ -63,22 +69,22 @@ const ReserveTime = ({ navigation: { navigate }, route }) => {
         <Text style={styles.textA}>예약 시간 선택</Text>
       </View>
       <View style={styles.successLoc}>
-        {TimeBlock(0,4)}
+        {drawTimeBlock(0,4)}
       </View>
       <View style={styles.successLoc}>
-        {TimeBlock(4,8)}
+        {drawTimeBlock(4,8)}
       </View>
       <View style={styles.successLoc}>
-        {TimeBlock(8,12)}
+        {drawTimeBlock(8,12)}
       </View>
       <View style={styles.successLoc}>
-        {TimeBlock(12,16)}
+        {drawTimeBlock(12,16)}
       </View>
       <View style={styles.successLoc}>
-        {TimeBlock(16,20)}
+        {drawTimeBlock(16,20)}
       </View>
       <View style={styles.successLoc}>
-        {TimeBlock(20,24)}
+        {drawTimeBlock(20,24)}
       </View>
       <View style={styles.successLoc}>
         <Text style={styles.availableTime}>예약 가능</Text>

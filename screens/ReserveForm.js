@@ -11,8 +11,13 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
+import firestore from '@react-native-firebase/firestore';
 
-const ReserveForm = ({ navigation: { navigate } }) => {
+const ReserveForm = ({ navigation: { navigate }, route }) => {
+  const [date, setDate] = useState(route.params.date);
+  const [spotId, setSpot] = useState(route.params.spotId);
+  const [startTime, setStartTime] = useState(route.params.startTime);
+
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
   const [opent, setOpent] = useState(false);
@@ -36,16 +41,14 @@ const ReserveForm = ({ navigation: { navigate } }) => {
             <View style={{ marginBottom: 20 }}>
               <Text style={styles.textB}>예약 날짜</Text>
               <View style={styles.info}>
-                <Text style={{ fontWeight: "bold", fontSize: 18 }}>
-                  2022년 08월 11일
-                </Text>
+                <Text style={{ fontWeight: "bold", fontSize: 18 }}>{date}</Text>
               </View>
             </View>
 
             <View style={{ marginBottom: 20 }}>
               <Text style={styles.textB}>주차 공간</Text>
               <View style={styles.successLoc} activeOpacity={0.5}>
-                <Text style={{ fontWeight: "bold", paddingVertical: 10, fontSize: 18 }}>A03</Text>
+                <Text style={{ fontWeight: "bold", paddingVertical: 10, fontSize: 18 }}>{spotId}</Text>
               </View>
             </View>
           </View>
@@ -54,7 +57,7 @@ const ReserveForm = ({ navigation: { navigate } }) => {
             <Text style={styles.textB}>시간</Text>
             <View style={styles.successLoc}>
               <View style={{ justifyContent: "center" }}>
-                <Text style={{fontSize: 18, fontWeight: "bold",}}>13:00</Text>
+                <Text style={{fontSize: 18, fontWeight: "bold",}}>{startTime+":00"}</Text>
               </View>
               <View style={{ justifyContent: "center" }}>
                 <Text style={{ fontSize: 18 }}> 부터 </Text>
@@ -102,17 +105,6 @@ const ReserveForm = ({ navigation: { navigate } }) => {
           </TouchableOpacity>
         </View>
       </View>
-      {/* <View style={{ flex: 1, justifyContent: "center"  }}>
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => {
-          navigate("Success", { text: "주차 예약이" });
-        }}>
-        <Text style={{ color: "white", fontWeight: "bold" }}>
-          시간 선택 완료
-        </Text>
-      </TouchableOpacity>
-    </View> */}
     </View>
   );
 };

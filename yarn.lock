@@ -1173,7 +1173,7 @@
     "node-forge" "^1.2.1"
     "nullthrows" "^1.1.1"
 
-"@expo/config-plugins@^4.0.14", "@expo/config-plugins@^4.1.5", "@expo/config-plugins@~4.1.4", "@expo/config-plugins@4.1.5":
+"@expo/config-plugins@^4.0.14", "@expo/config-plugins@~4.1.4", "@expo/config-plugins@4.1.5":
   "integrity" "sha512-RVvU40RtZt12HavuDAe+LDIq9lHj7sheOfMEHdmpJ/uTA8pgvkbc56XF6JHQD+yRr6+uhhb+JnAasGq49dsQbw=="
   "resolved" "https://registry.npmjs.org/@expo/config-plugins/-/config-plugins-4.1.5.tgz"
   "version" "4.1.5"
@@ -1194,10 +1194,36 @@
     "xcode" "^3.0.1"
     "xml2js" "0.4.23"
 
+"@expo/config-plugins@^5.0.1":
+  "integrity" "sha512-1OfnsOrfeSkB0VZfT01UjQ5Uq6p+yYbq8yNkj0e99K/6NLHpyvIxj+5tZIV0nQXgkOcqBIABL2uA7lwB8CkaBQ=="
+  "resolved" "https://registry.npmjs.org/@expo/config-plugins/-/config-plugins-5.0.1.tgz"
+  "version" "5.0.1"
+  dependencies:
+    "@expo/config-types" "^46.0.0"
+    "@expo/json-file" "8.2.36"
+    "@expo/plist" "0.0.18"
+    "@expo/sdk-runtime-versions" "^1.0.0"
+    "@react-native/normalize-color" "^2.0.0"
+    "chalk" "^4.1.2"
+    "debug" "^4.3.1"
+    "find-up" "~5.0.0"
+    "getenv" "^1.0.0"
+    "glob" "7.1.6"
+    "resolve-from" "^5.0.0"
+    "semver" "^7.3.5"
+    "slash" "^3.0.0"
+    "xcode" "^3.0.1"
+    "xml2js" "0.4.23"
+
 "@expo/config-types@^45.0.0":
   "integrity" "sha512-/QGhhLWyaGautgEyU50UJr5YqKJix5t77ePTwreOVAhmZH+ff3nrrtYTTnccx+qF08ZNQmfAyYMCD3rQfzpiJA=="
   "resolved" "https://registry.npmjs.org/@expo/config-types/-/config-types-45.0.0.tgz"
   "version" "45.0.0"
+
+"@expo/config-types@^46.0.0":
+  "integrity" "sha512-PXkmOgNwRyBfgVT1HmFZhfh3Qm7WKKyV6mk3/5HJ/LzPh1t+Zs2JrWX8U2YncTLV1QzV7nV8tnkyvszzqnZEzQ=="
+  "resolved" "https://registry.npmjs.org/@expo/config-types/-/config-types-46.0.2.tgz"
+  "version" "46.0.2"
 
 "@expo/config@^6.0.14", "@expo/config@~6.0.23", "@expo/config@6.0.24":
   "integrity" "sha512-OcACI1md1Yo5TQmUxxueJ/RaTlR2Mgl6KswTFOYCL1XJERF/jjAx95zhWXH+JQGdlM0yB0vqM6vB6GbUFRvLxA=="
@@ -1731,19 +1757,24 @@
     "sudo-prompt" "^9.0.0"
     "wcwidth" "^1.0.1"
 
-"@react-native-firebase/app@^15.2.0", "@react-native-firebase/app@15.2.0":
-  "integrity" "sha512-vofl5Ixi+EsRbTJ7G9/S3JLeMXnXIvGoYX0I7dfxzDz9/hIonIzDN/rAttOwqgiJsldkWrbDyANJeAfIgF7McA=="
-  "resolved" "https://registry.npmjs.org/@react-native-firebase/app/-/app-15.2.0.tgz"
-  "version" "15.2.0"
+"@react-native-firebase/app@^15.4.0", "@react-native-firebase/app@15.4.0":
+  "integrity" "sha512-1Xf1Q0x6x6dZamRjIpDLCvj4CUwozr1mvH3sc3A4J1avjGUwgqD0RR58DGd7r9akU+JmEXLHB84EZ9Aa68AHDg=="
+  "resolved" "https://registry.npmjs.org/@react-native-firebase/app/-/app-15.4.0.tgz"
+  "version" "15.4.0"
   dependencies:
-    "@expo/config-plugins" "^4.1.5"
+    "@expo/config-plugins" "^5.0.1"
     "opencollective-postinstall" "^2.0.1"
     "superstruct" "^0.6.2"
 
-"@react-native-firebase/auth@^15.2.0":
-  "integrity" "sha512-bHjZW3CCj0CNPUm0NaZB1jNRVhUydvBRGej/40mgXf/iiSmooFqgk9DbQq6HZrEJ+eo8NHoQMH38qJ/LIBz2rw=="
-  "resolved" "https://registry.npmjs.org/@react-native-firebase/auth/-/auth-15.2.0.tgz"
-  "version" "15.2.0"
+"@react-native-firebase/auth@^15.4.0":
+  "integrity" "sha512-8Vm/nJpFzjpBeIbueai+WR4m8WzzUvsOXG7oDyzvPPxAL1CkWAYQ3dKRk6KhcIaqGatvfR9Ue+k3XndRS6jSMA=="
+  "resolved" "https://registry.npmjs.org/@react-native-firebase/auth/-/auth-15.4.0.tgz"
+  "version" "15.4.0"
+
+"@react-native-firebase/firestore@^15.4.0":
+  "integrity" "sha512-7Kiqn9c4uzQyURFQ4LGCZ4waeZb/hZb/IWl6MlpfkCtII9PnpdqbvQwEKKKg8RQMocP5sbw0qPsKEdYEYUNKhg=="
+  "resolved" "https://registry.npmjs.org/@react-native-firebase/firestore/-/firestore-15.4.0.tgz"
+  "version" "15.4.0"
 
 "@react-native-picker/picker@^2.4.2":
   "integrity" "sha512-0nY8638h1J3wKz6P3IJMpOoxJDdOj7Dk/K2hP/xpqP3KnIY0lmoqYlhyNihuyVPocDGajf6SA7LFFsFepQ56ag=="
