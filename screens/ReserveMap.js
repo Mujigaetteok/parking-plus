@@ -1,5 +1,4 @@
-// 
-import React, {useState} from 'react';
+ import React, {useState} from 'react';
 import {
   Text,
   View,
@@ -8,14 +7,13 @@ import {
   Image ,Dimensions,
   ScrollView,
   SafeAreaView,
-  ImageBackground,
-  Alert} from 'react-native';
+} from 'react-native';
+import firestore from '@react-native-firebase/firestore';
 
 const {width:SCREEN_WIDTH, height:SCREEN_HEIGHT} = Dimensions.get('window')
 
-
-
 const ReserveMap = ({ navigation: { navigate }, route }) => {
+  const [date, setDate] = useState(route.params.date["selectedDate"]);
 
   const [MapStatus, setStatus] = useState([
     {id: "A01", status: false },
@@ -40,14 +38,18 @@ const ReserveMap = ({ navigation: { navigate }, route }) => {
     {id: "A20", status: true }
   ]);
 
-  const isAvailable = (i) => {
-    return MapStatus[i].status? true : false;
-  };
-
-  const getImage = (available) => {
-    return available?  require('../asset/available_spot.png'): require('../asset/car.png');
+  const Blank = () => {
+    return <View style={styles.btn}></View>
   }
 
+  const isUse = (i) => {
+    return MapStatus[i].status? true : false;
+  };
+  
+  const getImage = (isUse) => {
+    return isUse? require('../asset/car.png') : require('../asset/available_spot.png');
+  }
+  
   const getId = (i) => {
     return MapStatus[i].id;
   }
@@ -56,20 +58,17 @@ const ReserveMap = ({ navigation: { navigate }, route }) => {
     let sliced = MapStatus.slice(start,end);
     return (
       Object.keys(sliced).map((key,i) => (
-        <TouchableOpacity disabled={!isAvailable(i+start)} style={styles.btn}
-            onPress={() => {navigate("Time");}}>
-            <Image source={getImage(isAvailable(i+start))}/>
-            <Text style = {styles.txt} disabled={true}>{sliced[key].id}</Text>
+        <TouchableOpacity disabled={isUse(i+start)} style={styles.btn}
+            onPress={() => {navigate("Time",
+              {date:date, spotId:getId(i+start)}
+            );}}>
+            <Image source={getImage(isUse(i+start))}/>
+            <Text style = {styles.txt}>{getId(i+start)}</Text>
         </TouchableOpacity>
       ))
     )
   }
 
-  const Blank = () => {
-      return (
-        <View style={styles.btn}></View>
-      )
-    }
 
     return (
     <SafeAreaView>
