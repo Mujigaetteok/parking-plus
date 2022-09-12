@@ -14,24 +14,23 @@ import {
 import firestore from '@react-native-firebase/firestore';
 
 const ReserveForm = ({ navigation: { navigate }, route }) => {
-  const [date, setDate] = useState(route.params.date);
-  const [spotId, setSpot] = useState(route.params.spotId);
-  const [startTime, setStartTime] = useState(route.params.startTime);
+  const date = route.params.date;
+  const spotId = route.params.spotId;
+  const startTime = route.params.startTime;
+  const timeValue = route.params.timeValue;
 
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(null);
-  const [opent, setOpent] = useState(false);
-  const [valuet, setValuet] = useState(null);
+  const [value, setValue] = useState(1);
   const [items, setItems] = useState([
-    { label: "1", value: 0 },
-    { label: "2", value: 1 },
-    { label: "3", value: 2 },
-    { label: "4", value: 3 },
+    { label: "1", value: 1 },
+    { label: "2", value: 2 },
+    { label: "3", value: 3 },
+    { label: "4", value: 4 },
   ]);
 
   return (
     <View style={styles.contain}>
-      <View style={{ flex: 9}}>
+      <View style={{ flex: 9, marginBottom: 20 }}>
         <ScrollView>
           <View style={styles.top}>
             <Text style={styles.textA}>주차 예약</Text>
@@ -62,45 +61,60 @@ const ReserveForm = ({ navigation: { navigate }, route }) => {
               <View style={{ justifyContent: "center" }}>
                 <Text style={{ fontSize: 18 }}> 부터 </Text>
               </View>
-              <View style={{ width: 110 }}>
+                <View style={{ width: 110 }}>
                 <DropDownPicker
-                  open={opent}
-                  value={valuet}
-                  items={items}
-                  setOpen={setOpent}
-                  setValue={setValuet}
-                  setItems={setItems}
-                  placeholder="1"
-                  placeholderStyle={{color: "#677191",}}
-                  style={{
-                    backgroundColor: "#F3F6FF",
-                    borderRadius: 21,
-                    borderColor: "#F3F6FF",
-                  }}
-                  textStyle={{
-                    fontSize: 18,
-                    fontWeight: "bold",
-                  }}
-                  dropDownContainerStyle={{
-                    backgroundColor: "#F3F6FF",
-                    borderColor: "#F3F6FF",
-                    borderRadius: 21,
-                  }}
-                />
-              </View>
+                    open={open}
+                    value={value}
+                    items={items}
+                    setOpen={setOpen}
+                    setValue={setValue}
+                    setItems={setItems}
+                    placeholder="1"
+                    placeholderStyle={{
+                      color: "#677191",
+                    }}
+                    style={{
+                      backgroundColor: "#F3F6FF",
+                      borderRadius: 21,
+                      borderColor: "#F3F6FF",
+                      paddingLeft: 20,
+                    }}
+                    textStyle={{
+                      fontSize: 18,
+                      fontWeight: "bold",
+                    }}
+                    dropDownContainerStyle={{
+                      backgroundColor: "#F3F6FF",
+                      borderColor: "#F3F6FF",
+                      borderRadius: 21,
+                      paddingLeft: 10,
+                      height: 100,
+                    }}
+                  />
+                </View>
             <View style={{ justifyContent: "center" }}>
               <Text style={{ fontSize: 18 }}> 시간 </Text>
             </View>
           </View>  
         </View>
+        <View style={{ height: 100 }} />
       </ScrollView>
       </View>
       <View style={{ flex: 1 }}>
         <View style={styles.buttonArea}>
           <TouchableOpacity
             style={styles.button}
-            onPress={() => navigate("Success", {text: "주차 예약이"})}
-          >
+            onPress={() => {
+              navigate("Success", {text: "주차 예약이"});
+              firestore()
+              .collection('RESERVE')
+              .add({
+                member_id:"asdf",
+                cncl_status: false,
+                start_time: timeValue,
+                end_time: timeValue+ value-1,
+                parking_slot_num: spotId,
+                use_de: date})}}>
             <Text style={styles.buttonTitle}>시간 선택 완료</Text>
           </TouchableOpacity>
         </View>
