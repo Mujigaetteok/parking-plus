@@ -59,6 +59,13 @@ const ReserveTime = ({ navigation: { navigate }, route }) => {
   const getValue = (i) => {
     return timeList[i].value;
   }
+  
+  const getMaxTime = (i) => {
+    if (isUse(i+1)) return 1;
+    else if (isUse(i+2)) return 2;
+    else if (isUse(i+3)) return 3;
+    else return 4;
+  }
 
   const drawTimeBlock = (start,end) => {
     let sliced = timeList.slice(start,end);
@@ -66,7 +73,7 @@ const ReserveTime = ({ navigation: { navigate }, route }) => {
       Object.keys(sliced).map((key,i) => (
         <TouchableOpacity disabled={isUse(i+start)} style={getStyle(!isUse(i+start))}
             onPress={() => {navigate("Form",
-              {date:date, spotId:spotId, startTime:getTime(i+start), timeValue:getValue(i+start)}
+              {date:date, spotId:spotId, startTime:getTime(i+start), timeValue:getValue(i+start), maxTime:getMaxTime(i+start)}
             );}}>
             <Text style = {styles.textTime}>{getTime(i+start)}</Text>
         </TouchableOpacity>
@@ -76,7 +83,6 @@ const ReserveTime = ({ navigation: { navigate }, route }) => {
 
   const setInitTimeList= async () => {
     //Reserve Collection에서 가져오는 쿼리
-    console.log("start setInit");
     firestore()
     .collection('RESERVE')
     .where('parking_slot_num', '==', spotId )
@@ -86,10 +92,8 @@ const ReserveTime = ({ navigation: { navigate }, route }) => {
       querySnapshot.forEach(documentSnapshot => {
         let start = documentSnapshot.get("start_time");
         let end = documentSnapshot.get("end_time");
-        console.log(start,end);
         for (let i=start; i<=end; i++) {
           initTimeList[i]["status"]=true;
-          console.log("setInitTimeList["+i+"] = true");
         }
       });
       setTimeList(initTimeList);setLoading(false);
