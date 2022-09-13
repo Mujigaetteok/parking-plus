@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Text,
   StyleSheet,
@@ -18,15 +18,28 @@ const ReserveForm = ({ navigation: { navigate }, route }) => {
   const spotId = route.params.spotId;
   const startTime = route.params.startTime;
   const timeValue = route.params.timeValue;
+  const maxTime = route.params.maxTime;
 
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(1);
-  const [items, setItems] = useState([
-    { label: "1", value: 1 },
-    { label: "2", value: 2 },
-    { label: "3", value: 3 },
-    { label: "4", value: 4 },
-  ]);
+  const [items, setItems] = useState([]);
+
+  const setInitItems = () => {
+    let initItems = [];
+    switch (maxTime) {
+      case 1: {initItems = [{ label: "1", value: 1 }]; break;}
+      case 2: {initItems = [{ label: "1", value: 1 },{ label: "2", value: 2 }]; break;}
+      case 3: {initItems = [{ label: "1", value: 1 },{ label: "2", value: 2 },{ label: "3", value: 3 }]; break;}
+      case 4: {initItems = [{ label: "1", value: 1 },{ label: "2", value: 2 },{ label: "3", value: 3 },{ label: "4", value: 4 }]; break;}
+    }
+    setItems(initItems);
+  }
+
+  useEffect(() => {
+    console.log(maxTime);
+    setInitItems();
+    console.log(items);
+  }, []);
 
   return (
     <View style={styles.contain}>
@@ -61,7 +74,8 @@ const ReserveForm = ({ navigation: { navigate }, route }) => {
               <View style={{ justifyContent: "center" }}>
                 <Text style={{ fontSize: 18 }}> 부터 </Text>
               </View>
-                <View style={{ width: 110 }}>
+              <View style={{ flexDirection: "row" }}>
+                <View style={{ width:110 }}>
                 <DropDownPicker
                     open={open}
                     value={value}
@@ -91,6 +105,7 @@ const ReserveForm = ({ navigation: { navigate }, route }) => {
                       height: 100,
                     }}
                   />
+                </View>
                 </View>
             <View style={{ justifyContent: "center" }}>
               <Text style={{ fontSize: 18 }}> 시간 </Text>
@@ -141,21 +156,10 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 20,
   },
-  adressInfo: {
-    backgroundColor: "#F3F6FF",
-    borderRadius: 20,
-    paddingHorizontal: 30,
-    paddingVertical: 10,
-  },
   textB: {
     fontSize: 16,
     fontWeight: "bold",
     paddingBottom: 10,
-  },
-  textC: {
-    marginLeft: 20,
-    paddingVertical: 10,
-    fontWeight: "bold",
   },
   successLoc: {
     flexDirection: "row",
