@@ -14,30 +14,30 @@ const ReserveTime = ({ navigation: { navigate }, route }) => {
   const [isLoading, setLoading] = useState(true);
   const [timeList, setTimeList] = useState([]);
   const initTimeList = [
-    {time: "00", status: false, value:0 },
-    {time: "01", status: false, value:1 },
-    {time: "02", status: false, value:2 },
-    {time: "03", status: false, value:3 },
-    {time: "04", status: false, value:4 },
-    {time: "05", status: false, value:5 },
-    {time: "06", status: false, value:6 },
-    {time: "07", status: false, value:7 },
-    {time: "08", status: false, value:8 },
-    {time: "09", status: false, value:9 },
-    {time: "10", status: false, value:10 },
-    {time: "11", status: false, value:11 },
-    {time: "12", status: false, value:12 },
-    {time: "13", status: false, value:13 },
-    {time: "14", status: false, value:14 },
-    {time: "15", status: false, value:15 },
-    {time: "16", status: false, value:16 },
-    {time: "17", status: false, value:17 },
-    {time: "18", status: false, value:18 },
-    {time: "19", status: false, value:19 },
-    {time: "20", status: false, value:20 },
-    {time: "21", status: false, value:21 },
-    {time: "22", status: false, value:22 },
-    {time: "23", status: false, value:23 },
+    {time: "00", isUse: false, value:0 },
+    {time: "01", isUse: false, value:1 },
+    {time: "02", isUse: false, value:2 },
+    {time: "03", isUse: false, value:3 },
+    {time: "04", isUse: false, value:4 },
+    {time: "05", isUse: false, value:5 },
+    {time: "06", isUse: false, value:6 },
+    {time: "07", isUse: false, value:7 },
+    {time: "08", isUse: false, value:8 },
+    {time: "09", isUse: false, value:9 },
+    {time: "10", isUse: false, value:10 },
+    {time: "11", isUse: false, value:11 },
+    {time: "12", isUse: false, value:12 },
+    {time: "13", isUse: false, value:13 },
+    {time: "14", isUse: false, value:14 },
+    {time: "15", isUse: false, value:15 },
+    {time: "16", isUse: false, value:16 },
+    {time: "17", isUse: false, value:17 },
+    {time: "18", isUse: false, value:18 },
+    {time: "19", isUse: false, value:19 },
+    {time: "20", isUse: false, value:20 },
+    {time: "21", isUse: false, value:21 },
+    {time: "22", isUse: false, value:22 },
+    {time: "23", isUse: false, value:23 },
   ];
 
   useEffect(() => {
@@ -45,7 +45,7 @@ const ReserveTime = ({ navigation: { navigate }, route }) => {
   }, []);
 
   const isUse = (i) => {
-    return timeList[i].status? true : false;
+    return timeList[i].isUse? true : false;
   };
 
   const getStyle = (isUse) => {
@@ -92,8 +92,8 @@ const ReserveTime = ({ navigation: { navigate }, route }) => {
       querySnapshot.forEach(documentSnapshot => {
         let start = documentSnapshot.get("start_time");
         let end = documentSnapshot.get("end_time");
-        for (let i=start; i<=end; i++) {
-          initTimeList[i]["status"]=true;
+        for (let i=start; i<end; i++) {
+          initTimeList[i]["isuse"]=true;
         }
       });
       setTimeList(initTimeList);setLoading(false);

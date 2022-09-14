@@ -13,6 +13,8 @@ import {
 } from "react-native-responsive-screen";
 import firestore from '@react-native-firebase/firestore';
 
+DropDownPicker.setListMode("SCROLLVIEW");
+
 const ReserveForm = ({ navigation: { navigate }, route }) => {
   const date = route.params.date;
   const spotId = route.params.spotId;
@@ -44,12 +46,11 @@ const ReserveForm = ({ navigation: { navigate }, route }) => {
   return (
     <View style={styles.contain}>
       <View style={{ flex: 9, marginBottom: 20 }}>
-        <ScrollView>
+        <View>
           <View style={styles.top}>
             <Text style={styles.textA}>주차 예약</Text>
           </View>
 
-          <View>
             <View style={{ marginBottom: 20 }}>
               <Text style={styles.textB}>예약 날짜</Text>
               <View style={styles.info}>
@@ -63,19 +64,18 @@ const ReserveForm = ({ navigation: { navigate }, route }) => {
                 <Text style={{ fontWeight: "bold", paddingVertical: 10, fontSize: 18 }}>{spotId}</Text>
               </View>
             </View>
-          </View>
 
           <View>
             <Text style={styles.textB}>시간</Text>
             <View style={styles.successLoc}>
-              <View style={{ justifyContent: "center" }}>
-                <Text style={{fontSize: 18, fontWeight: "bold",}}>{startTime+":00"}</Text>
-              </View>
-              <View style={{ justifyContent: "center" }}>
-                <Text style={{ fontSize: 18 }}> 부터 </Text>
-              </View>
-              <View style={{ flexDirection: "row" }}>
-                <View style={{ width:110 }}>
+              <View style={{ flexDirection: "row", flex: 1 }}>
+                <View style={{ justifyContent: "center",marginRight:40,flex:1 }}>
+                  <Text style={{fontSize: 18, fontWeight: "bold",}}>{startTime+":00"}</Text>
+                </View>
+                <View style={{ justifyContent: "center",marginRight:30, flex:1 }}>
+                  <Text style={{ fontSize: 18 }}> 부터 </Text>
+                </View>
+                <View style={{ flex: 2 }}>
                 <DropDownPicker
                     open={open}
                     value={value}
@@ -92,6 +92,7 @@ const ReserveForm = ({ navigation: { navigate }, route }) => {
                       borderRadius: 21,
                       borderColor: "#F3F6FF",
                       paddingLeft: 20,
+                      justifyContent: "center"
                     }}
                     textStyle={{
                       fontSize: 18,
@@ -102,18 +103,18 @@ const ReserveForm = ({ navigation: { navigate }, route }) => {
                       borderColor: "#F3F6FF",
                       borderRadius: 21,
                       paddingLeft: 10,
-                      height: 100,
+                      height:100
                     }}
                   />
+                  </View>
+                <View style={{ justifyContent: "center" ,marginRight:10}}>
+                  <Text style={{ fontSize: 18 }}> 시간 </Text>
                 </View>
-                </View>
-            <View style={{ justifyContent: "center" }}>
-              <Text style={{ fontSize: 18 }}> 시간 </Text>
-            </View>
-          </View>  
+              </View>
+            </View>  
+          </View>
+          <View style={{ height: 100}} />
         </View>
-        <View style={{ height: 100 }} />
-      </ScrollView>
       </View>
       <View style={{ flex: 1 }}>
         <View style={styles.buttonArea}>
@@ -127,7 +128,7 @@ const ReserveForm = ({ navigation: { navigate }, route }) => {
                 member_id:"asdf",
                 cncl_status: false,
                 start_time: timeValue,
-                end_time: timeValue+ value-1,
+                end_time: timeValue+ value,
                 parking_slot_num: spotId,
                 use_de: date})}}>
             <Text style={styles.buttonTitle}>시간 선택 완료</Text>
@@ -155,6 +156,7 @@ const styles = StyleSheet.create({
   info: {
     paddingVertical: 10,
     paddingHorizontal: 20,
+    flexDirection: "row",
   },
   textB: {
     fontSize: 16,
@@ -166,17 +168,9 @@ const styles = StyleSheet.create({
     backgroundColor: "#F3F6FF",
     borderRadius: 20,
     paddingLeft: 20,
-    justifyContent: "space-between",
     marginBottom: 10,
   },
-  textD: {
-    fontSize: 14,
-    color: "white",
-    backgroundColor: "#AAF54B",
-    paddingVertical: 10,
-    paddingHorizontal: 10,
-    borderRadius: 25,
-  },
+
   buttonArea: {
     width: "100%",
     height: hp("5%"),
