@@ -38,9 +38,7 @@ const ReserveForm = ({ navigation: { navigate }, route }) => {
   }
 
   useEffect(() => {
-    console.log(maxTime);
     setInitItems();
-    console.log(items);
   }, []);
 
   return (
@@ -69,10 +67,10 @@ const ReserveForm = ({ navigation: { navigate }, route }) => {
             <Text style={styles.textB}>시간</Text>
             <View style={styles.successLoc}>
               <View style={{ flexDirection: "row", flex: 1 }}>
-                <View style={{ justifyContent: "center",marginRight:40,flex:1 }}>
+                <View style={{marginTop:10 , marginRight:40,flex:1 }}>
                   <Text style={{fontSize: 18, fontWeight: "bold",}}>{startTime+":00"}</Text>
                 </View>
-                <View style={{ justifyContent: "center",marginRight:30, flex:1 }}>
+                <View style={{marginTop:10 , marginRight:30, flex:1 }}>
                   <Text style={{ fontSize: 18 }}> 부터 </Text>
                 </View>
                 <View style={{ flex: 2 }}>
@@ -107,9 +105,10 @@ const ReserveForm = ({ navigation: { navigate }, route }) => {
                     }}
                   />
                   </View>
-                <View style={{ justifyContent: "center" ,marginRight:10}}>
+                <View style={{ marginTop:10 ,marginRight:10}}>
                   <Text style={{ fontSize: 18 }}> 시간 </Text>
                 </View>
+                <View style={{ height: 100}} />
               </View>
             </View>  
           </View>
@@ -165,7 +164,6 @@ const styles = StyleSheet.create({
   },
   successLoc: {
     flexDirection: "row",
-    backgroundColor: "#F3F6FF",
     borderRadius: 20,
     paddingLeft: 20,
     marginBottom: 10,

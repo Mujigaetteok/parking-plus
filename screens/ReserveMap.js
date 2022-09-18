@@ -55,7 +55,8 @@ const ReserveMap = ({ navigation: { navigate }, route }) => {
     //DB조회해서 사용 시간을 채우는 메소드
     let timeTable = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
     //Reserve Collection에서 가져오는 쿼리
-    let isFull = await firestore()
+    let isFull = false;
+    await firestore()
     .collection('RESERVE')
     .where('parking_slot_num', '==', initMapStatus[mapIndex]['id'] )
     .where('use_de', '==', date)
@@ -66,8 +67,8 @@ const ReserveMap = ({ navigation: { navigate }, route }) => {
         let end = documentSnapshot.get("end_time");
         for (let i=start; i<=end; i++) {timeTable[i]=1;}
       });
-      if (!(timeTable.includes(0))) { return true;}
-      else return false;
+      if (!(timeTable.includes(0))) { isFull=true;}
+      else isFull= false;
     });
     return isFull;
   }
@@ -101,7 +102,7 @@ const ReserveMap = ({ navigation: { navigate }, route }) => {
     let sliced = mapStatus.slice(start,end);
     return (
       Object.keys(sliced).map((key,i) => (
-        <TouchableOpacity disabled={getIsFull(i+start)} style={styles.btn}
+        <TouchableOpacity key={key} disabled={getIsFull(i+start)} style={styles.btn}
             onPress={() => {navigate("Time",
               {date:date, spotId:getId(i+start)}
             );}}>

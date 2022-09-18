@@ -71,7 +71,7 @@ const ReserveTime = ({ navigation: { navigate }, route }) => {
     let sliced = timeList.slice(start,end);
     return (
       Object.keys(sliced).map((key,i) => (
-        <TouchableOpacity disabled={isUse(i+start)} style={getStyle(!isUse(i+start))}
+        <TouchableOpacity key={key} disabled={isUse(i+start)} style={getStyle(!isUse(i+start))}
             onPress={() => {navigate("Form",
               {date:date, spotId:spotId, startTime:getTime(i+start), timeValue:getValue(i+start), maxTime:getMaxTime(i+start)}
             );}}>
