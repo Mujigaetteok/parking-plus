@@ -1,9 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Text,
   View,
   StyleSheet,
-  TouchableOpacity,
   Image,
   Dimensions,
   ScrollView,
@@ -13,31 +12,88 @@ import firestore from "@react-native-firebase/firestore";
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get("window");
 
 const Map = () => {
-  const [MapStatus, setMapStatus] = useState([
-    { id: "A01", status: false },
-    { id: "A02", status: false },
-    { id: "A03", status: true },
-    { id: "A04", status: true },
-    { id: "A05", status: true },
-    { id: "A06", status: true },
-    { id: "A07", status: true },
-    { id: "A08", status: true },
-    { id: "A09", status: true },
-    { id: "A10", status: true },
-    { id: "A11", status: true },
-    { id: "A12", status: true },
-    { id: "A13", status: true },
-    { id: "A14", status: true },
-    { id: "A15", status: true },
-    { id: "A16", status: true },
-    { id: "A17", status: false },
-    { id: "A18", status: true },
-    { id: "A19", status: true },
-    { id: "A20", status: true },
-  ]);
+  const [isLoading, setLoading] = useState(true);
 
-  const isUse = (i) => {
-    return MapStatus[i].status ? true : false;
+  const initMapStatus = [
+    { id: "A01", isUse: false },
+    { id: "A02", isUse: false },
+    { id: "A03", isUse: false },
+    { id: "A04", isUse: false },
+    { id: "A05", isUse: false },
+    { id: "A06", isUse: false },
+    { id: "A07", isUse: false },
+    { id: "A08", isUse: false },
+    { id: "A09", isUse: false },
+    { id: "A10", isUse: false },
+    { id: "A11", isUse: false },
+    { id: "A12", isUse: false },
+    { id: "A13", isUse: false },
+    { id: "A14", isUse: false },
+    { id: "A15", isUse: false },
+    { id: "A16", isUse: false },
+    { id: "A17", isUse: false },
+    { id: "A18", isUse: false },
+    { id: "A19", isUse: false },
+    { id: "A20", isUse: false },
+  ];
+
+  const [mapStatus, setMapStatus] = useState([]);
+
+  const d = new Date();
+  const now_date = `${d.getFullYear()}-${
+    d.getMonth() + 1 > 9 ? d.getMonth() + 1 : "0" + (d.getMonth() + 1)
+  }-${d.getDate()}`;
+  const now_time = d.getHours();
+
+  useEffect(() => {
+    setInitMapStatus();
+  }, []);
+
+  const setIsUse = (mapIndex, isUse) => {
+    initMapStatus[mapIndex]["isUse"] = isUse;
+    if (mapIndex == 19) {
+      setLoading(false);
+      setMapStatus(initMapStatus);
+    }
+  };
+
+  const checkIsUse = async (mapIndex) => {
+    //Reserve Collection에서 가져오는 쿼리
+    let isUse = false;
+    await firestore()
+      .collection("RESERVE")
+      .where("parking_slot_num", "==", initMapStatus[mapIndex]["id"])
+      .where("use_de", "==", now_date)
+      // .where('start_time', '>=', now_time)
+      // .where('end_time', '<', now_time)
+      .get()
+      .then((querySnapshot) => {
+        if (querySnapshot.empty) isUse = false;
+        else {
+          querySnapshot.forEach((documentSnapshot) => {
+            let start = documentSnapshot.get("start_time");
+            let end = documentSnapshot.get("end_time");
+            if (now_time >= start && now_time < end) isUse = true;
+          });
+        }
+      });
+    return isUse;
+  };
+
+  //전체 spot에 state 적용
+  const setInitMapStatus = async () => {
+    initMapStatus.forEach(async (spot, i) => {
+      let isUse = await checkIsUse(i);
+      setIsUse(i, isUse);
+    });
+  };
+
+  const Blank = () => {
+    return <View style={styles.btn}></View>;
+  };
+
+  const getIsUse = (mapIndex) => {
+    return mapStatus[mapIndex]["isUse"];
   };
 
   const getImage = (isUse) => {
@@ -46,24 +102,27 @@ const Map = () => {
       : require("../asset/available_spot.png");
   };
 
-  const getId = (i) => {
-    return MapStatus[i].id;
+  const getId = (mapIndex) => {
+    return mapStatus[mapIndex]["id"];
   };
 
   const draw = (start, end) => {
-    let sliced = MapStatus.slice(start, end);
+    let sliced = mapStatus.slice(start, end);
     return Object.keys(sliced).map((key, i) => (
       <View style={styles.btn}>
-        <Image source={getImage(isUse(i + start))} />
+        <Image source={getImage(getIsUse(i + start))} />
         <Text style={styles.txt}>{getId(i + start)}</Text>
       </View>
     ));
   };
 
-  const Blank = () => {
-    return <View style={styles.btn}></View>;
-  };
-
+  if (isLoading) {
+    return (
+      <View>
+        <Text>Loading...</Text>
+      </View>
+    );
+  }
   return (
     <SafeAreaView>
       <ScrollView horizontal>
@@ -82,6 +141,8 @@ const Map = () => {
           <Blank></Blank>
           {draw(10, 13)}
         </View>
+
+        <View style={styles.map} />
 
         <View style={styles.map} />
 

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Text,
   StyleSheet,
@@ -12,103 +12,165 @@ import {
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 import firestore from "@react-native-firebase/firestore";
+
+DropDownPicker.setListMode("SCROLLVIEW");
+
 const ReserveForm = ({ navigation: { navigate }, route }) => {
-  const [date, setDate] = useState(route.params.date);
-  const [spotId, setSpot] = useState(route.params.spotId);
-  const [startTime, setStartTime] = useState(route.params.startTime);
+  const date = route.params.date;
+  const spotId = route.params.spotId;
+  const startTime = route.params.startTime;
+  const timeValue = route.params.timeValue;
+  const maxTime = route.params.maxTime;
 
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(null);
-  const [opent, setOpent] = useState(false);
-  const [valuet, setValuet] = useState(null);
-  const [items, setItems] = useState([
-    { label: "1", value: 0 },
-    { label: "2", value: 1 },
-    { label: "3", value: 2 },
-    { label: "4", value: 3 },
-  ]);
+  const [value, setValue] = useState(1);
+  const [items, setItems] = useState([]);
+
+  const setInitItems = () => {
+    let initItems = [];
+    switch (maxTime) {
+      case 1: {
+        initItems = [{ label: "1", value: 1 }];
+        break;
+      }
+      case 2: {
+        initItems = [
+          { label: "1", value: 1 },
+          { label: "2", value: 2 },
+        ];
+        break;
+      }
+      case 3: {
+        initItems = [
+          { label: "1", value: 1 },
+          { label: "2", value: 2 },
+          { label: "3", value: 3 },
+        ];
+        break;
+      }
+      case 4: {
+        initItems = [
+          { label: "1", value: 1 },
+          { label: "2", value: 2 },
+          { label: "3", value: 3 },
+          { label: "4", value: 4 },
+        ];
+        break;
+      }
+    }
+    setItems(initItems);
+  };
+
+  useEffect(() => {
+    console.log(maxTime);
+    setInitItems();
+    console.log(items);
+  }, []);
 
   return (
     <View style={styles.contain}>
-      <View style={{ flex: 9 }}>
-        <ScrollView>
+      <View style={{ flex: 9, marginBottom: 20 }}>
+        <View>
           <View style={styles.top}>
             <Text style={styles.textA}>주차 예약</Text>
           </View>
 
-          <View>
-            <View style={{ marginBottom: 20 }}>
-              <Text style={styles.textB}>예약 날짜</Text>
-              <View style={styles.info}>
-                <Text style={{ fontWeight: "bold", fontSize: 18 }}>{date}</Text>
-              </View>
+          <View style={{ marginBottom: 20 }}>
+            <Text style={styles.textB}>예약 날짜</Text>
+            <View style={styles.info}>
+              <Text style={{ fontWeight: "bold", fontSize: 18 }}>{date}</Text>
             </View>
+          </View>
 
-            <View style={{ marginBottom: 20 }}>
-              <Text style={styles.textB}>주차 공간</Text>
-              <View style={styles.successLoc} activeOpacity={0.5}>
-                <Text
-                  style={{
-                    fontWeight: "bold",
-                    paddingVertical: 10,
-                    fontSize: 18,
-                  }}
-                >
-                  {spotId}
-                </Text>
-              </View>
+          <View style={{ marginBottom: 20 }}>
+            <Text style={styles.textB}>주차 공간</Text>
+            <View style={styles.successLoc} activeOpacity={0.5}>
+              <Text
+                style={{
+                  fontWeight: "bold",
+                  paddingVertical: 10,
+                  fontSize: 18,
+                }}
+              >
+                {spotId}
+              </Text>
             </View>
           </View>
 
           <View>
             <Text style={styles.textB}>시간</Text>
             <View style={styles.successLoc}>
-              <View style={{ justifyContent: "center" }}>
-                <Text style={{ fontSize: 18, fontWeight: "bold" }}>
-                  {startTime + ":00"}
-                </Text>
-              </View>
-              <View style={{ justifyContent: "center" }}>
-                <Text style={{ fontSize: 18 }}> 부터 </Text>
-              </View>
-              <View style={{ width: 110 }}>
-                <DropDownPicker
-                  open={opent}
-                  value={valuet}
-                  items={items}
-                  setOpen={setOpent}
-                  setValue={setValuet}
-                  setItems={setItems}
-                  placeholder="1"
-                  placeholderStyle={{ color: "#677191" }}
-                  style={{
-                    backgroundColor: "#F3F6FF",
-                    borderRadius: 21,
-                    borderColor: "#F3F6FF",
-                  }}
-                  textStyle={{
-                    fontSize: 18,
-                    fontWeight: "bold",
-                  }}
-                  dropDownContainerStyle={{
-                    backgroundColor: "#F3F6FF",
-                    borderColor: "#F3F6FF",
-                    borderRadius: 21,
-                  }}
-                />
-              </View>
-              <View style={{ justifyContent: "center" }}>
-                <Text style={{ fontSize: 18 }}> 시간 </Text>
+              <View style={{ flexDirection: "row", flex: 1 }}>
+                <View
+                  style={{ justifyContent: "center", marginRight: 40, flex: 1 }}
+                >
+                  <Text style={{ fontSize: 18, fontWeight: "bold" }}>
+                    {startTime + ":00"}
+                  </Text>
+                </View>
+                <View
+                  style={{ justifyContent: "center", marginRight: 30, flex: 1 }}
+                >
+                  <Text style={{ fontSize: 18 }}> 부터 </Text>
+                </View>
+                <View style={{ flex: 2 }}>
+                  <DropDownPicker
+                    open={open}
+                    value={value}
+                    items={items}
+                    setOpen={setOpen}
+                    setValue={setValue}
+                    setItems={setItems}
+                    placeholder="1"
+                    placeholderStyle={{
+                      color: "#677191",
+                    }}
+                    style={{
+                      backgroundColor: "#F3F6FF",
+                      borderRadius: 21,
+                      borderColor: "#F3F6FF",
+                      paddingLeft: 20,
+                      justifyContent: "center",
+                    }}
+                    textStyle={{
+                      fontSize: 18,
+                      fontWeight: "bold",
+                    }}
+                    dropDownContainerStyle={{
+                      backgroundColor: "#F3F6FF",
+                      borderColor: "#F3F6FF",
+                      borderRadius: 21,
+                      paddingLeft: 10,
+                      height: 100,
+                    }}
+                  />
+                </View>
+                <View style={{ justifyContent: "center", marginRight: 10 }}>
+                  <Text style={{ fontSize: 18 }}> 시간 </Text>
+                </View>
               </View>
             </View>
           </View>
-        </ScrollView>
+          <View style={{ height: 100 }} />
+        </View>
       </View>
       <View style={{ flex: 1 }}>
         <View style={styles.buttonArea}>
           <TouchableOpacity
             style={styles.button}
-            onPress={() => navigate("Success", { text: "주차 예약이" })}
+            onPress={() => {
+              navigate("Success", { text: "주차 예약이" });
+              firestore()
+                .collection("RESERVE")
+                .add({
+                  member_id: "asdf",
+                  cncl_status: false,
+                  start_time: timeValue,
+                  end_time: timeValue + value,
+                  parking_slot_num: spotId,
+                  use_de: date,
+                });
+            }}
           >
             <Text style={styles.buttonTitle}>시간 선택 완료</Text>
           </TouchableOpacity>
@@ -135,39 +197,21 @@ const styles = StyleSheet.create({
   info: {
     paddingVertical: 10,
     paddingHorizontal: 20,
-  },
-  adressInfo: {
-    backgroundColor: "#F3F6FF",
-    borderRadius: 20,
-    paddingHorizontal: 30,
-    paddingVertical: 10,
+    flexDirection: "row",
   },
   textB: {
     fontSize: 16,
     fontWeight: "bold",
     paddingBottom: 10,
   },
-  textC: {
-    marginLeft: 20,
-    paddingVertical: 10,
-    fontWeight: "bold",
-  },
   successLoc: {
     flexDirection: "row",
     backgroundColor: "#F3F6FF",
     borderRadius: 20,
     paddingLeft: 20,
-    justifyContent: "space-between",
     marginBottom: 10,
   },
-  textD: {
-    fontSize: 14,
-    color: "white",
-    backgroundColor: "#AAF54B",
-    paddingVertical: 10,
-    paddingHorizontal: 10,
-    borderRadius: 25,
-  },
+
   buttonArea: {
     width: "100%",
     height: hp("5%"),

@@ -58,15 +58,84 @@ function Register4({ navigation: { navigate } }) {
               />
             </TextInput>
             <Text style={styles.label}>아파트</Text>
-            <TextInput style={styles.textForm}>
+            <Text style={styles.textForm}>
               <Icon4
                 name="magnifying-glass"
                 color="#677191"
                 size={20}
                 style={{ marginRight: 15 }}
               />
-            </TextInput>
+              <TouchableOpacity onPress={() => bottomSheet.current.show()}>
+                <Text style={styles.textD}>Search your apartment</Text>
+              </TouchableOpacity>
+            </Text>
+            <BottomSheet
+              hasDraggableIcon
+              ref={bottomSheet}
+              height={400}
+              enabledContentGestureInteraction={false}
+              sheetBackgroundColor="white"
+            >
+              <View>
+                <View style={{ marginTop: 20, paddingHorizontal: 30 }}>
+                  <ScrollView>
+                    <View style={styles.bottomInfo}>
+                      <Icon4
+                        name="magnifying-glass"
+                        color="#677191"
+                        size={20}
+                        style={{ marginRight: 15 }}
+                      />
+                      <Text style={styles.textD}>Search your apartment</Text>
+                    </View>
+                    <TouchableOpacity
+                      style={{ flexDirection: "row", marginBottom: 10 }}
+                    >
+                      <View
+                        style={{
+                          flexDirection: "column",
+                          width: 50,
+                          height: 50,
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      >
+                        <Icon5 name="parking" color="#FF317B" size={20} />
+                      </View>
+                      <View>
+                        <Text style={styles.textE}>파플아파트 1단지</Text>
+                        <Text style={styles.textC}>
+                          대전시 유성구 대학로 99번길
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
+                  </ScrollView>
+                </View>
+              </View>
+            </BottomSheet>
+
             <Text style={styles.label}>주소</Text>
+            <View>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                }}
+              >
+                <View style={{ flexDirection: "row", flex: 1 }}>
+                  <View style={styles.adressInfo}>
+                    <TextInput style={styles.textD}></TextInput>
+                  </View>
+                  <Text style={styles.textC}>동</Text>
+                </View>
+                <View style={{ flexDirection: "row", flex: 1 }}>
+                  <View style={styles.adressInfo}>
+                    <Text style={styles.textD}></Text>
+                  </View>
+                  <Text style={styles.textC}>호</Text>
+                </View>
+              </View>
+            </View>
           </View>
         </ScrollView>
       </View>
@@ -140,9 +209,43 @@ const styles = StyleSheet.create({
   icon: {
     margin: wp("10%"),
   },
+  bottomInfo: {
+    backgroundColor: "#F3F6FF",
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 20,
+    flexDirection: "row",
+    marginBottom: 20,
+  },
+  adressInfo: {
+    backgroundColor: "#F3F6FF",
+    borderRadius: 100,
+    paddingVertical: 10,
+    alignItems: "center",
+    flex: 3,
+  },
   textB: {
     marginTop: 40,
     textAlign: "center",
+  },
+  textC: {
+    fontSize: 16,
+    marginLeft: 10,
+    paddingVertical: 10,
+    fontWeight: "bold",
+    color: "#677191",
+    flex: 1,
+  },
+  textD: {
+    fontSize: 16,
+    color: "#677191",
+  },
+  textE: {
+    fontSize: 16,
+    marginLeft: 10,
+    fontWeight: "bold",
+    color: "#192342",
+    flex: 1,
   },
 });
 
