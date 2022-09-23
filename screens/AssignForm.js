@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Text,
   StyleSheet,
@@ -10,18 +10,142 @@ import DropDownPicker from "react-native-dropdown-picker";
 import Icon from "react-native-vector-icons/Ionicons";
 import Icon2 from "react-native-vector-icons/Feather";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
+import firestore from "@react-native-firebase/firestore";
 
 DropDownPicker.setListMode("SCROLLVIEW");
 
 const AssignForm = ({ navigation: { navigate } }) => {
+  const uid = 1;
+  const carColl = firestore().collection("CAR");
+  const assignAppColl = firestore().collection("ASSIGN_APPLY");
+  const memberColl = firestore().collection("MEMBER");
+
+  const [items, setItems] = useState([]);
+  const [users, setUsers] = useState([]);
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
-  const [items, setItems] = useState([
-    { label: "1", value: 1 },
-    { label: "2", value: 2 },
-    { label: "3", value: 3 },
-    { label: "4", value: 4 },
-  ]);
+
+  const d = new Date();
+
+  useEffect(() => {
+    memberColl.where("id", "==", uid.toString()).onSnapshot((snapshot) => {
+      const memArray = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setUsers(memArray);
+    });
+  }, []);
+
+  /*
+  useEffect(() => {
+    memberColl.onSnapshot((snapshot) => {
+      const memArray = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      const currentMem = memArray.filter((mem) => mem.id == uid);
+      setUsers(currentMem);
+    });
+  }, []);
+  
+  */
+
+  useEffect(() => {
+    carColl.onSnapshot((snapshot) => {
+      const carArray = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      const currentCar = carArray.filter((car) => car.member_id == uid);
+
+      var arr = [];
+      for (var i = 1; i <= currentCar.length; i++) {
+        arr.push({ label: i.toString(), value: i });
+      }
+      setItems(arr);
+    });
+  }, []);
+
+  /*
+  useEffect(() => {
+    carColl.onSnapshot((snapshot) => {
+      setItems([]);
+      const carArray = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      const currentCar = carArray.filter((car) => car.member_id == uid);
+      var arr = [];
+      for (var i = 1; i <= currentCar.length; i++) {
+        arr.push({ label: i.toString(), value: i });
+      }
+      setItems(arr);
+    });
+  }, []);
+  */
+
+  const startDate = () => {
+    const last = new Date(
+      new Date(new Date().setMonth(d.getMonth() + 1)).setDate(0)
+    );
+    const lastDay = new Date(last.setDate(last.getDate() - 13));
+    const mon = lastDay.getMonth() + 1;
+    const format = lastDay.getFullYear() + "." + mon + "." + lastDay.getDate();
+    return format;
+  };
+
+  const endDate = () => {
+    const last = new Date(
+      new Date(new Date().setMonth(d.getMonth() + 1)).setDate(0)
+    );
+    const lastDay = new Date(last.setDate(last.getDate() - 7));
+    const mon = lastDay.getMonth() + 1;
+    const format = lastDay.getFullYear() + "." + mon + "." + lastDay.getDate();
+    return format;
+  };
+
+  const getMon = () => {
+    let month = d.getMonth() + 1;
+    if (month === 12) {
+      month = 1;
+    } else {
+      month = month + 1;
+    }
+    return month;
+  };
+
+  const addAssignApp = async () => {
+    try {
+      await assignAppColl.add({
+        apply_term: d.getFullYear() + "-" + getMon(),
+        apply_count: value,
+        member_id: uid,
+      });
+      setValue(null);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  /*
+  useEffect(() => {
+    carColl.onSnapshot((snapshot) => {
+      const carArray = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      const currentCar = carArray.filter((car) => car.member_id == uid);
+      setItems([]);
+      console.log(currentCar.length);
+      for (let i = 1; i <= currentCar.length; i++) {
+        console.log(i);
+        setItems([...items, { label: i.toString(), value: i }]);
+        console.log(items);
+      }
+    });
+  }, []);
+  */
 
   return (
     <View style={styles.contain}>
@@ -39,7 +163,13 @@ const AssignForm = ({ navigation: { navigate } }) => {
                 size={20}
                 style={{ marginRight: 15 }}
               />
-              <Text style={styles.textD}>파플아파트 101동 101호</Text>
+              {users.map((user, id) => (
+                <Text style={styles.textD} key={id}>
+                  {user.apt_name} {user.dong_no}
+                  {"동"} {user.hosu_no}
+                  {"호"}
+                </Text>
+              ))}
             </View>
           </View>
           <View style={{ marginBottom: 20 }}>
@@ -51,7 +181,11 @@ const AssignForm = ({ navigation: { navigate } }) => {
                 size={20}
                 style={{ marginRight: 15 }}
               />
-              <Text style={styles.textD}>2022.02.10 ~ 2022.02.17</Text>
+              <Text style={styles.textD}>
+                {startDate()}
+                {" ~ "}
+                {endDate()}
+              </Text>
             </View>
           </View>
           <View style={{ marginBottom: 20 }}>
@@ -63,7 +197,11 @@ const AssignForm = ({ navigation: { navigate } }) => {
                 size={20}
                 style={{ marginRight: 15 }}
               />
-              <Text style={styles.textD}>2022년 03월</Text>
+              <Text style={styles.textD}>
+                {d.getFullYear()}
+                {"년"} {getMon()}
+                {"월"}
+              </Text>
             </View>
           </View>
           <View style={{ marginBottom: 20 }}>
@@ -84,6 +222,7 @@ const AssignForm = ({ navigation: { navigate } }) => {
                     setOpen={setOpen}
                     setValue={setValue}
                     setItems={setItems}
+                    maxHeight={90}
                     placeholder="1"
                     placeholderStyle={{
                       color: "#677191",
@@ -103,7 +242,6 @@ const AssignForm = ({ navigation: { navigate } }) => {
                       borderColor: "#F3F6FF",
                       borderRadius: 21,
                       paddingLeft: 10,
-                      height: 100,
                     }}
                   />
                 </View>
@@ -121,7 +259,9 @@ const AssignForm = ({ navigation: { navigate } }) => {
           {value !== null ? (
             <TouchableOpacity
               style={styles.button}
-              onPress={() => navigate("Success", { text: "배정 신청이" })}
+              onPress={() => {
+                addAssignApp(), navigate("Success", { text: "배정 신청이" });
+              }}
             >
               <Text style={{ color: "white", fontWeight: "bold" }}>
                 배정 신청

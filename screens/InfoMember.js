@@ -1,10 +1,56 @@
-import React, { useState } from "react";
-import { Text, StyleSheet, View, ScrollView } from "react-native";
+import React, { useEffect, useState } from "react";
+import { Text, StyleSheet, View, ScrollView, Button } from "react-native";
 import Icon from "react-native-vector-icons/Octicons";
 import Icon2 from "react-native-vector-icons/Feather";
 import Icon3 from "react-native-vector-icons/Ionicons";
+import firestore from "@react-native-firebase/firestore";
 
 const InfoMember = ({ navigation: { navigate } }) => {
+  const uid = 1;
+  const memberColl = firestore().collection("MEMBER");
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    memberColl.where("id", "==", uid.toString()).onSnapshot((snapshot) => {
+      const memArray = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+
+      setUsers(memArray);
+    });
+  }, []);
+
+  /*
+    
+     const datas = await memberColl.get();
+    datas.forEach((document) => {
+        const dd = {
+        ...document.data(),
+        id: document.id,
+      };
+      setUser((p) => [document.data(),...p]);
+    });
+    console.log(users[1]);
+    
+    */
+
+  /*
+ try {
+      const data = await memberColl.doc().get();
+      setUsers(data.doc.map((doc) => ({ ...doc.data(), id: doc.id })));
+    } catch (error) {
+      console.log(error.message);
+    }
+
+ */
+  /**
+ * <Button title="읽" onPress={rea} />
+      {users?.map((row, idx) => {
+        return <Text key={idx}>{row.name}</Text>;
+      })}
+ */
+
   return (
     <ScrollView style={styles.contain}>
       <View style={styles.top}>
@@ -19,7 +65,11 @@ const InfoMember = ({ navigation: { navigate } }) => {
             size={20}
             style={{ marginRight: 15 }}
           />
-          <Text style={styles.textD}>홍길동</Text>
+          {users.map((user, id) => (
+            <Text style={styles.textD} key={id}>
+              {user.name}
+            </Text>
+          ))}
         </View>
       </View>
       <View style={{ marginBottom: 20 }}>
@@ -31,7 +81,11 @@ const InfoMember = ({ navigation: { navigate } }) => {
             size={20}
             style={{ marginRight: 15 }}
           />
-          <Text style={styles.textD}>01012345678</Text>
+          {users.map((user, id) => (
+            <Text style={styles.textD} key={id}>
+              {user.phone}
+            </Text>
+          ))}
         </View>
       </View>
       <View style={{ marginBottom: 20 }}>
@@ -43,7 +97,11 @@ const InfoMember = ({ navigation: { navigate } }) => {
             size={20}
             style={{ marginRight: 15 }}
           />
-          <Text style={styles.textD}>파플아파트 1단지</Text>
+          {users.map((user, id) => (
+            <Text style={styles.textD} key={id}>
+              {user.apt_name}
+            </Text>
+          ))}
         </View>
       </View>
       <View style={{ marginBottom: 20 }}>
@@ -54,13 +112,21 @@ const InfoMember = ({ navigation: { navigate } }) => {
           >
             <View style={{ flexDirection: "row", flex: 1 }}>
               <View style={styles.adressInfo}>
-                <Text style={styles.textD}>101</Text>
+                {users.map((user, id) => (
+                  <Text style={styles.textD} key={id}>
+                    {user.dong_no}
+                  </Text>
+                ))}
               </View>
               <Text style={styles.textC}>동</Text>
             </View>
             <View style={{ flexDirection: "row", flex: 1 }}>
               <View style={styles.adressInfo}>
-                <Text style={styles.textD}>101</Text>
+                {users.map((user, id) => (
+                  <Text style={styles.textD} key={id}>
+                    {user.hosu_no}
+                  </Text>
+                ))}
               </View>
               <Text style={styles.textC}>호</Text>
             </View>

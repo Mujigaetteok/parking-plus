@@ -11,8 +11,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
-import firestore from '@react-native-firebase/firestore';
-
+import firestore from "@react-native-firebase/firestore";
 const ReserveForm = ({ navigation: { navigate }, route }) => {
   const [date, setDate] = useState(route.params.date);
   const [spotId, setSpot] = useState(route.params.spotId);
@@ -31,7 +30,7 @@ const ReserveForm = ({ navigation: { navigate }, route }) => {
 
   return (
     <View style={styles.contain}>
-      <View style={{ flex: 9}}>
+      <View style={{ flex: 9 }}>
         <ScrollView>
           <View style={styles.top}>
             <Text style={styles.textA}>주차 예약</Text>
@@ -48,7 +47,15 @@ const ReserveForm = ({ navigation: { navigate }, route }) => {
             <View style={{ marginBottom: 20 }}>
               <Text style={styles.textB}>주차 공간</Text>
               <View style={styles.successLoc} activeOpacity={0.5}>
-                <Text style={{ fontWeight: "bold", paddingVertical: 10, fontSize: 18 }}>{spotId}</Text>
+                <Text
+                  style={{
+                    fontWeight: "bold",
+                    paddingVertical: 10,
+                    fontSize: 18,
+                  }}
+                >
+                  {spotId}
+                </Text>
               </View>
             </View>
           </View>
@@ -57,7 +64,9 @@ const ReserveForm = ({ navigation: { navigate }, route }) => {
             <Text style={styles.textB}>시간</Text>
             <View style={styles.successLoc}>
               <View style={{ justifyContent: "center" }}>
-                <Text style={{fontSize: 18, fontWeight: "bold",}}>{startTime+":00"}</Text>
+                <Text style={{ fontSize: 18, fontWeight: "bold" }}>
+                  {startTime + ":00"}
+                </Text>
               </View>
               <View style={{ justifyContent: "center" }}>
                 <Text style={{ fontSize: 18 }}> 부터 </Text>
@@ -71,7 +80,7 @@ const ReserveForm = ({ navigation: { navigate }, route }) => {
                   setValue={setValuet}
                   setItems={setItems}
                   placeholder="1"
-                  placeholderStyle={{color: "#677191",}}
+                  placeholderStyle={{ color: "#677191" }}
                   style={{
                     backgroundColor: "#F3F6FF",
                     borderRadius: 21,
@@ -88,18 +97,18 @@ const ReserveForm = ({ navigation: { navigate }, route }) => {
                   }}
                 />
               </View>
-            <View style={{ justifyContent: "center" }}>
-              <Text style={{ fontSize: 18 }}> 시간 </Text>
+              <View style={{ justifyContent: "center" }}>
+                <Text style={{ fontSize: 18 }}> 시간 </Text>
+              </View>
             </View>
-          </View>  
-        </View>
-      </ScrollView>
+          </View>
+        </ScrollView>
       </View>
       <View style={{ flex: 1 }}>
         <View style={styles.buttonArea}>
           <TouchableOpacity
             style={styles.button}
-            onPress={() => navigate("Success", {text: "주차 예약이"})}
+            onPress={() => navigate("Success", { text: "주차 예약이" })}
           >
             <Text style={styles.buttonTitle}>시간 선택 완료</Text>
           </TouchableOpacity>

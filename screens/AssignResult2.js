@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import {
   Text,
   StyleSheet,
@@ -11,10 +11,52 @@ import DropDownPicker from "react-native-dropdown-picker";
 import Icon from "react-native-vector-icons/Ionicons";
 import Icon2 from "react-native-vector-icons/Feather";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
+import firestore from "@react-native-firebase/firestore";
 
 DropDownPicker.setListMode("SCROLLVIEW");
 
 const AssignResult2 = ({ navigation: { navigate }, route }) => {
+  const uid = 1;
+  const memberColl = firestore().collection("MEMBER");
+  const d = new Date();
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    memberColl.where("id", "==", uid.toString()).onSnapshot((snapshot) => {
+      const memArray = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setUsers(memArray);
+    });
+  }, []);
+  /*
+  useEffect(() => {
+    assignColl.onSnapshot((snapshot) => {
+      const assignArray = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      const currentAssign = assignArray.filter(
+        (as) =>
+          as.member_id == uid &&
+          as.cncl_status == false &&
+          new Date(as.start_de) > d
+      );
+      setAssigns(currentAssign);
+    });
+  }, []);
+*/
+  const term = () => {
+    let month = d.getMonth() + 1;
+    if (month === 12) {
+      month = 1;
+    } else {
+      month = month + 1;
+    }
+    return d.getFullYear() + "년 " + month + "월";
+  };
+
   const [week, setWeek] = useState([
     { id: 1, day: "월", status: false },
     { id: 2, day: "화", status: false },
@@ -112,6 +154,7 @@ const AssignResult2 = ({ navigation: { navigate }, route }) => {
                 setOpen={setOpen}
                 setValue={setValue}
                 setItems={setItems}
+                maxHeight={120}
                 placeholder="00:00"
                 placeholderStyle={{
                   color: "#677191",
@@ -129,7 +172,6 @@ const AssignResult2 = ({ navigation: { navigate }, route }) => {
                   backgroundColor: "#F3F6FF",
                   borderColor: "#F3F6FF",
                   borderRadius: 21,
-                  height: 120,
                 }}
               />
             </View>
@@ -150,6 +192,7 @@ const AssignResult2 = ({ navigation: { navigate }, route }) => {
                 setOpen={setOpent}
                 setValue={setValuet}
                 setItems={setItems}
+                maxHeight={120}
                 placeholder="00:00"
                 placeholderStyle={{
                   color: "#677191",
@@ -167,7 +210,6 @@ const AssignResult2 = ({ navigation: { navigate }, route }) => {
                   backgroundColor: "#F3F6FF",
                   borderColor: "#F3F6FF",
                   borderRadius: 21,
-                  height: 120,
                 }}
               />
             </View>
@@ -229,7 +271,11 @@ const AssignResult2 = ({ navigation: { navigate }, route }) => {
                 size={20}
                 style={{ marginRight: 15 }}
               />
-              <Text style={styles.textC}>파플아파트 1단지</Text>
+              {users.map((user, id) => (
+                <Text style={styles.textC} key={id}>
+                  {user.apt_name}
+                </Text>
+              ))}
             </View>
           </View>
           <View style={{ marginBottom: 20 }}>
@@ -241,7 +287,7 @@ const AssignResult2 = ({ navigation: { navigate }, route }) => {
                 size={20}
                 style={{ marginRight: 15 }}
               />
-              <Text style={styles.textC}>2022년 03월</Text>
+              <Text style={styles.textC}>{term()}</Text>
             </View>
           </View>
           <View style={{ marginBottom: 20 }}>
