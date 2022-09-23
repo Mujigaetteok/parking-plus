@@ -30,23 +30,7 @@ const AssignResult2 = ({ navigation: { navigate }, route }) => {
       setUsers(memArray);
     });
   }, []);
-  /*
-  useEffect(() => {
-    assignColl.onSnapshot((snapshot) => {
-      const assignArray = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      const currentAssign = assignArray.filter(
-        (as) =>
-          as.member_id == uid &&
-          as.cncl_status == false &&
-          new Date(as.start_de) > d
-      );
-      setAssigns(currentAssign);
-    });
-  }, []);
-*/
+
   const term = () => {
     let month = d.getMonth() + 1;
     if (month === 12) {

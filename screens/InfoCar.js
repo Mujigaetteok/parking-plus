@@ -41,34 +41,6 @@ const InfoCar = ({ navigation: { navigate } }) => {
     }
   };
 
-  /*
- useEffect(() => {
-    carColl.onSnapshot((snapshot) => {
-      const carArray = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      const currentCar = carArray.filter((car) => car.member_id == uid);
-      setCars(currentCar);
-    });
-  }, []);
-  */
-
-  /*
-  useEffect(() => {
-    carColl.onSnapshot((snapshot) => {
-      const carArray = snapshot.docs.map((doc) =>
-        doc.member_id == uid
-          ? {
-              id: doc.id,
-              ...doc.data(),
-            }
-      );
-      setCars(carArray);
-    });
-  }, []);
-  */
-
   const bottomSheetView = () => {
     return (
       <View style={styles.contain}>

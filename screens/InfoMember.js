@@ -21,36 +21,6 @@ const InfoMember = ({ navigation: { navigate } }) => {
     });
   }, []);
 
-  /*
-    
-     const datas = await memberColl.get();
-    datas.forEach((document) => {
-        const dd = {
-        ...document.data(),
-        id: document.id,
-      };
-      setUser((p) => [document.data(),...p]);
-    });
-    console.log(users[1]);
-    
-    */
-
-  /*
- try {
-      const data = await memberColl.doc().get();
-      setUsers(data.doc.map((doc) => ({ ...doc.data(), id: doc.id })));
-    } catch (error) {
-      console.log(error.message);
-    }
-
- */
-  /**
- * <Button title="읽" onPress={rea} />
-      {users?.map((row, idx) => {
-        return <Text key={idx}>{row.name}</Text>;
-      })}
- */
-
   return (
     <ScrollView style={styles.contain}>
       <View style={styles.top}>

@@ -37,20 +37,6 @@ const AssignForm = ({ navigation: { navigate } }) => {
     });
   }, []);
 
-  /*
-  useEffect(() => {
-    memberColl.onSnapshot((snapshot) => {
-      const memArray = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      const currentMem = memArray.filter((mem) => mem.id == uid);
-      setUsers(currentMem);
-    });
-  }, []);
-  
-  */
-
   useEffect(() => {
     carColl.onSnapshot((snapshot) => {
       const carArray = snapshot.docs.map((doc) => ({
@@ -66,24 +52,6 @@ const AssignForm = ({ navigation: { navigate } }) => {
       setItems(arr);
     });
   }, []);
-
-  /*
-  useEffect(() => {
-    carColl.onSnapshot((snapshot) => {
-      setItems([]);
-      const carArray = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      const currentCar = carArray.filter((car) => car.member_id == uid);
-      var arr = [];
-      for (var i = 1; i <= currentCar.length; i++) {
-        arr.push({ label: i.toString(), value: i });
-      }
-      setItems(arr);
-    });
-  }, []);
-  */
 
   const startDate = () => {
     const last = new Date(
@@ -127,25 +95,6 @@ const AssignForm = ({ navigation: { navigate } }) => {
       console.log(error.message);
     }
   };
-
-  /*
-  useEffect(() => {
-    carColl.onSnapshot((snapshot) => {
-      const carArray = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      const currentCar = carArray.filter((car) => car.member_id == uid);
-      setItems([]);
-      console.log(currentCar.length);
-      for (let i = 1; i <= currentCar.length; i++) {
-        console.log(i);
-        setItems([...items, { label: i.toString(), value: i }]);
-        console.log(items);
-      }
-    });
-  }, []);
-  */
 
   return (
     <View style={styles.contain}>

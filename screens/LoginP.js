@@ -23,6 +23,10 @@ const LoginP = ({ navigation: { navigate } }) => {
     }
   }
 
+  async function signout() {
+    auth().signOut();
+  }
+
   return (
     <>
       <TextInput value={phoneNumber} onChangeText={setPhoneNumber} />
@@ -36,6 +40,7 @@ const LoginP = ({ navigation: { navigate } }) => {
           <Button title="Confirm Code" onPress={() => confirmCode()} />
         </View>
       ) : null}
+      <Button title="logOut" onPress={() => signout} />
     </>
   );
 };
