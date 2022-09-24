@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   Text,
   StyleSheet,
@@ -9,10 +9,18 @@ import {
 import BottomSheet from "react-native-gesture-bottom-sheet";
 import DropDownPicker from "react-native-dropdown-picker";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
+import firestore from "@react-native-firebase/firestore";
 
 DropDownPicker.setListMode("SCROLLVIEW");
 
 const AssignResult3 = ({ navigation: { navigate }, route }) => {
+  const uid = 1;
+  const assignColl = firestore().collection("ASSIGN");
+  const mon = new Date().getMonth() + 2;
+  const year = new Date().getFullYear();
+  const form = year + "-" + (mon < 10 ? "0" + mon : mon) + "-" + "01";
+  const loc = route.params.location;
+
   const [open, setOpen] = useState(false);
   const [opent, setOpent] = useState(false);
   const [items, setItems] = useState([...route.params.items]);
@@ -29,6 +37,8 @@ const AssignResult3 = ({ navigation: { navigate }, route }) => {
       ...m,
       start: items[ind(route.params.value)].label,
       end: items[ind(route.params.valuet)].label,
+      value: route.params.value,
+      valuet: route.params.valuet,
     }))
   );
 
@@ -37,10 +47,56 @@ const AssignResult3 = ({ navigation: { navigate }, route }) => {
     start >= 0 && start <= 23 && end >= 0 && end <= 23
       ? ((newDay[key].start = items[ind(start)].label),
         (newDay[key].end = items[ind(end)].label),
+        (newDay[key].value = start),
+        (newDay[key].valuet = end),
         setDayTime(newDay))
       : null;
     setStart(null);
     setEnd(null);
+  };
+
+  const dayAdd = async () => {
+    try {
+      const rows = await assignColl
+        .where("member_id", "==", uid.toString())
+        .where("start_de", "==", form)
+        .where("cncl_status", "==", false)
+        .where("parking_slot_id", "==", loc);
+      rows.onSnapshot((snapshot) => {
+        snapshot.docs.map((doc) => {
+          dayTime.map((day) => {
+            const de = assignColl.doc(doc.id).collection("ASSIGN_SCHEDULE");
+            de.where("use_day", "==", day.day)
+              .get()
+              .then((res) => {
+                res.size >= 1
+                  ? res.forEach(function (doc) {
+                      doc.ref.set({
+                        use_day: day.day,
+                        start_time: day.value,
+                        end_time: day.valuet,
+                      });
+                    })
+                  : add(doc.id, day.day, day.value, day.valuet);
+              });
+          });
+        });
+      });
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  const add = async (id, day, value, valuet) => {
+    try {
+      await assignColl.doc(id).collection("ASSIGN_SCHEDULE").add({
+        use_day: day,
+        start_time: value,
+        end_time: valuet,
+      });
+    } catch (error) {
+      console.log(error.message);
+    }
   };
 
   const bottomSheetView = (key) => {
@@ -57,6 +113,7 @@ const AssignResult3 = ({ navigation: { navigate }, route }) => {
                 setOpen={setOpen}
                 setValue={setStart}
                 setItems={setItems}
+                maxHeight={120}
                 placeholder="00:00"
                 placeholderStyle={{
                   color: "#677191",
@@ -74,7 +131,6 @@ const AssignResult3 = ({ navigation: { navigate }, route }) => {
                   backgroundColor: "#F3F6FF",
                   borderColor: "#F3F6FF",
                   borderRadius: 21,
-                  height: 120,
                 }}
               />
             </View>
@@ -95,6 +151,7 @@ const AssignResult3 = ({ navigation: { navigate }, route }) => {
                 setOpen={setOpent}
                 setValue={setEnd}
                 setItems={setItems}
+                maxHeight={120}
                 placeholder="00:00"
                 placeholderStyle={{
                   color: "#677191",
@@ -112,7 +169,6 @@ const AssignResult3 = ({ navigation: { navigate }, route }) => {
                   backgroundColor: "#F3F6FF",
                   borderColor: "#F3F6FF",
                   borderRadius: 21,
-                  height: 120,
                 }}
               />
             </View>
@@ -227,9 +283,9 @@ const AssignResult3 = ({ navigation: { navigate }, route }) => {
         <View style={styles.buttonArea}>
           <TouchableOpacity
             style={styles.button}
-            onPress={() =>
-              navigate("Success", { text: "배정 공간 스케줄 선택이" })
-            }
+            onPress={() => (
+              dayAdd(), navigate("Success", { text: "배정 공간 스케줄 선택이" })
+            )}
           >
             <Text style={{ color: "white", fontWeight: "bold" }}>완료</Text>
           </TouchableOpacity>

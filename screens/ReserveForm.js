@@ -11,7 +11,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
-import firestore from '@react-native-firebase/firestore';
+import firestore from "@react-native-firebase/firestore";
 
 DropDownPicker.setListMode("SCROLLVIEW");
 
@@ -29,13 +29,37 @@ const ReserveForm = ({ navigation: { navigate }, route }) => {
   const setInitItems = () => {
     let initItems = [];
     switch (maxTime) {
-      case 1: {initItems = [{ label: "1", value: 1 }]; break;}
-      case 2: {initItems = [{ label: "1", value: 1 },{ label: "2", value: 2 }]; break;}
-      case 3: {initItems = [{ label: "1", value: 1 },{ label: "2", value: 2 },{ label: "3", value: 3 }]; break;}
-      case 4: {initItems = [{ label: "1", value: 1 },{ label: "2", value: 2 },{ label: "3", value: 3 },{ label: "4", value: 4 }]; break;}
+      case 1: {
+        initItems = [{ label: "1", value: 1 }];
+        break;
+      }
+      case 2: {
+        initItems = [
+          { label: "1", value: 1 },
+          { label: "2", value: 2 },
+        ];
+        break;
+      }
+      case 3: {
+        initItems = [
+          { label: "1", value: 1 },
+          { label: "2", value: 2 },
+          { label: "3", value: 3 },
+        ];
+        break;
+      }
+      case 4: {
+        initItems = [
+          { label: "1", value: 1 },
+          { label: "2", value: 2 },
+          { label: "3", value: 3 },
+          { label: "4", value: 4 },
+        ];
+        break;
+      }
     }
     setItems(initItems);
-  }
+  };
 
   useEffect(() => {
     setInitItems();
@@ -49,19 +73,27 @@ const ReserveForm = ({ navigation: { navigate }, route }) => {
             <Text style={styles.textA}>주차 예약</Text>
           </View>
 
-            <View style={{ marginBottom: 20 }}>
-              <Text style={styles.textB}>예약 날짜</Text>
-              <View style={styles.info}>
-                <Text style={{ fontWeight: "bold", fontSize: 18 }}>{date}</Text>
-              </View>
+          <View style={{ marginBottom: 20 }}>
+            <Text style={styles.textB}>예약 날짜</Text>
+            <View style={styles.info}>
+              <Text style={{ fontWeight: "bold", fontSize: 18 }}>{date}</Text>
             </View>
+          </View>
 
-            <View style={{ marginBottom: 20 }}>
-              <Text style={styles.textB}>주차 공간</Text>
-              <View style={styles.successLoc} activeOpacity={0.5}>
-                <Text style={{ fontWeight: "bold", paddingVertical: 10, fontSize: 18 }}>{spotId}</Text>
-              </View>
+          <View style={{ marginBottom: 20 }}>
+            <Text style={styles.textB}>주차 공간</Text>
+            <View style={styles.successLoc} activeOpacity={0.5}>
+              <Text
+                style={{
+                  fontWeight: "bold",
+                  paddingVertical: 10,
+                  fontSize: 18,
+                }}
+              >
+                {spotId}
+              </Text>
             </View>
+          </View>
 
           <View>
             <Text style={styles.textB}>시간</Text>
@@ -74,7 +106,7 @@ const ReserveForm = ({ navigation: { navigate }, route }) => {
                   <Text style={{ fontSize: 18 }}> 부터 </Text>
                 </View>
                 <View style={{ flex: 2 }}>
-                <DropDownPicker
+                  <DropDownPicker
                     open={open}
                     value={value}
                     items={items}
@@ -90,7 +122,7 @@ const ReserveForm = ({ navigation: { navigate }, route }) => {
                       borderRadius: 21,
                       borderColor: "#F3F6FF",
                       paddingLeft: 20,
-                      justifyContent: "center"
+                      justifyContent: "center",
                     }}
                     textStyle={{
                       fontSize: 18,
@@ -101,7 +133,7 @@ const ReserveForm = ({ navigation: { navigate }, route }) => {
                       borderColor: "#F3F6FF",
                       borderRadius: 21,
                       paddingLeft: 10,
-                      height:100
+                      height: 100,
                     }}
                   />
                   </View>
@@ -110,9 +142,9 @@ const ReserveForm = ({ navigation: { navigate }, route }) => {
                 </View>
                 <View style={{ height: 100}} />
               </View>
-            </View>  
+            </View>
           </View>
-          <View style={{ height: 100}} />
+          <View style={{ height: 100 }} />
         </View>
       </View>
       <View style={{ flex: 1 }}>
@@ -120,16 +152,19 @@ const ReserveForm = ({ navigation: { navigate }, route }) => {
           <TouchableOpacity
             style={styles.button}
             onPress={() => {
-              navigate("Success", {text: "주차 예약이"});
+              navigate("Success", { text: "주차 예약이" });
               firestore()
-              .collection('RESERVE')
-              .add({
-                member_id:"asdf",
-                cncl_status: false,
-                start_time: timeValue,
-                end_time: timeValue+ value,
-                parking_slot_num: spotId,
-                use_de: date})}}>
+                .collection("RESERVE")
+                .add({
+                  member_id: "asdf",
+                  cncl_status: false,
+                  start_time: timeValue,
+                  end_time: timeValue + value,
+                  parking_slot_num: spotId,
+                  use_de: date,
+                });
+            }}
+          >
             <Text style={styles.buttonTitle}>시간 선택 완료</Text>
           </TouchableOpacity>
         </View>

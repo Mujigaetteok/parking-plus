@@ -1,34 +1,57 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Text, StyleSheet, View, ScrollView } from "react-native";
+import firestore from "@react-native-firebase/firestore";
 
 const InfoReserve = ({ navigation: { navigate } }) => {
+  const uid = 1;
+  const reserveColl = firestore().collection("RESERVE");
+  const [reser, setReser] = useState([]);
+  const d = new Date();
+
+  useEffect(() => {
+    reserveColl
+      .where("member_id", "==", uid.toString())
+      .where("cncl_status", "==", false)
+      .onSnapshot((snapshot) => {
+        const reserArray = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        const currentReser = reserArray.filter(
+          (re) => d <= new Date(re.use_de)
+        );
+        currentReser.sort((a, b) => new Date(a.use_de) - new Date(b.use_de));
+        setReser(currentReser);
+      });
+  }, []);
+
   return (
     <ScrollView style={styles.contain}>
       <View style={styles.top}>
         <Text style={styles.textA}>예약 정보</Text>
       </View>
-      <Text style={styles.textB}>2022.06.25</Text>
-      <View style={styles.info}>
-        <View style={{ flexDirection: "row", paddingBottom: 20 }}>
-          <Text style={styles.textC}>Location : </Text>
-          <Text style={styles.textC}> A07</Text>
+      {reser.map((r, id) => (
+        <View key={id}>
+          <Text style={styles.textB}>{r.use_de}</Text>
+          <View style={styles.info}>
+            <View style={{ flexDirection: "row", paddingBottom: 20 }}>
+              <Text style={styles.textC}>Location : </Text>
+              <Text style={styles.textC}> {r.parking_slot_id}</Text>
+            </View>
+            <View style={{ flexDirection: "row" }}>
+              <Text style={styles.textC}>Time {"       "}: </Text>
+              <Text style={styles.textC}>
+                {" "}
+                {r.start_time}
+                {":00"}
+                {" ~ "}
+                {r.end_time}
+                {":00"}
+              </Text>
+            </View>
+          </View>
         </View>
-        <View style={{ flexDirection: "row" }}>
-          <Text style={styles.textC}>Time {"       "}: </Text>
-          <Text style={styles.textC}> 10:00 ~ 21:00</Text>
-        </View>
-      </View>
-      <Text style={styles.textB}>2022.06.26</Text>
-      <View style={styles.info}>
-        <View style={{ flexDirection: "row", paddingBottom: 20 }}>
-          <Text style={styles.textC}>Location : </Text>
-          <Text style={styles.textC}> A11</Text>
-        </View>
-        <View style={{ flexDirection: "row" }}>
-          <Text style={styles.textC}>Time {"       "}: </Text>
-          <Text style={styles.textC}> 07:00 ~ 24:00</Text>
-        </View>
-      </View>
+      ))}
     </ScrollView>
   );
 };
