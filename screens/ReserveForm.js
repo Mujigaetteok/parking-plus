@@ -154,17 +154,14 @@ const ReserveForm = ({ navigation: { navigate }, route }) => {
             onPress={() => {
               navigate("Success", { text: "주차 예약이" });
               firestore()
-                .collection("RESERVE")
-                .add({
-                  member_id: "asdf",
-                  cncl_status: false,
-                  start_time: timeValue,
-                  end_time: timeValue + value,
-                  parking_slot_num: spotId,
-                  use_de: date,
-                });
-            }}
-          >
+              .collection('RESERVE')
+              .add({
+                member_id:"asdf",
+                cncl_status: false,
+                start_time: timeValue,
+                end_time: timeValue+ value,
+                parking_slot_id: spotId,
+                use_de: date})}}>
             <Text style={styles.buttonTitle}>시간 선택 완료</Text>
           </TouchableOpacity>
         </View>
