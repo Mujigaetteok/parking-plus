@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import {
   Text,
   StyleSheet,
@@ -10,9 +10,37 @@ import {
 import BottomSheet from "react-native-gesture-bottom-sheet";
 import Icon from "react-native-vector-icons/Ionicons";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
+import firestore from "@react-native-firebase/firestore";
 
 const InfoCar = ({ navigation: { navigate } }) => {
+  const uid = 1;
+  const carColl = firestore().collection("CAR");
+  const [cars, setCars] = useState([]);
   const [car, setCar] = useState("");
+
+  useEffect(() => {
+    carColl.onSnapshot((snapshot) => {
+      const carArray = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      const currentCar = carArray.filter((car) => car.member_id == uid);
+      setCars(currentCar);
+    });
+  }, []);
+
+  const addCar = async () => {
+    try {
+      await carColl.add({
+        member_id: uid,
+        idnt_no: car,
+      });
+      setCar("");
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
   const bottomSheetView = () => {
     return (
       <View style={styles.contain}>
@@ -39,7 +67,9 @@ const InfoCar = ({ navigation: { navigate } }) => {
           <View style={styles.buttonArea}>
             <TouchableOpacity
               style={styles.button}
-              onPress={() => bottomSheet.current.close()}
+              onPress={() => {
+                bottomSheet.current.close(), addCar();
+              }}
             >
               <Text style={{ color: "white", fontWeight: "bold" }}>등록</Text>
             </TouchableOpacity>
@@ -57,15 +87,18 @@ const InfoCar = ({ navigation: { navigate } }) => {
             <Text style={styles.textA}>차량 정보</Text>
           </View>
           <Text style={styles.textB}>차량 번호</Text>
-          <View style={styles.info}>
-            <Icon
-              name="car-outline"
-              color="#677191"
-              size={20}
-              style={{ marginRight: 15 }}
-            />
-            <Text style={styles.textC}>12가 3456</Text>
-          </View>
+
+          {cars.map((car, id) => (
+            <View style={styles.info} key={id}>
+              <Icon
+                name="car-outline"
+                color="#677191"
+                size={20}
+                style={{ marginRight: 15 }}
+              />
+              <Text style={styles.textC}>{car.idnt_no}</Text>
+            </View>
+          ))}
 
           <BottomSheet
             hasDraggableIcon
