@@ -14,6 +14,8 @@ const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get("window");
 
 const ReserveMap = ({ navigation: { navigate }, route }) => {
   const date = route.params.date["selectedDate"];
+  const now_month = date.slice(0,7)+"-01"
+  const now_day = new Date(date).getDay();
 
   const [isLoading, setLoading] = useState(true);
 
@@ -60,23 +62,53 @@ const ReserveMap = ({ navigation: { navigate }, route }) => {
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     ];
     //Reserve Collection에서 가져오는 쿼리
-    let isFull = await firestore()
-      .collection("RESERVE")
-      .where("parking_slot_num", "==", initMapStatus[mapIndex]["id"])
-      .where("use_de", "==", date)
-      .get()
-      .then((querySnapshot) => {
-        querySnapshot.forEach((documentSnapshot) => {
-          let start = documentSnapshot.get("start_time");
-          let end = documentSnapshot.get("end_time");
-          for (let i = start; i <= end; i++) {
-            timeTable[i] = 1;
-          }
-        });
-        if (!timeTable.includes(0)) {
-          return true;
-        } else return false;
+    let isFull = false;
+    await firestore()
+    .collection('RESERVE')
+    .where('parking_slot_id', '==', initMapStatus[mapIndex]['id'] )
+    .where('use_de', '==', date)
+    .get()
+    .then(querySnapshot => {
+      querySnapshot.forEach(documentSnapshot => {
+        let start = documentSnapshot.get("start_time");
+        let end = documentSnapshot.get("end_time");
+        for (let i=start; i<=end; i++) {timeTable[i]=1;}
       });
+      if (!(timeTable.includes(0))) {isFull=true;}
+      else isFull= false;
+    });
+
+    //Assign Collection에서 가져오는 쿼리
+    await firestore()
+    .collection('ASSIGN')
+    .where('parking_slot_id', '==', initMapStatus[mapIndex]['id'] )
+    .where('start_de', '==', now_month)
+    .get()
+    .then(querySnapshot => {
+      if (querySnapshot.empty) return;
+      else {
+        querySnapshot.forEach(async documentSnapshot => {
+          await firestore()
+          .collection('ASSIGN')
+          .doc(documentSnapshot.id)
+          .collection('ASSIGN_SCHEDULE')
+          .where('day_index', '==', now_day)
+          .get()
+          .then(querySnapshot => {
+            if (querySnapshot.empty) return;
+            else {
+              querySnapshot.forEach(documentSnapshot => {
+                let start = documentSnapshot.get("start_time");
+                let end = documentSnapshot.get("end_time");
+                for (let i=start; i<=end; i++) {timeTable[i]=1;}
+              });
+              if (!(timeTable.includes(0))) {isFull=true;console.log("assign true")}
+              else isFull = false;
+            }
+          });
+        });
+      }
+    });
     return isFull;
   };
 
@@ -96,6 +128,20 @@ const ReserveMap = ({ navigation: { navigate }, route }) => {
     return mapStatus[mapIndex]["isFull"];
   };
 
+  const draw = (start,end) => {
+    let sliced = mapStatus.slice(start,end);
+    return (
+      Object.keys(sliced).map((key,i) => (
+        <TouchableOpacity key={key} disabled={getIsFull(i+start)} style={styles.btn}
+            onPress={() => {navigate("Time",
+              {date:date, spotId:getId(i+start)}
+            );}}>
+            <Image source={getImage(getIsFull(i+start))}/>
+            <Text style = {styles.txt}>{getId(i+start)}</Text>
+        </TouchableOpacity>
+      ))
+    )
+  }
   const getImage = (isFull) => {
     return isFull
       ? require("../asset/car.png")
@@ -104,22 +150,6 @@ const ReserveMap = ({ navigation: { navigate }, route }) => {
 
   const getId = (mapIndex) => {
     return mapStatus[mapIndex]["id"];
-  };
-
-  const draw = (start, end) => {
-    let sliced = mapStatus.slice(start, end);
-    return Object.keys(sliced).map((key, i) => (
-      <TouchableOpacity
-        disabled={getIsFull(i + start)}
-        style={styles.btn}
-        onPress={() => {
-          navigate("Time", { date: date, spotId: getId(i + start) });
-        }}
-      >
-        <Image source={getImage(getIsFull(i + start))} />
-        <Text style={styles.txt}>{getId(i + start)}</Text>
-      </TouchableOpacity>
-    ));
   };
 
   if (isLoading) {
