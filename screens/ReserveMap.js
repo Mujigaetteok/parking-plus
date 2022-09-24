@@ -74,8 +74,6 @@ const ReserveMap = ({ navigation: { navigate }, route }) => {
         let end = documentSnapshot.get("end_time");
         for (let i=start; i<=end; i++) {timeTable[i]=1;}
       });
-      if (!(timeTable.includes(0))) {isFull=true;}
-      else isFull= false;
     });
 
     //Assign Collection에서 가져오는 쿼리
@@ -102,13 +100,13 @@ const ReserveMap = ({ navigation: { navigate }, route }) => {
                 let end = documentSnapshot.get("end_time");
                 for (let i=start; i<=end; i++) {timeTable[i]=1;}
               });
-              if (!(timeTable.includes(0))) {isFull=true;console.log("assign true")}
-              else isFull = false;
             }
           });
         });
       }
     });
+    if (!(timeTable.includes(0))) {isFull=true;}
+    else isFull= false;
     return isFull;
   };
 
@@ -163,8 +161,6 @@ const ReserveMap = ({ navigation: { navigate }, route }) => {
     <SafeAreaView>
       <ScrollView horizontal>
         <View style={styles.map}>{draw(0, 7)}</View>
-        <View style={styles.map}></View>
-        <View style={styles.map}>{draw(0, 7)}</View>
 
         <View style={styles.map} />
 
@@ -173,14 +169,6 @@ const ReserveMap = ({ navigation: { navigate }, route }) => {
           <Blank></Blank>
           {draw(7, 10)}
         </View>
-
-        <View style={styles.map}>
-          <Blank></Blank>
-          <Blank></Blank>
-          {draw(10, 13)}
-        </View>
-
-        <View style={styles.map} />
 
         <View style={styles.map}>
           <Blank></Blank>
