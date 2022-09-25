@@ -159,6 +159,7 @@ const Map = () => {
   }
   return (
     <SafeAreaView>
+      <ScrollView>
       <ScrollView horizontal>
         <View style={styles.map}>{draw(0, 7)}</View>
 
@@ -181,6 +182,7 @@ const Map = () => {
         <View style={styles.map} />
 
         <View style={styles.map}>{draw(13, 20)}</View>
+      </ScrollView>
       </ScrollView>
     </SafeAreaView>
   );
