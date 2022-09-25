@@ -86,19 +86,27 @@ const InfoCar = ({ navigation: { navigate } }) => {
           <View style={styles.top}>
             <Text style={styles.textA}>차량 정보</Text>
           </View>
-          <Text style={styles.textB}>차량 번호</Text>
+          {cars.length > 0 ? (
+            <View>
+              <Text style={styles.textB}>차량 번호</Text>
 
-          {cars.map((car, id) => (
-            <View style={styles.info} key={id}>
-              <Icon
-                name="car-outline"
-                color="#677191"
-                size={20}
-                style={{ marginRight: 15 }}
-              />
-              <Text style={styles.textC}>{car.idnt_no}</Text>
+              {cars.map((car, id) => (
+                <View style={styles.info} key={id}>
+                  <Icon
+                    name="car-outline"
+                    color="#677191"
+                    size={20}
+                    style={{ marginRight: 15 }}
+                  />
+                  <Text style={styles.textC}>{car.idnt_no}</Text>
+                </View>
+              ))}
             </View>
-          ))}
+          ) : (
+            <View style={{ alignItems: "center" }}>
+              <Text style={styles.textD}>등록된 차량이 없습니다</Text>
+            </View>
+          )}
 
           <BottomSheet
             hasDraggableIcon
@@ -166,6 +174,12 @@ const styles = StyleSheet.create({
   textC: {
     fontSize: 16,
     color: "#677191",
+  },
+  textD: {
+    fontSize: 18,
+    fontWeight: "bold",
+    paddingBottom: 10,
+    color: "#192342",
   },
   buttonArea: {
     width: "100%",

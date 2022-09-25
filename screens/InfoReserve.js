@@ -30,28 +30,35 @@ const InfoReserve = ({ navigation: { navigate } }) => {
       <View style={styles.top}>
         <Text style={styles.textA}>예약 정보</Text>
       </View>
-      {reser.map((r, id) => (
-        <View key={id}>
-          <Text style={styles.textB}>{r.use_de}</Text>
-          <View style={styles.info}>
-            <View style={{ flexDirection: "row", paddingBottom: 20 }}>
-              <Text style={styles.textC}>Location : </Text>
-              <Text style={styles.textC}> {r.parking_slot_id}</Text>
-            </View>
-            <View style={{ flexDirection: "row" }}>
-              <Text style={styles.textC}>Time {"       "}: </Text>
-              <Text style={styles.textC}>
-                {" "}
-                {r.start_time}
-                {":00"}
-                {" ~ "}
-                {r.end_time}
-                {":00"}
-              </Text>
+      {reser.length > 0 ? (
+        reser.map((r, id) => (
+          <View key={id}>
+            <Text style={styles.textB}>{r.use_de}</Text>
+            <View style={styles.info}>
+              <View style={{ flexDirection: "row", paddingBottom: 20 }}>
+                <Text style={styles.textC}>Location : </Text>
+                <Text style={styles.textC}> {r.parking_slot_id}</Text>
+              </View>
+              <View style={{ flexDirection: "row" }}>
+                <Text style={styles.textC}>Time {"       "}: </Text>
+                <Text style={styles.textC}>
+                  {" "}
+                  {r.start_time}
+                  {":00"}
+                  {" ~ "}
+                  {r.end_time}
+                  {":00"}
+                </Text>
+              </View>
             </View>
           </View>
+        ))
+      ) : (
+        <View style={{ alignItems: "center" }}>
+          <Text style={styles.textC}>예약 정보가 없습니다</Text>
         </View>
-      ))}
+      )}
+      {}
     </ScrollView>
   );
 };

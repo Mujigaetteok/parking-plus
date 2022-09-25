@@ -73,11 +73,12 @@ const AssignResult3 = ({ navigation: { navigate }, route }) => {
                   ? res.forEach(function (doc) {
                       doc.ref.set({
                         use_day: day.day,
+                        day_id: day.id,
                         start_time: day.value,
                         end_time: day.valuet,
                       });
                     })
-                  : add(doc.id, day.day, day.value, day.valuet);
+                  : add(doc.id, day.day, day.id, day.value, day.valuet);
               });
           });
         });
@@ -87,10 +88,11 @@ const AssignResult3 = ({ navigation: { navigate }, route }) => {
     }
   };
 
-  const add = async (id, day, value, valuet) => {
+  const add = async (id, day, did, value, valuet) => {
     try {
       await assignColl.doc(id).collection("ASSIGN_SCHEDULE").add({
         use_day: day,
+        day_id: did,
         start_time: value,
         end_time: valuet,
       });

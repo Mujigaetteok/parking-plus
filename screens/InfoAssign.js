@@ -26,6 +26,7 @@ const InfoAssign = ({ navigation }) => {
             const assign = snap.docs.map((d) => ({
               id: d.id,
               slot: doc.data().parking_slot_id,
+              day_id: d.data().day_id,
               use_day: d.data().use_day,
               start_time: d.data().start_time,
               end_time: d.data().end_time,
@@ -111,18 +112,28 @@ const InfoAssign = ({ navigation }) => {
             var resul = [];
             for (var k = 0; k < endSlice.length; k++) {
               var useD = [];
+              endSlice[k].sort((a, b) => a.day_id - b.day_id);
+
               for (var h = 0; h < endSlice[k].length; h++) {
                 useD.push(endSlice[k][h].use_day);
               }
+
               const day = useD.join(", ");
-              resul.push({
-                slot: endSlice[k][0].slot,
-                use_day: day,
-                start_time: endSlice[k][0].start_time,
-                end_time: endSlice[k][0].end_time,
-              });
+
+              day != ""
+                ? resul.push({
+                    slot: endSlice[k][0].slot,
+                    use_day: day,
+                    start_time: endSlice[k][0].start_time,
+                    end_time: endSlice[k][0].end_time,
+                  })
+                : null;
             }
-            ass.push(resul);
+
+            if (resul.length != 0) {
+              ass.push(resul);
+            }
+
             setAssigns(JSON.parse(JSON.stringify(ass)));
           })
       );
@@ -163,21 +174,27 @@ const InfoAssign = ({ navigation }) => {
       <View style={styles.top}>
         <Text style={styles.textA}>배정 정보</Text>
       </View>
-      {assigns.map((as, id) => (
-        <View key={id}>
-          <Text style={styles.textB}>
-            {"배정구역 "}
-            {as[0].slot}
-          </Text>
-          <View style={{ marginBottom: 30 }}>
-            {arra(as.length).map((val, idn) => (
-              <View style={styles.info} key={idn}>
-                <Print key={idn} p={as[val]} />
-              </View>
-            ))}
+      {assigns.length > 0 ? (
+        assigns.map((as, id) => (
+          <View key={id}>
+            <Text style={styles.textB}>
+              {"배정구역 "}
+              {as[0].slot}
+            </Text>
+            <View style={{ marginBottom: 30 }}>
+              {arra(as.length).map((val, idn) => (
+                <View style={styles.info} key={idn}>
+                  <Print key={idn} p={as[val]} />
+                </View>
+              ))}
+            </View>
           </View>
+        ))
+      ) : (
+        <View style={{ justifyContent: "center", alignItems: "center" }}>
+          <Text style={styles.textD}>배정 정보가 없습니다</Text>
         </View>
-      ))}
+      )}
     </ScrollView>
   );
 };
@@ -212,6 +229,11 @@ const styles = StyleSheet.create({
   textC: {
     fontWeight: "bold",
     fontSize: 20,
+    color: "#192342",
+  },
+  textD: {
+    fontSize: 20,
+    fontWeight: "bold",
     color: "#192342",
   },
 });
