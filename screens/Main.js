@@ -123,9 +123,7 @@ const Main = ({ navigation: { navigate } }) => {
                       alignItems: "center",
                       justifyContent: "center",
                     }}
-                    onPress={() =>
-                      navigate("내 정보 관리", { screen: "Personal" })
-                    }
+                    onPress={() => navigate("Mem")}
                   >
                     <Text style={{ color: "#FFFFFF", fontSize: 11 }}>
                       View More
@@ -211,7 +209,7 @@ const Main = ({ navigation: { navigate } }) => {
               borderRadius: 25,
               paddingHorizontal: 15,
             }}
-            onPress={() => navigate("내 정보 관리", { screen: "Car" })}
+            onPress={() => navigate("Car")}
           >
             <View style={{ flex: 1 }}>
               <Icon3
