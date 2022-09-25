@@ -63,6 +63,8 @@ const ReserveTime = ({ navigation: { navigate }, route }) => {
   }
   
   const getMaxTime = (i) => {
+    let n = 0;
+    if (i>=21) {n = 24-i; return n;}
     if (isUse(i+1)) return 1;
     else if (isUse(i+2)) return 2;
     else if (isUse(i+3)) return 3;
@@ -98,42 +100,40 @@ const ReserveTime = ({ navigation: { navigate }, route }) => {
           initTimeList[i]['isUse']=true;
         }
       });
+      setTimeList(initTimeList);setLoading(false);
     });
 
     //Assign Collection에서 가져오는 쿼리
-    firestore()
-    .collection('ASSIGN')
-    .where('parking_slot_id', '==', spotId )
-    .where('start_de', '==', now_month)
-    .get()
-    .then(querySnapshot => {
-      if (querySnapshot.empty) return;
-      else {
-        querySnapshot.forEach(async documentSnapshot => {
-          await firestore()
-          .collection('ASSIGN')
-          .doc(documentSnapshot.id)
-          .collection('ASSIGN_SCHEDULE')
-          .where('day_index', '==', now_day)
-          .get()
-          .then(querySnapshot => {
-            if (querySnapshot.empty) return;
-            else {
-              querySnapshot.forEach(documentSnapshot => {
-                let start = documentSnapshot.get("start_time");
-                let end = documentSnapshot.get("end_time");
-                for (let i=start; i<=end; i++) {
-                  initTimeList[i]['isUse']=true;
-                }
-              });
-            }
-          });
-        });
-      }
-    });
-
-    setTimeList(initTimeList);setLoading(false);
-
+    // firestore()
+    // .collection('ASSIGN')
+    // .where('parking_slot_id', '==', spotId )
+    // .where('start_de', '==', now_month)
+    // .get()
+    // .then(querySnapshot => {
+    //   if (querySnapshot.empty) return;
+    //   else {
+    //     querySnapshot.forEach(async documentSnapshot => {
+    //       await firestore()
+    //       .collection('ASSIGN')
+    //       .doc(documentSnapshot.id)
+    //       .collection('ASSIGN_SCHEDULE')
+    //       .where('day_index', '==', now_day)
+    //       .get()
+    //       .then(querySnapshot => {
+    //         if (querySnapshot.empty) return;
+    //         else {
+    //           querySnapshot.forEach(documentSnapshot => {
+    //             let start = documentSnapshot.get("start_time");
+    //             let end = documentSnapshot.get("end_time");
+    //             for (let i=start; i<=end; i++) {
+    //               initTimeList[i]['isUse']=true;
+    //             }
+    //           });
+    //         }
+    //       });
+    //     });
+    //   }
+    // });
   }
 
   if (isLoading) {
