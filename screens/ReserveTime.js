@@ -11,7 +11,8 @@ const ReserveTime = ({ navigation: { navigate }, route }) => {
   const date = route.params.date;
   const spotId = route.params.spotId;
   const now_month = date.slice(0,7)+"-01"
-  const now_day = new Date(date).getDay();
+  const d = new Date(date);
+  const now_day = (d.getDay()==0)? 7:d.getDay();
 
   const [isLoading, setLoading] = useState(true);
   const [timeList, setTimeList] = useState([]);
@@ -63,6 +64,8 @@ const ReserveTime = ({ navigation: { navigate }, route }) => {
   }
   
   const getMaxTime = (i) => {
+    let n = 0;
+    if (i>=21) {n = 24-i; return n;}
     if (isUse(i+1)) return 1;
     else if (isUse(i+2)) return 2;
     else if (isUse(i+3)) return 3;
@@ -84,6 +87,35 @@ const ReserveTime = ({ navigation: { navigate }, route }) => {
   }
 
   const setInitTimeList= async () => {
+    //Assign Collection에서 가져오는 쿼리
+    await firestore()
+    .collection('ASSIGN')
+    .where('parking_slot_id', '==', spotId )
+    .where('start_de', '==', now_month)
+    .get()
+    .then(querySnapshot => {
+      if (querySnapshot.empty) return;
+      else {
+        querySnapshot.forEach(async documentSnapshot => {
+          await firestore()
+          .collection('ASSIGN')
+          .doc(documentSnapshot.id)
+          .collection('ASSIGN_SCHEDULE')
+          .where('day_id', '==', now_day)
+          .get()
+          .then(querySnapshot => {
+            if (querySnapshot.empty) return;
+            else {
+              querySnapshot.forEach(documentSnapshot => {
+                let start = documentSnapshot.get("start_time");
+                let end = documentSnapshot.get("end_time");
+                for (let i=start; i<end; i++) {initTimeList[i]['isUse']=true;console.log("AssignTime+");}
+              });
+            }
+          });
+        });
+      }
+    });
     //Reserve Collection에서 가져오는 쿼리
     firestore()
     .collection('RESERVE')
@@ -98,42 +130,8 @@ const ReserveTime = ({ navigation: { navigate }, route }) => {
           initTimeList[i]['isUse']=true;
         }
       });
+      setTimeList(initTimeList);setLoading(false);
     });
-
-    //Assign Collection에서 가져오는 쿼리
-    firestore()
-    .collection('ASSIGN')
-    .where('parking_slot_id', '==', spotId )
-    .where('start_de', '==', now_month)
-    .get()
-    .then(querySnapshot => {
-      if (querySnapshot.empty) return;
-      else {
-        querySnapshot.forEach(async documentSnapshot => {
-          await firestore()
-          .collection('ASSIGN')
-          .doc(documentSnapshot.id)
-          .collection('ASSIGN_SCHEDULE')
-          .where('day_index', '==', now_day)
-          .get()
-          .then(querySnapshot => {
-            if (querySnapshot.empty) return;
-            else {
-              querySnapshot.forEach(documentSnapshot => {
-                let start = documentSnapshot.get("start_time");
-                let end = documentSnapshot.get("end_time");
-                for (let i=start; i<=end; i++) {
-                  initTimeList[i]['isUse']=true;
-                }
-              });
-            }
-          });
-        });
-      }
-    });
-
-    setTimeList(initTimeList);setLoading(false);
-
   }
 
   if (isLoading) {

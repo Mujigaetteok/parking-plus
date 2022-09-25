@@ -44,7 +44,7 @@ const Map = () => {
     d.getMonth() + 1 > 9 ? d.getMonth() + 1 : "0" + (d.getMonth() + 1)
   }-${d.getDate()}`;
   const now_time = d.getHours();
-  const now_day = d.getDay();
+  const now_day = (d.getDay()==0)? 7:d.getDay();
   const now_month = now_date.slice(0,7)+"-01";
 
   useEffect(() => {
@@ -61,8 +61,38 @@ const Map = () => {
   };
 
   const checkIsUse = async (mapIndex) => {
-    //Reserve Collection에서 가져오는 쿼리
-    let isUse = false;
+    let isBooked = false;
+    let isAssigned = false;
+
+    await firestore()
+    .collection('ASSIGN')
+    .where('parking_slot_id', '==', initMapStatus[mapIndex]['id'] )
+    .where('start_de', '==', now_month)
+    .get()
+    .then(async(querySnapshot) => {
+      if (querySnapshot.empty) return;
+      else {
+        querySnapshot.forEach(documentSnapshot => {
+          firestore()
+          .collection('ASSIGN')
+          .doc(documentSnapshot.id)
+          .collection('ASSIGN_SCHEDULE')
+          .where('day_id', '==', now_day)
+          .get()
+          .then(querySnapshot => {
+            if (querySnapshot.empty) return;
+            else {
+              querySnapshot.forEach(documentSnapshot => {
+                let start = documentSnapshot.get("start_time");
+                let end = documentSnapshot.get("end_time");
+                if ((now_time>=start) && (now_time<end)) {isAssigned = true; }
+              });
+            }
+          });
+        });
+      }
+    });
+
     await firestore()
     .collection('RESERVE')
     .where('parking_slot_id', '==', initMapStatus[mapIndex]['id'] )
@@ -74,42 +104,12 @@ const Map = () => {
         querySnapshot.forEach(documentSnapshot => {
           let start = documentSnapshot.get("start_time");
           let end = documentSnapshot.get("end_time");
-          if ((now_time>=start) && (now_time<end)) isUse=true;
+          if ((now_time>=start) && (now_time<end)) {isBooked = true;};
         });
       }
     });
-    
-    //Assign Collection에서 가져오는 쿼리
-    await firestore()
-    .collection('ASSIGN')
-    .where('parking_slot_id', '==', initMapStatus[mapIndex]['id'] )
-    .where('start_de', '==', now_month)
-    .get()
-    .then(querySnapshot => {
-      if (querySnapshot.empty) return;
-      else {
-        querySnapshot.forEach(async documentSnapshot => {
-          await firestore()
-          .collection('ASSIGN')
-          .doc(documentSnapshot.id)
-          .collection('ASSIGN_SCHEDULE')
-          .where('day_index', '==', now_day)
-          .get()
-          .then(querySnapshot => {
-            if (querySnapshot.empty) return;
-            else {
-              querySnapshot.forEach(documentSnapshot => {
-                let start = documentSnapshot.get("start_time");
-                let end = documentSnapshot.get("end_time");
-                if ((now_time>=start) && (now_time<end)) isUse=true;
-              });
-            }
-          });
-        });
-      }
-    });
-    console.log(mapIndex,isUse);
-    return isUse;
+
+    return (isBooked||isAssigned);
   };
 
   //전체 spot에 state 적용
@@ -159,6 +159,7 @@ const Map = () => {
   }
   return (
     <SafeAreaView>
+      <ScrollView>
       <ScrollView horizontal>
         <View style={styles.map}>{draw(0, 7)}</View>
 
@@ -181,6 +182,7 @@ const Map = () => {
         <View style={styles.map} />
 
         <View style={styles.map}>{draw(13, 20)}</View>
+      </ScrollView>
       </ScrollView>
     </SafeAreaView>
   );
