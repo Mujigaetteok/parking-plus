@@ -157,6 +157,7 @@ const ReserveMap = ({ navigation: { navigate }, route }) => {
   }
   return (
     <SafeAreaView>
+      <ScrollView>
       <ScrollView horizontal>
         <View style={styles.map}>{draw(0, 7)}</View>
 
@@ -175,6 +176,7 @@ const ReserveMap = ({ navigation: { navigate }, route }) => {
         </View>
         <View style={styles.map}></View>
         <View style={styles.map}>{draw(13, 20)}</View>
+      </ScrollView>
       </ScrollView>
     </SafeAreaView>
   );
