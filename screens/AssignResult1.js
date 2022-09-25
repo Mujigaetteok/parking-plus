@@ -91,25 +91,31 @@ const AssignResult1 = ({ navigation: { navigate } }) => {
       <View style={{ marginBottom: 20 }}>
         <Text style={styles.textB}>주차 공간</Text>
         <View style={{ height: 10 }} />
-        {assigns.map((as, id) => (
-          <TouchableOpacity
-            key={id}
-            style={styles.successLoc}
-            activeOpacity={0.5}
-            onPress={() => navigate("Day", { location: as.parking_slot_id })}
-          >
-            <View style={{ alignItems: "center", flexDirection: "row" }}>
-              <Icon
-                name="car-outline"
-                color="#677191"
-                size={20}
-                style={{ marginRight: 15 }}
-              />
-              <Text style={styles.textE}>{as.parking_slot_id}</Text>
-            </View>
-            <Text style={styles.textD}>success</Text>
-          </TouchableOpacity>
-        ))}
+        {assigns.length > 0 ? (
+          assigns.map((as, id) => (
+            <TouchableOpacity
+              key={id}
+              style={styles.successLoc}
+              activeOpacity={0.5}
+              onPress={() => navigate("Day", { location: as.parking_slot_id })}
+            >
+              <View style={{ alignItems: "center", flexDirection: "row" }}>
+                <Icon
+                  name="car-outline"
+                  color="#677191"
+                  size={20}
+                  style={{ marginRight: 15 }}
+                />
+                <Text style={styles.textE}>{as.parking_slot_id}</Text>
+              </View>
+              <Text style={styles.textD}>success</Text>
+            </TouchableOpacity>
+          ))
+        ) : (
+          <View style={{ alignItems: "center" }}>
+            <Text style={styles.textE}>배정된 공간이 없습니다</Text>
+          </View>
+        )}
       </View>
     </ScrollView>
   );
