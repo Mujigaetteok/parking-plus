@@ -37,11 +37,12 @@ const Main = ({ navigation: { navigate } }) => {
           backgroundColor: "white",
           borderRadius: 25,
           borderColor: "#92A3FD",
-          shadowColor: "#92A3FD",
+          shadowColor: "#000000",
           ...Platform.select({
             ios: {
-              shadowOffset: { width: 4, height: 4 },
-              shadowOpacity: 0.3,
+              shadowOffset: { width: 10, height: 10 },
+              shadowOpacity: 0.5,
+              shadowRadius: 16.0,
             },
             android: {
               elevation: 7,
@@ -251,11 +252,12 @@ const Main = ({ navigation: { navigate } }) => {
           flex: 5,
           backgroundColor: "white",
           borderRadius: 25,
-          shadowColor: "#EEEEEE",
+          shadowColor: "#000000",
           ...Platform.select({
             ios: {
-              shadowOffset: { width: 5, height: 5 },
-              shadowOpacity: 0.4,
+              shadowOffset: { width: 10, height: 10 },
+              shadowOpacity: 0.5,
+              shadowRadius: 16.0,
             },
             android: {
               elevation: 5,
