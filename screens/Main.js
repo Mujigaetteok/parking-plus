@@ -16,7 +16,10 @@ import firestore from "@react-native-firebase/firestore";
 const Main = ({ navigation: { navigate } }) => {
   const uid = 1;
   const memberColl = firestore().collection("MEMBER");
+  const carColl = firestore().collection("CAR");
   const [users, setUsers] = useState([]);
+  const [carN, setCarN] = useState();
+  const [car, setCar] = useState();
 
   useEffect(() => {
     memberColl.where("id", "==", uid.toString()).onSnapshot((snapshot) => {
@@ -28,28 +31,26 @@ const Main = ({ navigation: { navigate } }) => {
       setUsers(memArray);
     });
   }, []);
+
+  useEffect(() => {
+    carColl.onSnapshot((snapshot) => {
+      const carArray = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      const currentCar = carArray.filter((car) => car.member_id == uid);
+      setCarN(currentCar.length.toString());
+      if (currentCar.length != 0) {
+        setCar(currentCar[0].idnt_no.toString());
+      }
+      console.log(car);
+    });
+  }, []);
+
   return (
     <View style={styles.contain}>
       <View style={{ flex: 0.5 }} />
-      <View
-        style={{
-          flex: 5,
-          backgroundColor: "white",
-          borderRadius: 25,
-          borderColor: "#92A3FD",
-          shadowColor: "#000000",
-          ...Platform.select({
-            ios: {
-              shadowOffset: { width: 10, height: 10 },
-              shadowOpacity: 0.5,
-              shadowRadius: 16.0,
-            },
-            android: {
-              elevation: 7,
-            },
-          }),
-        }}
-      >
+      <View style={styles.top}>
         <ImageBackground
           source={require("./Image/1.png")}
           resizeMode="cover"
@@ -59,9 +60,6 @@ const Main = ({ navigation: { navigate } }) => {
           }}
           imageStyle={{
             borderRadius: 25,
-            shadowColor: "gray",
-            shadowOffset: { width: 0, height: 2 },
-            shadowOpacity: 0.2,
           }}
         >
           <View style={{ flex: 1 }}>
@@ -111,7 +109,6 @@ const Main = ({ navigation: { navigate } }) => {
                   source={require("./Image/2.png")}
                   resizeMode="cover"
                   style={{
-                    borderRadius: 25,
                     paddingHorizontal: 20,
                   }}
                   imageStyle={{
@@ -138,18 +135,7 @@ const Main = ({ navigation: { navigate } }) => {
         </ImageBackground>
       </View>
       <View style={{ flex: 1 }} />
-      <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "space-between",
-          backgroundColor: "#EEF1FF",
-          alignItems: "center",
-          paddingHorizontal: 25,
-
-          flex: 2,
-          borderRadius: 17,
-        }}
-      >
+      <View style={styles.form}>
         <Text style={{ color: "#1D1617", fontSize: 14 }}>
           3월 배정 신청까지 <Text style={{ fontWeight: "bold" }}>17일</Text>{" "}
           남았습니다!
@@ -188,30 +174,12 @@ const Main = ({ navigation: { navigate } }) => {
               style={{ flex: 1 }}
               onPress={() => navigate("주차장 지도")}
             >
-              <Text
-                style={{
-                  color: "#000000",
-                  fontSize: 24,
-                  fontWeight: "bold",
-                  paddingHorizontal: 25,
-                  paddingVertical: 23,
-                }}
-              >
-                MAP
-              </Text>
+              <Text style={styles.mapT}>MAP</Text>
             </TouchableOpacity>
           </ImageBackground>
 
           <View style={{ flex: 0.3, backgroundColor: "white" }} />
-          <TouchableOpacity
-            style={{
-              flex: 3,
-              backgroundColor: "#567DF4",
-              borderRadius: 25,
-              paddingHorizontal: 15,
-            }}
-            onPress={() => navigate("Car")}
-          >
+          <TouchableOpacity style={styles.carV} onPress={() => navigate("Car")}>
             <View style={{ flex: 1 }}>
               <Icon3
                 name="car"
@@ -221,21 +189,26 @@ const Main = ({ navigation: { navigate } }) => {
               />
             </View>
             <View style={{ flex: 1, justifyContent: "center" }}>
-              <Text
-                style={{ color: "#FFFFFF", fontSize: 18, fontWeight: "bold" }}
-              >
-                2021 Audi Q3
-              </Text>
-              <Text style={{ color: "#E2E9FD", fontSize: 16 }}>B 1234 CD</Text>
+              {carN == 0 ? (
+                <Text style={styles.carText}>차량 없음</Text>
+              ) : carN == 1 ? (
+                <Text style={styles.carText}>{car}</Text>
+              ) : (
+                <Text style={styles.carText}>
+                  {car}
+                  {" 외 "}
+                  {carN - 1}
+                </Text>
+              )}
+
+              <Text style={{ color: "#E2E9FD", fontSize: 15 }}>차량정보</Text>
             </View>
-            <View
-              style={{
-                flex: 1,
-                flexDirection: "row",
-                justifyContent: "space-between",
-              }}
-            >
-              <View />
+            <View style={styles.otherV}>
+              <View>
+                <Text style={{ color: "#FFFFFF", fontSize: 13 }}>
+                  View More
+                </Text>
+              </View>
               <Icon2
                 name="checksquare"
                 color="white"
@@ -247,41 +220,14 @@ const Main = ({ navigation: { navigate } }) => {
         </View>
       </View>
       <View style={{ flex: 1, backgroundColor: "white" }} />
-      <View
-        style={{
-          flex: 5,
-          backgroundColor: "white",
-          borderRadius: 25,
-          shadowColor: "#000000",
-          ...Platform.select({
-            ios: {
-              shadowOffset: { width: 10, height: 10 },
-              shadowOpacity: 0.5,
-              shadowRadius: 16.0,
-            },
-            android: {
-              elevation: 5,
-            },
-          }),
-          borderColor: "#EEEEEE",
-          paddingHorizontal: 25,
-          justifyContent: "space-between",
-        }}
-      >
+      <View style={styles.bottom}>
         <View style={{ flex: 1, justifyContent: "center" }}>
           <Text style={{ color: "#1D1617", fontWeight: "bold", fontSize: 16 }}>
             Other
           </Text>
         </View>
         <View style={{ flex: 1.5, justifyContent: "center" }}>
-          <View
-            style={{
-              flex: 1,
-              flexDirection: "row",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
+          <View style={styles.otherV}>
             <View style={{ flexDirection: "row" }}>
               <Icon
                 name="envelope-o"
@@ -289,18 +235,11 @@ const Main = ({ navigation: { navigate } }) => {
                 size={18}
                 style={{ marginRight: 10 }}
               />
-              <Text style={{ color: "#7B6F72", fontSize: 12 }}>공지사항</Text>
+              <Text style={styles.otherT}>공지사항</Text>
             </View>
             <Icon2 name="right" color="#7B6F72" size={15} />
           </View>
-          <View
-            style={{
-              flex: 1,
-              flexDirection: "row",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
+          <View style={styles.otherV}>
             <View style={{ flexDirection: "row" }}>
               <Icon3
                 name="shield-check-outline"
@@ -308,18 +247,11 @@ const Main = ({ navigation: { navigate } }) => {
                 size={18}
                 style={{ marginRight: 10 }}
               />
-              <Text style={{ color: "#7B6F72", fontSize: 12 }}>고객센터</Text>
+              <Text style={styles.otherT}>고객센터</Text>
             </View>
             <Icon2 name="right" color="#7B6F72" size={15} />
           </View>
-          <View
-            style={{
-              flex: 1,
-              flexDirection: "row",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
+          <View style={styles.otherV}>
             <View style={{ flexDirection: "row" }}>
               <Icon2
                 name="setting"
@@ -327,7 +259,7 @@ const Main = ({ navigation: { navigate } }) => {
                 size={18}
                 style={{ marginRight: 10 }}
               />
-              <Text style={{ color: "#7B6F72", fontSize: 12 }}>앱가이드</Text>
+              <Text style={styles.otherT}>앱가이드</Text>
             </View>
             <Icon2 name="right" color="#7B6F72" size={15} />
           </View>
@@ -345,19 +277,76 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     paddingHorizontal: 15,
   },
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
+  carText: {
+    color: "#FFFFFF",
+    fontSize: 17,
+    fontWeight: "bold",
   },
-  successLoc: {
+  top: {
+    flex: 5,
+    backgroundColor: "white",
+    borderRadius: 25,
+    borderColor: "#92A3FD",
+    shadowColor: "#000000",
+    ...Platform.select({
+      ios: {
+        shadowOffset: { width: 10, height: 10 },
+        shadowOpacity: 0.5,
+        shadowRadius: 16.0,
+      },
+      android: {
+        elevation: 7,
+      },
+    }),
+  },
+  bottom: {
+    flex: 5,
+    backgroundColor: "white",
+    borderRadius: 25,
+    shadowColor: "#000000",
+    ...Platform.select({
+      ios: {
+        shadowOffset: { width: 10, height: 10 },
+        shadowOpacity: 0.5,
+        shadowRadius: 16.0,
+      },
+      android: {
+        elevation: 5,
+      },
+    }),
+    borderColor: "#EEEEEE",
+    paddingHorizontal: 25,
+    justifyContent: "space-between",
+  },
+  form: {
     flexDirection: "row",
     justifyContent: "space-between",
-    paddingVertical: 10,
+    backgroundColor: "#EEF1FF",
+    alignItems: "center",
+    paddingHorizontal: 25,
+
+    flex: 2,
+    borderRadius: 17,
   },
-  text: {
-    fontSize: 30,
+  otherT: { color: "#7B6F72", fontSize: 12 },
+  otherV: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  mapT: {
+    color: "#000000",
+    fontSize: 24,
+    fontWeight: "bold",
+    paddingHorizontal: 25,
+    paddingVertical: 23,
+  },
+  carV: {
+    flex: 3,
+    backgroundColor: "#567DF4",
+    borderRadius: 25,
+    paddingHorizontal: 15,
   },
 });
 

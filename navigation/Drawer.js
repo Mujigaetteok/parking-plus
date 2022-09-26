@@ -12,6 +12,7 @@ import MainStack from "./MainStack";
 import Map from "../screens/Map";
 import AssignForm from "../screens/AssignForm";
 import ReserveStack from "./ReserveStack";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 function CustomDrawerContent(props) {
   return (
@@ -54,6 +55,14 @@ const Drawer = () => {
           drawerLabelStyle: {
             fontWeight: "bold",
           },
+          headerRight: () => (
+            <Icon
+              name="bell-outline"
+              color="black"
+              size={22}
+              style={{ marginHorizontal: 22 }}
+            ></Icon>
+          ),
         }}
       >
         <DrawerNav.Screen name="홈" component={MainStack} />
