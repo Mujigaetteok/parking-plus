@@ -62,9 +62,7 @@ const ReserveForm = ({ navigation: { navigate }, route }) => {
   };
 
   useEffect(() => {
-    console.log(maxTime);
     setInitItems();
-    console.log(items);
   }, []);
 
   return (
@@ -101,16 +99,10 @@ const ReserveForm = ({ navigation: { navigate }, route }) => {
             <Text style={styles.textB}>시간</Text>
             <View style={styles.successLoc}>
               <View style={{ flexDirection: "row", flex: 1 }}>
-                <View
-                  style={{ justifyContent: "center", marginRight: 40, flex: 1 }}
-                >
-                  <Text style={{ fontSize: 18, fontWeight: "bold" }}>
-                    {startTime + ":00"}
-                  </Text>
+                <View style={{marginTop:10 , marginRight:40,flex:1 }}>
+                  <Text style={{fontSize: 18, fontWeight: "bold",}}>{startTime+":00"}</Text>
                 </View>
-                <View
-                  style={{ justifyContent: "center", marginRight: 30, flex: 1 }}
-                >
+                <View style={{marginTop:10 , marginRight:30, flex:1 }}>
                   <Text style={{ fontSize: 18 }}> 부터 </Text>
                 </View>
                 <View style={{ flex: 2 }}>
@@ -144,10 +136,11 @@ const ReserveForm = ({ navigation: { navigate }, route }) => {
                       height: 100,
                     }}
                   />
-                </View>
-                <View style={{ justifyContent: "center", marginRight: 10 }}>
+                  </View>
+                <View style={{ marginTop:10 ,marginRight:10}}>
                   <Text style={{ fontSize: 18 }}> 시간 </Text>
                 </View>
+                <View style={{ height: 100}} />
               </View>
             </View>
           </View>
@@ -161,17 +154,14 @@ const ReserveForm = ({ navigation: { navigate }, route }) => {
             onPress={() => {
               navigate("Success", { text: "주차 예약이" });
               firestore()
-                .collection("RESERVE")
-                .add({
-                  member_id: "asdf",
-                  cncl_status: false,
-                  start_time: timeValue,
-                  end_time: timeValue + value,
-                  parking_slot_num: spotId,
-                  use_de: date,
-                });
-            }}
-          >
+              .collection('RESERVE')
+              .add({
+                member_id:"asdf",
+                cncl_status: false,
+                start_time: timeValue,
+                end_time: timeValue+ value,
+                parking_slot_id: spotId,
+                use_de: date})}}>
             <Text style={styles.buttonTitle}>시간 선택 완료</Text>
           </TouchableOpacity>
         </View>
@@ -206,7 +196,6 @@ const styles = StyleSheet.create({
   },
   successLoc: {
     flexDirection: "row",
-    backgroundColor: "#F3F6FF",
     borderRadius: 20,
     paddingLeft: 20,
     marginBottom: 10,

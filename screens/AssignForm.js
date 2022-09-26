@@ -155,50 +155,57 @@ const AssignForm = ({ navigation: { navigate } }) => {
           </View>
           <View style={{ marginBottom: 20 }}>
             <Text style={styles.textB}>차량 개수</Text>
-            <View style={styles.successLoc}>
-              <Icon
-                name="car-outline"
-                color="#677191"
-                size={20}
-                style={{ marginRight: 15, marginTop: 5 }}
-              />
-              <View style={{ flexDirection: "row", flex: 1 }}>
-                <View style={{ flex: 1 }}>
-                  <DropDownPicker
-                    open={open}
-                    value={value}
-                    items={items}
-                    setOpen={setOpen}
-                    setValue={setValue}
-                    setItems={setItems}
-                    maxHeight={90}
-                    placeholder="1"
-                    placeholderStyle={{
-                      color: "#677191",
-                    }}
-                    style={{
-                      backgroundColor: "#F3F6FF",
-                      borderRadius: 21,
-                      borderColor: "#F3F6FF",
-                      paddingLeft: 20,
-                    }}
-                    textStyle={{
-                      fontSize: 18,
-                      fontWeight: "bold",
-                    }}
-                    dropDownContainerStyle={{
-                      backgroundColor: "#F3F6FF",
-                      borderColor: "#F3F6FF",
-                      borderRadius: 21,
-                      paddingLeft: 10,
-                    }}
-                  />
-                </View>
-                <View style={{ justifyContent: "center", flex: 1.5 }}>
-                  <Text style={styles.textE}>{"   "}대</Text>
+
+            {items.length > 0 ? (
+              <View style={styles.successLoc}>
+                <Icon
+                  name="car-outline"
+                  color="#677191"
+                  size={20}
+                  style={{ marginRight: 15, marginTop: 5 }}
+                />
+                <View style={{ flexDirection: "row", flex: 1 }}>
+                  <View style={{ flex: 1 }}>
+                    <DropDownPicker
+                      open={open}
+                      value={value}
+                      items={items}
+                      setOpen={setOpen}
+                      setValue={setValue}
+                      setItems={setItems}
+                      maxHeight={90}
+                      placeholder="1"
+                      placeholderStyle={{
+                        color: "#677191",
+                      }}
+                      style={{
+                        backgroundColor: "#F3F6FF",
+                        borderRadius: 21,
+                        borderColor: "#F3F6FF",
+                        paddingLeft: 20,
+                      }}
+                      textStyle={{
+                        fontSize: 18,
+                        fontWeight: "bold",
+                      }}
+                      dropDownContainerStyle={{
+                        backgroundColor: "#F3F6FF",
+                        borderColor: "#F3F6FF",
+                        borderRadius: 21,
+                        paddingLeft: 10,
+                      }}
+                    />
+                  </View>
+                  <View style={{ justifyContent: "center", flex: 1.5 }}>
+                    <Text style={styles.textE}>{"   "}대</Text>
+                  </View>
                 </View>
               </View>
-            </View>
+            ) : (
+              <View style={{ alignItems: "center" }}>
+                <Text style={styles.textD}>배정 신청할 차량이 없습니다</Text>
+              </View>
+            )}
           </View>
           <View style={{ height: 100 }} />
         </ScrollView>
