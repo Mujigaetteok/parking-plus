@@ -17,7 +17,7 @@ const LoginP = ({ navigation: { navigate } }) => {
   async function confirmCode() {
     try {
       await confirm.confirm(code);
-      navigate("Register2");
+      navigate("RegisterStack", { screen: "Register2" });
     } catch (error) {
       console.log("Invalid code.");
     }
