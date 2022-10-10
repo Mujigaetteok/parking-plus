@@ -95,7 +95,7 @@ function Join({ navigation: { navigate } }) {
               returnKeyType="next"
               style={styles.textForm}
               onChangeText={(text) => setEmail(text)}
-              onSubmitEditing={onSubmitEditing}
+              onSubmitEditing={onSubmitEmailEditing}
             >
               {/* <Icon2
                 name="smartphone"
