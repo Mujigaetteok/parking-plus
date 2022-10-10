@@ -1,10 +1,13 @@
 import React, { useRef, useState } from "react";
+import auth from "@react-native-firebase/auth";
 import {
   View,
   Text,
   TextInput,
   TouchableOpacity,
   StyleSheet,
+  Alert,
+  ActivityIndicator,
 } from "react-native";
 import {
   widthPercentageToDP as wp,
@@ -18,9 +21,44 @@ import Icon4 from "react-native-vector-icons/Entypo";
 import Icon5 from "react-native-vector-icons/FontAwesome5";
 import { ScrollView } from "react-native-gesture-handler";
 
-function Register4({ navigation: { navigate } }) {
+function Join({ navigation: { navigate } }) {
   const bottomSheet = useRef();
-
+  const emailInput = useRef();
+  const passwordInput = useRef();
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  // 이름 입력 후 enter 누르면 Email 칸으로 넘어가게
+  const onSubmitNameEditing = () => {
+    emailInput.current.focus();
+  };
+  // Email 입력 후 enter 누르면 Password 칸으로 넘어가게
+  const onSubmitEmailEditing = () => {
+    passwordInput.current.focus();
+  };
+  const onSubmitPasswordEditing = async () => {
+    setLoading(true);
+    if (email === "" || password === "") {
+      return Alert.alert("Fill in the form.");
+    }
+    if (loading) {
+      return;
+    }
+    try {
+      const userCredential = await auth().createUserWithEmailAndPassword(
+        email,
+        password
+      );
+      console.log(userCredential);
+    } catch (e) {
+      switch (e.code) {
+        case "auth/weak-password": {
+          Alert.alert("더 강력한 비밀번호를 작성하세요!");
+        }
+      }
+    }
+  };
   return (
     <View style={styles.container}>
       <View style={{ flex: 9 }}>
@@ -31,40 +69,66 @@ function Register4({ navigation: { navigate } }) {
           </View>
           <View style={styles.formArea}>
             <Text style={styles.label}>이름</Text>
-            <TextInput style={styles.textForm}>
-              <Icon
+            <TextInput
+              placeholder="Name"
+              value={name}
+              returnKeyType="next"
+              style={styles.textForm}
+              onChangeText={(text) => setName(text)}
+              onSubmitEditing={onSubmitNameEditing}
+            >
+              {/* <Icon
                 name="person"
                 color="#677191"
                 size={20}
                 style={{ marginRight: 15 }}
-              />
+              /> */}
             </TextInput>
             <Text style={styles.label}>ID</Text>
-            <TextInput style={styles.textForm}>
-              <Icon2
+            <TextInput
+              ref={emailInput}
+              placeholder="Email"
+              autoCapitalize="none"
+              autoCorrect={false}
+              keyboardType="email-address"
+              value={email}
+              returnKeyType="next"
+              style={styles.textForm}
+              onChangeText={(text) => setEmail(text)}
+              onSubmitEditing={onSubmitEditing}
+            >
+              {/* <Icon2
                 name="smartphone"
                 color="#677191"
                 size={20}
                 style={{ marginRight: 15 }}
-              />
+              /> */}
             </TextInput>
             <Text style={styles.label}>Password</Text>
-            <TextInput style={styles.textForm}>
-              <Icon3
+            <TextInput
+              ref={passwordInput}
+              placeholder="6자리 이상 입력해주세요"
+              secureTextEntry
+              value={password}
+              returnKeyType="done"
+              style={styles.textForm}
+              onChangeText={(text) => setPassword(text)}
+            >
+              {/* <Icon3
                 name="lock"
                 color="#677191"
                 size={20}
                 style={{ marginRight: 15 }}
-              />
+              /> */}
             </TextInput>
             <Text style={styles.label}>아파트</Text>
             <Text style={styles.textForm}>
-              <Icon4
+              {/* <Icon4
                 name="magnifying-glass"
                 color="#677191"
                 size={20}
                 style={{ marginRight: 15 }}
-              />
+              /> */}
               <TouchableOpacity onPress={() => bottomSheet.current.show()}>
                 <Text style={styles.textD}>Search your apartment</Text>
               </TouchableOpacity>
@@ -144,9 +208,13 @@ function Register4({ navigation: { navigate } }) {
         <View style={styles.buttonArea}>
           <TouchableOpacity
             style={styles.button}
-            onPress={() => navigate("Login")}
+            onPress={onSubmitPasswordEditing}
           >
-            <Text style={styles.buttonTitle}>가입</Text>
+            {loading ? (
+              <ActivityIndicator color="white" />
+            ) : (
+              <Text style={styles.buttonTitle}>가입</Text>
+            )}
           </TouchableOpacity>
         </View>
       </View>
@@ -249,4 +317,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Register4;
+export default Join;

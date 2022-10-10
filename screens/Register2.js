@@ -31,7 +31,7 @@ function Register2({ navigation: { navigate } }) {
         <View style={styles.buttonArea}>
           <TouchableOpacity
             style={styles.button}
-            onPress={() => navigate("Register4")}
+            onPress={() => navigate("Join")}
           >
             <Text style={styles.buttonTitle}>Verify</Text>
           </TouchableOpacity>
