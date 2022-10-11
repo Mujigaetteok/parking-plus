@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useRef, useState } from "react";
+import auth from "@react-native-firebase/auth";
 import {
   View,
   Text,
   TextInput,
   TouchableOpacity,
   StyleSheet,
+  Alert,
 } from "react-native";
 import {
   widthPercentageToDP as wp,
@@ -13,6 +15,35 @@ import {
 import Icon from "react-native-vector-icons/Feather";
 
 function Login({ navigation: { navigate } }) {
+  const passwordInput = useRef();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  // Email 입력 후 enter 누르면 Password 칸으로 넘어가게
+  const onSubmitEmailEditing = () => {
+    passwordInput.current.focus();
+  };
+  const onSubmitPasswordEditing = async () => {
+    if (email === "" || password === "") {
+      return Alert.alert("Fill in the form.");
+    }
+    try {
+      const userCredential = await auth().signInWithEmailAndPassword(
+        email,
+        password
+      );
+      console.log(userCredential);
+    } catch (e) {
+      switch (e.code) {
+        case "auth/user-not-found": {
+          Alert.alert("찾을 수 없는 이메일이네요 :(");
+        }
+        case "auth/wrong-password": {
+          Alert.alert("비밀번호를 다시 입력하세요!");
+        }
+      }
+    }
+  };
+
   return (
     <View style={styles.container}>
       <View style={{ flex: 9 }}>
@@ -22,27 +53,43 @@ function Login({ navigation: { navigate } }) {
         </View>
         <View style={styles.formArea}>
           <Text style={styles.label}>ID</Text>
-          <TextInput style={styles.textForm}>
-            <Icon
+          <TextInput
+            placeholder="Email"
+            autoCapitalize="none"
+            autoCorrect={false}
+            keyboardType="email-address"
+            value={email}
+            returnKeyType="next"
+            style={styles.textForm}
+            onChangeText={(text) => setEmail(text)}
+            onSubmitEditing={onSubmitEmailEditing}
+          >
+            {/* <Icon
               name="smartphone"
               color="#677191"
               size={20}
               style={{ marginRight: 15 }}
-            />
+            /> */}
           </TextInput>
           <Text style={styles.label}>Password</Text>
-          <TextInput style={styles.textForm}>
-            <Icon
+          <TextInput
+            ref={passwordInput}
+            placeholder="6자리 이상 입력해주세요"
+            secureTextEntry
+            value={password}
+            returnKeyType="done"
+            style={styles.textForm}
+            onChangeText={(text) => setPassword(text)}
+          >
+            {/* <Icon
               name="lock"
               color="#677191"
               size={20}
               style={{ marginRight: 15 }}
-            />
+            /> */}
           </TextInput>
         </View>
-        <TouchableOpacity
-          onPress={() => navigate("RegisterStack", { screen: "Register1" })}
-        >
+        <TouchableOpacity onPress={() => navigate("Join")}>
           <Text style={styles.textB}>계정이 없으신가요?</Text>
         </TouchableOpacity>
       </View>
@@ -50,7 +97,8 @@ function Login({ navigation: { navigate } }) {
         <View style={styles.buttonArea}>
           <TouchableOpacity
             style={styles.button}
-            onPress={() => navigate("Root")}
+            // onPress={() => navigate("Root")}
+            onPress={onSubmitPasswordEditing}
           >
             <Text style={styles.buttonTitle}>Login</Text>
           </TouchableOpacity>
