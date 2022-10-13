@@ -1,14 +1,25 @@
 import React, { useEffect, useState } from "react";
-import { Text, StyleSheet, View, ScrollView, Button } from "react-native";
+import {
+  Text,
+  StyleSheet,
+  View,
+  ScrollView,
+  TouchableOpacity,
+  ImageBackground,
+} from "react-native";
 import firestore from "@react-native-firebase/firestore";
+import Icon from "react-native-vector-icons/AntDesign";
+import { useIsFocused } from "@react-navigation/native";
 
-const InfoAssign = ({ navigation }) => {
+const InfoAssign = ({ navigation: { navigate } }) => {
   const uid = 1;
   const assignColl = firestore().collection("ASSIGN");
-  const mon = new Date().getMonth() + 2;
+  const mon = new Date().getMonth() + 1;
   const year = new Date().getFullYear();
   const form = year + "-" + (mon < 10 ? "0" + mon : mon) + "-" + "01";
   const [assigns, setAssigns] = useState([]);
+  const [assignBe, setAssignBe] = useState([]);
+  const isFocused = useIsFocused();
 
   useEffect(() => {
     setAssigns([]);
@@ -17,176 +28,198 @@ const InfoAssign = ({ navigation }) => {
       .where("start_de", "==", form)
       .where("cncl_status", "==", false);
     var ass = [];
-    rows.onSnapshot((snapshot) => {
-      snapshot.docs.map((doc) =>
-        assignColl
+    const rc = rows.onSnapshot((snapshot) => {
+      const assc = snapshot.docs.map((doc) => {
+        const asc = assignColl
           .doc(doc.id)
           .collection("ASSIGN_SCHEDULE")
           .onSnapshot((snap) => {
             const assign = snap.docs.map((d) => ({
               id: d.id,
+              did: doc.id,
               slot: doc.data().parking_slot_id,
+              start_de: doc.data().start_de,
               day_id: d.data().day_id,
               use_day: d.data().use_day,
               start_time: d.data().start_time,
               end_time: d.data().end_time,
             }));
-            assign.sort((a, b) => a.start_time - b.start_time);
 
-            //
-            var i = 0;
-            var ar = []; //start_time slice위치
-            for (i = 0; i < assign.length - 1; i++) {
-              if (assign[i].start_time != assign[i + 1].start_time) {
-                ar.push(i + 1);
-              }
-            }
-            var arr = []; // start_time으로 slice
-            var slic = [...assign];
-            if (ar.length >= 1) {
-              for (var j = 0; j < ar.length; j++) {
-                if (j == ar.length - 1) {
-                  if (slic.slice(0, ar[j] - ar[j - 1]).length != 0) {
-                    arr.push(slic.slice(0, ar[j] - ar[j - 1]));
-                  }
+            assign.sort((a, b) => a.day_id - b.day_id);
 
-                  slic = slic.slice(ar[j] - ar[j - 1], slic.length);
-                  if (slic.length != 0) {
-                    arr.push(slic);
-                  }
-                } else if (j == 0) {
-                  if (slic.slice(0, ar[j]).length != 0) {
-                    arr.push(slic.slice(0, ar[j]));
-                  }
-
-                  slic = slic.slice(ar[j], slic.length);
-                } else {
-                  if (slic.slice(0, ar[j] - ar[j - 1]).length != 0) {
-                    arr.push(slic.slice(0, ar[j] - ar[j - 1]));
-                  }
-
-                  slic = slic.slice(ar[j] - ar[j - 1], slic.length);
-                }
-              }
-            } else {
-              arr.push(slic);
-            }
-
-            for (var j = 0; j < arr.length; j++) {
-              arr[j].sort((a, b) => a.end_time - b.end_time);
-            }
-            var endSlice = []; // end_time 으로 slice
-            for (var j = 0; j < arr.length; j++) {
-              var ind = []; // end_time slice 위치
-              var spli = [];
-              for (var p = 0; p < arr[j].length - 1; p++) {
-                if (arr[j][p].end_time != arr[j][p + 1].end_time) {
-                  ind.push(p + 1);
-                }
-              }
-              spli = arr[j];
-              if (ind.length >= 1) {
-                for (var p = 0; p < arr[j].length; p++) {
-                  if (p == arr[j].length - 1) {
-                    const b = spli.slice(0, ind[p] - ind[p - 1]);
-                    if (b.length != 0) endSlice.push(b);
-                    spli = spli.slice(ind[p] - ind[p - 1], spli.length);
-                    if (spli.length != 0) {
-                      endSlice.push(spli);
-                    }
-                  } else if (p == 0) {
-                    const a = spli.slice(0, ind[p]);
-                    if (a.length != 0) endSlice.push(a);
-                    spli = spli.slice(ind[p], spli.length);
-                  } else {
-                    const c = spli.slice(0, ind[p] - ind[p - 1]);
-                    if (c.length != 0) endSlice.push(c);
-                    spli = spli.slice(ind[p] - ind[p - 1], spli.length);
-                  }
-                }
-              } else {
-                endSlice.push(spli);
-              }
-            }
-
-            var resul = [];
-            for (var k = 0; k < endSlice.length; k++) {
-              var useD = [];
-              endSlice[k].sort((a, b) => a.day_id - b.day_id);
-
-              for (var h = 0; h < endSlice[k].length; h++) {
-                useD.push(endSlice[k][h].use_day);
-              }
-
-              const day = useD.join(", ");
-
-              day != ""
-                ? resul.push({
-                    slot: endSlice[k][0].slot,
-                    use_day: day,
-                    start_time: endSlice[k][0].start_time,
-                    end_time: endSlice[k][0].end_time,
-                  })
-                : null;
-            }
-
-            if (resul.length != 0) {
-              ass.push(resul);
+            if (assign.length > 0) {
+              ass.push(assign);
             }
 
             setAssigns(JSON.parse(JSON.stringify(ass)));
-          })
-      );
-    });
-  }, []);
+          });
 
-  function Print({ p }) {
+        return () => {
+          asc();
+        };
+      });
+      return () => {
+        assc();
+      };
+    });
+
+    return () => {
+      rc();
+    };
+  }, [isFocused]);
+
+  useEffect(() => {
+    setAssignBe([]);
+    const rows = assignColl
+      .where("member_id", "==", uid.toString())
+      .where("cncl_status", "==", false);
+    var assn = [];
+    const rc = rows.onSnapshot((snapshot) => {
+      const assc = snapshot.docs.map((doc) => {
+        const asc = assignColl
+          .doc(doc.id)
+          .collection("ASSIGN_SCHEDULE")
+          .onSnapshot((snap) => {
+            const assign = snap.docs.map((d) => ({
+              id: d.id,
+              did: doc.id,
+              slot: doc.data().parking_slot_id,
+              start_de: doc.data().start_de,
+              day_id: d.data().day_id,
+              use_day: d.data().use_day,
+              start_time: d.data().start_time,
+              end_time: d.data().end_time,
+            }));
+
+            assign.sort((a, b) => a.day_id - b.day_id);
+            if (
+              assign.length > 0 &&
+              new Date(doc.data().start_de) < new Date(form)
+            ) {
+              assn.push(assign);
+            }
+            assn.sort(
+              (a, b) => new Date(b[0].start_de) - new Date(a[0].start_de)
+            );
+
+            setAssignBe(JSON.parse(JSON.stringify(assn)));
+          });
+        return () => {
+          asc();
+        };
+      });
+      return () => {
+        assc();
+      };
+    });
+    return () => {
+      rc();
+    };
+  }, [isFocused]);
+
+  function PrintWeek({ p }) {
+    var ar = [];
+    for (var i = 0; i < p.length; i++) {
+      ar.push(p[i].use_day);
+    }
+    const we = ar.join(", ");
     return (
       <View>
-        <View style={{ paddingBottom: 20 }}>
-          <Text style={styles.textC}>
-            {"Day    :  "}
-            {p.use_day}
-          </Text>
-        </View>
-        <Text style={styles.textC}>
-          {"Time   :  "}
-          {p.start_time}
-          {":00"}
-          {" ~ "}
-          {p.end_time}
-          {":00"}
+        <Text style={{ color: "#7B6F72", fontSize: 13, marginTop: 4 }}>
+          {we}
         </Text>
       </View>
     );
   }
 
-  const arra = (d) => {
-    var len = [];
-    for (var g = 0; g < d; g++) {
-      len.push(g);
-    }
-    return len;
-  };
+  function YearPrint({ day }) {
+    const d = day.split("-");
+    return (
+      <View>
+        <Text
+          style={{
+            fontSize: 12,
+            color: "#7B6F72",
+          }}
+        >
+          {d[0]}
+        </Text>
+      </View>
+    );
+  }
+
+  function MonthPrint({ day }) {
+    const d = day.split("-");
+    return (
+      <View>
+        <Text
+          style={{
+            fontSize: 15,
+            color: "#7B6F72",
+            fontWeight: "bold",
+          }}
+        >
+          {d[1]}
+        </Text>
+      </View>
+    );
+  }
 
   return (
     <ScrollView style={styles.contain}>
       <View style={styles.top}>
         <Text style={styles.textA}>배정 정보</Text>
       </View>
+      <Text style={styles.textB}>현재 배정내역</Text>
       {assigns.length > 0 ? (
         assigns.map((as, id) => (
           <View key={id}>
-            <Text style={styles.textB}>
-              {"배정구역 "}
-              {as[0].slot}
-            </Text>
-            <View style={{ marginBottom: 30 }}>
-              {arra(as.length).map((val, idn) => (
-                <View style={styles.info} key={idn}>
-                  <Print key={idn} p={as[val]} />
+            <View style={styles.infos}>
+              <View style={{ flexDirection: "row" }}>
+                <ImageBackground
+                  source={require("./Image/6.png")}
+                  resizeMode="cover"
+                  imageStyle={{ borderRadius: 13 }}
+                  style={{
+                    height: 60,
+                    width: 61,
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <YearPrint day={as[0].start_de} />
+                  <MonthPrint day={as[0].start_de} />
+                </ImageBackground>
+                <View
+                  style={{
+                    justifyContent: "center",
+                    marginLeft: 15,
+                  }}
+                >
+                  <Text
+                    style={{
+                      color: "#1D1617",
+                      fontSize: 15,
+                    }}
+                  >
+                    {as[0].slot}
+                  </Text>
+                  <PrintWeek p={as} />
                 </View>
-              ))}
+              </View>
+              <TouchableOpacity
+                onPress={() =>
+                  navigate("Assignment2", {
+                    slot: as[0].slot,
+                    did: as[0].did,
+                    year: as[0].start_de.split("-")[0],
+                    monf: as[0].start_de.split("-")[1],
+                    status: true,
+                  })
+                }
+              >
+                <Icon name="rightcircleo" color="#ADA4A5" size={24} />
+              </TouchableOpacity>
             </View>
           </View>
         ))
@@ -195,14 +228,68 @@ const InfoAssign = ({ navigation }) => {
           <Text style={styles.textD}>배정 정보가 없습니다</Text>
         </View>
       )}
+      <View style={{ height: 35 }} />
+      <Text style={styles.textB}>과거 배정내역</Text>
+      {assignBe.length > 0 ? (
+        assignBe.map((as, id) => (
+          <View key={id}>
+            <View style={styles.info}>
+              <View style={{ flexDirection: "row" }}>
+                <View
+                  style={{
+                    backgroundColor: "#F5F8F8",
+                    height: 60,
+                    width: 61,
+                    justifyContent: "center",
+                    alignItems: "center",
+                    borderRadius: 13,
+                  }}
+                >
+                  <YearPrint day={as[0].start_de} />
+                  <MonthPrint day={as[0].start_de} />
+                </View>
+                <View
+                  style={{
+                    justifyContent: "center",
+                    marginLeft: 15,
+                  }}
+                >
+                  <Text style={{ color: "#1D1617", fontSize: 15 }}>
+                    {as[0].slot}
+                  </Text>
+                  <PrintWeek p={as} />
+                </View>
+              </View>
+              <TouchableOpacity
+                onPress={() =>
+                  navigate("Assignment2", {
+                    slot: as[0].slot,
+                    did: as[0].did,
+                    year: as[0].start_de.split("-")[0],
+                    monf: as[0].start_de.split("-")[1],
+                    status: false,
+                  })
+                }
+              >
+                <Icon name="rightcircleo" color="#ADA4A5" size={24} />
+              </TouchableOpacity>
+            </View>
+          </View>
+        ))
+      ) : (
+        <View style={{ justifyContent: "center", alignItems: "center" }}>
+          <Text style={styles.textD}>과거 배정 정보가 없습니다</Text>
+        </View>
+      )}
     </ScrollView>
   );
 };
 const styles = StyleSheet.create({
   top: {
     height: 100,
-    paddingLeft: 30,
     justifyContent: "center",
+    marginHorizontal: 10,
+    marginBottom: 10,
   },
   textA: {
     fontSize: 24,
@@ -212,29 +299,56 @@ const styles = StyleSheet.create({
   contain: {
     flex: 1,
     backgroundColor: "white",
+    paddingHorizontal: 20,
   },
   info: {
-    backgroundColor: "#F3F6FF",
-    paddingVertical: 15,
-    paddingLeft: 30,
+    height: 63,
+    justifyContent: "center",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingHorizontal: 15,
+    marginHorizontal: 10,
     marginBottom: 20,
   },
   textB: {
-    fontSize: 20,
-    paddingLeft: 30,
+    fontSize: 16,
     fontWeight: "bold",
-    marginBottom: 10,
+    marginBottom: 25,
+    marginHorizontal: 10,
     color: "#192342",
   },
   textC: {
-    fontWeight: "bold",
-    fontSize: 20,
-    color: "#192342",
+    fontSize: 15,
+    color: "#7B6F72",
   },
   textD: {
     fontSize: 20,
     fontWeight: "bold",
     color: "#192342",
+  },
+  infos: {
+    height: 93,
+    justifyContent: "center",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingHorizontal: 13,
+    marginHorizontal: 10,
+    marginBottom: 20,
+    backgroundColor: "white",
+    borderRadius: 25,
+    shadowColor: "#EDEDED",
+    ...Platform.select({
+      ios: {
+        shadowOffset: { width: 10, height: 10 },
+        shadowOpacity: 0.5,
+        shadowRadius: 16.0,
+      },
+      android: {
+        elevation: 2,
+      },
+    }),
   },
 });
 export default InfoAssign;

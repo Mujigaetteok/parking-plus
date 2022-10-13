@@ -26,7 +26,7 @@ const InfoMember = ({ navigation: { navigate } }) => {
       <View style={styles.top}>
         <Text style={styles.textA}>개인 정보</Text>
       </View>
-      <View style={{ marginBottom: 20 }}>
+      <View>
         <Text style={styles.textB}>이름</Text>
         <View style={styles.info}>
           <Icon
@@ -42,7 +42,7 @@ const InfoMember = ({ navigation: { navigate } }) => {
           ))}
         </View>
       </View>
-      <View style={{ marginBottom: 20 }}>
+      <View>
         <Text style={styles.textB}>ID</Text>
         <View style={styles.info}>
           <Icon2
@@ -58,7 +58,7 @@ const InfoMember = ({ navigation: { navigate } }) => {
           ))}
         </View>
       </View>
-      <View style={{ marginBottom: 20 }}>
+      <View>
         <Text style={styles.textB}>아파트</Text>
         <View style={styles.info}>
           <Icon3
@@ -74,7 +74,7 @@ const InfoMember = ({ navigation: { navigate } }) => {
           ))}
         </View>
       </View>
-      <View style={{ marginBottom: 20 }}>
+      <View>
         <Text style={styles.textB}>주소</Text>
         <View>
           <View
@@ -124,10 +124,12 @@ const styles = StyleSheet.create({
   },
   info: {
     backgroundColor: "#F3F6FF",
-    paddingVertical: 10,
+    alignItems: "center",
     paddingHorizontal: 20,
-    borderRadius: 20,
+    borderRadius: 25,
     flexDirection: "row",
+    height: 50,
+    marginBottom: 20,
   },
   adressInfo: {
     backgroundColor: "#F3F6FF",
