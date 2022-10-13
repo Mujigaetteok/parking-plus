@@ -12,7 +12,7 @@ import firestore from "@react-native-firebase/firestore";
 import Icon from "react-native-vector-icons/Ionicons";
 
 const InfoReserve = ({ navigation: { navigate } }) => {
-  const uid = "asdf";
+  const uid = "1";
   const reserveColl = firestore().collection("RESERVE");
   const [reser, setReser] = useState([]);
   const d = new Date();
