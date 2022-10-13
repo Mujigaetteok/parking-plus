@@ -108,7 +108,9 @@ const AssignResult1 = ({ navigation: { navigate } }) => {
                 />
                 <Text style={styles.textE}>{as.parking_slot_id}</Text>
               </View>
-              <Text style={styles.textD}>success</Text>
+              <View style={styles.textD}>
+                <Text style={{ fontSize: 14, color: "white" }}>Success</Text>
+              </View>
             </TouchableOpacity>
           ))
         ) : (
@@ -162,18 +164,18 @@ const styles = StyleSheet.create({
   successLoc: {
     flexDirection: "row",
     backgroundColor: "#F3F6FF",
-    borderRadius: 20,
+    borderRadius: 25,
     paddingLeft: 20,
     justifyContent: "space-between",
     marginBottom: 10,
+    height: 50,
   },
   textD: {
-    fontSize: 14,
-    color: "white",
     backgroundColor: "#AAF54B",
-    paddingVertical: 10,
-    paddingHorizontal: 10,
+    paddingHorizontal: 17,
     borderRadius: 25,
+    alignItems: "center",
+    justifyContent: "center",
   },
   textE: {
     fontWeight: "bold",

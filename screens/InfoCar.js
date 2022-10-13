@@ -6,6 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
   TextInput,
+  Alert,
 } from "react-native";
 import BottomSheet from "react-native-gesture-bottom-sheet";
 import Icon from "react-native-vector-icons/Ionicons";
@@ -19,23 +20,58 @@ const InfoCar = ({ navigation: { navigate } }) => {
   const [car, setCar] = useState("");
 
   useEffect(() => {
-    carColl.onSnapshot((snapshot) => {
+    const carc = carColl.onSnapshot((snapshot) => {
       const carArray = snapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
       }));
       const currentCar = carArray.filter((car) => car.member_id == uid);
       setCars(currentCar);
+      return () => {
+        carArray();
+      };
     });
+    return () => {
+      carc();
+    };
   }, []);
+
+  const delAlert = (id, alertForm) =>
+    Alert.alert(
+      alertForm,
+      "차량을 삭제하시겠습니까?",
+      [
+        {
+          text: "취소",
+          style: "default",
+        },
+        {
+          text: "삭제",
+          style: "destructive",
+          onPress: () => del(id),
+        },
+      ],
+      { cancelable: false }
+    );
+
+  const del = async (id) => {
+    try {
+      await carColl.doc(id).delete();
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
 
   const addCar = async () => {
     try {
-      await carColl.add({
+      const carcc = await carColl.add({
         member_id: uid,
         idnt_no: car,
       });
       setCar("");
+      return () => {
+        carcc();
+      };
     } catch (error) {
       console.log(error.message);
     }
@@ -91,14 +127,24 @@ const InfoCar = ({ navigation: { navigate } }) => {
               <Text style={styles.textB}>차량 번호</Text>
 
               {cars.map((car, id) => (
-                <View style={styles.info} key={id}>
-                  <Icon
-                    name="car-outline"
-                    color="#677191"
-                    size={20}
-                    style={{ marginRight: 15 }}
-                  />
-                  <Text style={styles.textC}>{car.idnt_no}</Text>
+                <View
+                  style={{ justifyContent: "space-between", ...styles.info }}
+                  key={id}
+                >
+                  <View style={{ flexDirection: "row" }}>
+                    <Icon
+                      name="car-outline"
+                      color="#677191"
+                      size={20}
+                      style={{ marginRight: 15 }}
+                    />
+                    <Text style={styles.textC}>{car.idnt_no}</Text>
+                  </View>
+                  <TouchableOpacity
+                    onPress={() => delAlert(cars[id].id, car.idnt_no)}
+                  >
+                    <Icon name="md-close-outline" color="#7B6F72" size={22} />
+                  </TouchableOpacity>
                 </View>
               ))}
             </View>
@@ -152,11 +198,12 @@ const styles = StyleSheet.create({
   },
   info: {
     backgroundColor: "#F3F6FF",
-    paddingVertical: 10,
+
     paddingHorizontal: 20,
-    borderRadius: 20,
+    borderRadius: 25,
     alignItems: "center",
     flexDirection: "row",
+    height: 50,
     marginBottom: 15,
   },
   adressInfo: {
@@ -168,7 +215,7 @@ const styles = StyleSheet.create({
   textB: {
     fontSize: 14,
     fontWeight: "bold",
-    paddingBottom: 10,
+    paddingBottom: 15,
     color: "#192342",
   },
   textC: {

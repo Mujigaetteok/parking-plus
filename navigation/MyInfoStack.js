@@ -5,6 +5,7 @@ import InfoAssign from "../screens/InfoAssign";
 import InfoReserve from "../screens/InfoReserve";
 import InfoMember from "../screens/InfoMember";
 import InfoCar from "../screens/InfoCar";
+import InfoAssign2 from "../screens/InfoAssign2";
 
 const StackNav = createNativeStackNavigator();
 
@@ -16,6 +17,7 @@ const MyInfoStack = () => {
     >
       <StackNav.Screen name="InfoMain" component={InfoHome} />
       <StackNav.Screen name="Assignment" component={InfoAssign} />
+      <StackNav.Screen name="Assignment2" component={InfoAssign2} />
       <StackNav.Screen name="Reservation" component={InfoReserve} />
       <StackNav.Screen name="Car" component={InfoCar} />
       <StackNav.Screen name="Personal" component={InfoMember} />

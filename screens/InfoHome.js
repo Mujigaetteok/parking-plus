@@ -1,5 +1,8 @@
 import React from "react";
 import { Text, StyleSheet, View, TouchableOpacity } from "react-native";
+import Icon from "react-native-vector-icons/AntDesign";
+import Icon2 from "react-native-vector-icons/MaterialCommunityIcons";
+import Icon3 from "react-native-vector-icons/Ionicons";
 
 const InfoHome = ({ navigation: { navigate } }) => {
   return (
@@ -12,30 +15,60 @@ const InfoHome = ({ navigation: { navigate } }) => {
         activeOpacity={0.8}
         onPress={() => navigate("Assignment")}
       >
-        <Text style={styles.textA}>배정 정보</Text>
+        <View style={{ flexDirection: "row" }}>
+          <Icon2 name="lock-outline" color="#192342" size={21} />
+          <Text style={styles.textA}>배정 정보</Text>
+        </View>
+        <Icon name="right" color="#1A1A1A" size={13} />
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.block}
         activeOpacity={0.8}
         onPress={() => navigate("Reservation")}
       >
-        <Text style={styles.textA}>예약 정보</Text>
+        <View style={{ flexDirection: "row" }}>
+          <Icon3 name="person-outline" color="#192342" size={21} />
+          <Text style={styles.textA}>예약 정보</Text>
+        </View>
+        <Icon name="right" color="#1A1A1A" size={13} />
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.block}
         activeOpacity={0.8}
         onPress={() => navigate("Car")}
       >
-        <Text style={styles.textA}>차량 정보</Text>
+        <View style={{ flexDirection: "row" }}>
+          <Icon3 name="car-outline" color="#192342" size={21} />
+          <Text style={styles.textA}>차량 정보</Text>
+        </View>
+        <Icon name="right" color="#1A1A1A" size={13} />
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.block}
         activeOpacity={0.8}
         onPress={() => navigate("Personal")}
       >
-        <Text style={styles.textA}>개인 정보</Text>
+        <View style={{ flexDirection: "row" }}>
+          <Icon3 name="eye-off-outline" color="#192342" size={21} />
+          <Text style={styles.textA}>개인 정보</Text>
+        </View>
+        <Icon name="right" color="#1A1A1A" size={13} />
       </TouchableOpacity>
-      <View style={{ flex: 4 }} />
+      <View style={{ flex: 2 }} />
+      <View style={{ flex: 1 }}>
+        <View
+          style={{
+            backgroundColor: "#F3F6FF",
+            height: 53,
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <TouchableOpacity>
+            <Text style={{ fontWeight: "bold", fontSize: 16 }}>Log out</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
       <View />
     </View>
   );
@@ -44,26 +77,29 @@ const InfoHome = ({ navigation: { navigate } }) => {
 const styles = StyleSheet.create({
   top: {
     height: 100,
-    paddingLeft: 30,
     justifyContent: "center",
   },
   contain: {
     flex: 1,
     backgroundColor: "white",
+    paddingHorizontal: 30,
   },
 
   block: {
-    flex: 1.3,
+    flex: 1,
     backgroundColor: "#F3F6FF",
-    justifyContent: "center",
-    paddingLeft: 30,
+    alignItems: "center",
+    paddingHorizontal: 20,
     borderBottomColor: "white",
     borderBottomWidth: 0.5,
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   textA: {
-    fontSize: 20,
+    fontSize: 17,
     fontWeight: "bold",
     color: "#192342",
+    marginLeft: 15,
   },
   textB: {
     fontSize: 24,

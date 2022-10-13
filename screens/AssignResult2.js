@@ -289,7 +289,7 @@ const AssignResult2 = ({ navigation: { navigate }, route }) => {
           <View style={{ marginBottom: 20 }}>
             <Text style={styles.textB}>결과</Text>
             <View style={styles.successLoc}>
-              <Text style={styles.textD}>success</Text>
+              <Text style={styles.textD}>Success</Text>
             </View>
           </View>
           <View style={{ marginBottom: 20 }}>
@@ -386,9 +386,9 @@ const styles = StyleSheet.create({
   textD: {
     fontSize: 14,
     backgroundColor: "#AAF54B",
-    borderRadius: 20,
-    paddingHorizontal: 10,
-    paddingVertical: 7,
+    borderRadius: 21,
+    paddingHorizontal: 15,
+    paddingVertical: 10,
     marginBottom: 10,
     color: "white",
   },
