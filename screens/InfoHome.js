@@ -1,10 +1,20 @@
 import React from "react";
-import { Text, StyleSheet, View, TouchableOpacity } from "react-native";
+import auth from "@react-native-firebase/auth";
+import { Text, StyleSheet, View, TouchableOpacity, Alert } from "react-native";
 import Icon from "react-native-vector-icons/AntDesign";
 import Icon2 from "react-native-vector-icons/MaterialCommunityIcons";
 import Icon3 from "react-native-vector-icons/Ionicons";
 
 const InfoHome = ({ navigation: { navigate } }) => {
+  const logout = async () => {
+    try {
+      const currentUser = auth().currentUser;
+      console.log(currentUser);
+      await auth().signOut();
+    } catch (error) {
+      Alert.alert("로그아웃에 문제가 생겼습니다! ", error.message);
+    }
+  };
   return (
     <View style={styles.contain}>
       <View style={styles.top}>
@@ -64,7 +74,7 @@ const InfoHome = ({ navigation: { navigate } }) => {
             alignItems: "center",
           }}
         >
-          <TouchableOpacity>
+          <TouchableOpacity onPress={logout}>
             <Text style={{ fontWeight: "bold", fontSize: 16 }}>Log out</Text>
           </TouchableOpacity>
         </View>
