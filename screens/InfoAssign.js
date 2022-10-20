@@ -10,6 +10,7 @@ import {
 import firestore from "@react-native-firebase/firestore";
 import Icon from "react-native-vector-icons/AntDesign";
 import { useIsFocused } from "@react-navigation/native";
+import auth from "@react-native-firebase/auth";
 
 const InfoAssign = ({ navigation: { navigate } }) => {
   const uid = 1;
@@ -20,8 +21,10 @@ const InfoAssign = ({ navigation: { navigate } }) => {
   const [assigns, setAssigns] = useState([]);
   const [assignBe, setAssignBe] = useState([]);
   const isFocused = useIsFocused();
+  const user = auth().currentUser;
 
   useEffect(() => {
+    console.log(user.uid);
     setAssigns([]);
     const rows = assignColl
       .where("member_id", "==", uid.toString())
