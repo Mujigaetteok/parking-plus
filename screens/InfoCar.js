@@ -12,12 +12,15 @@ import BottomSheet from "react-native-gesture-bottom-sheet";
 import Icon from "react-native-vector-icons/Ionicons";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 import firestore from "@react-native-firebase/firestore";
+import auth from "@react-native-firebase/auth";
+import { useIsFocused } from "@react-navigation/native";
 
 const InfoCar = ({ navigation: { navigate } }) => {
-  const uid = 1;
+  const uid = auth().currentUser.uid.toString();
   const carColl = firestore().collection("CAR");
   const [cars, setCars] = useState([]);
   const [car, setCar] = useState("");
+  const isFocused = useIsFocused();
 
   useEffect(() => {
     const carc = carColl.onSnapshot((snapshot) => {
@@ -34,7 +37,7 @@ const InfoCar = ({ navigation: { navigate } }) => {
     return () => {
       carc();
     };
-  }, []);
+  }, [isFocused]);
 
   const delAlert = (id, alertForm) =>
     Alert.alert(

@@ -12,14 +12,20 @@ import Icon2 from "react-native-vector-icons/AntDesign";
 import Icon3 from "react-native-vector-icons/MaterialCommunityIcons";
 import Icon4 from "react-native-vector-icons/Ionicons";
 import firestore from "@react-native-firebase/firestore";
+import auth from "@react-native-firebase/auth";
+import { useIsFocused } from "@react-navigation/native";
 
 const Main = ({ navigation: { navigate } }) => {
-  const uid = 1;
+  const uid = auth().currentUser.uid.toString();
   const memberColl = firestore().collection("MEMBER");
   const carColl = firestore().collection("CAR");
+  const isFocused = useIsFocused();
   const [users, setUsers] = useState([]);
   const [carN, setCarN] = useState();
   const [car, setCar] = useState();
+  const [mo, setMo] = useState("");
+  const [day, setDay] = useState("");
+  const d = new Date();
 
   useEffect(() => {
     memberColl.where("id", "==", uid.toString()).onSnapshot((snapshot) => {
@@ -30,7 +36,21 @@ const Main = ({ navigation: { navigate } }) => {
 
       setUsers(memArray);
     });
-  }, []);
+  }, [isFocused]);
+
+  useEffect(() => {
+    if (new Date(startDate(0)) > d) {
+      const m = (d.getMonth() + 1).toString();
+      const da = (new Date(startDate(0)).getDate() - d.getDate()).toString();
+      setMo(m);
+      setDay(da);
+    } else if (new Date(endDate(0)) < d) {
+      const m = (d.getMonth() + 2).toString();
+      const da = (new Date(startDate(1)).getDate() - d.getDate()).toString();
+      setMo(m);
+      setDay(da);
+    }
+  }, [isFocused]);
 
   useEffect(() => {
     carColl.onSnapshot((snapshot) => {
@@ -43,9 +63,28 @@ const Main = ({ navigation: { navigate } }) => {
       if (currentCar.length != 0) {
         setCar(currentCar[0].idnt_no.toString());
       }
-      console.log(car);
     });
-  }, []);
+  }, [isFocused]);
+
+  const startDate = (n) => {
+    const last = new Date(
+      new Date(new Date().setMonth(d.getMonth() + 1 + n)).setDate(0)
+    );
+    const lastDay = new Date(last.setDate(last.getDate() - 13));
+    const mon = lastDay.getMonth() + 1;
+    const format = lastDay.getFullYear() + "." + mon + "." + lastDay.getDate();
+    return format;
+  };
+
+  const endDate = (n) => {
+    const last = new Date(
+      new Date(new Date().setMonth(d.getMonth() + 1 + n)).setDate(0)
+    );
+    const lastDay = new Date(last.setDate(last.getDate() - 7));
+    const mon = lastDay.getMonth() + 1;
+    const format = lastDay.getFullYear() + "." + mon + "." + lastDay.getDate();
+    return format;
+  };
 
   return (
     <View style={styles.contain}>

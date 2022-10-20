@@ -10,11 +10,12 @@ import BottomSheet from "react-native-gesture-bottom-sheet";
 import DropDownPicker from "react-native-dropdown-picker";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 import firestore from "@react-native-firebase/firestore";
+import auth from "@react-native-firebase/auth";
 
 DropDownPicker.setListMode("SCROLLVIEW");
 
 const AssignResult3 = ({ navigation: { navigate }, route }) => {
-  const uid = 1;
+  const uid = auth().currentUser.uid.toString();
   const assignColl = firestore().collection("ASSIGN");
   const mon = new Date().getMonth() + 2;
   const year = new Date().getFullYear();
@@ -62,8 +63,8 @@ const AssignResult3 = ({ navigation: { navigate }, route }) => {
         .where("start_de", "==", form)
         .where("cncl_status", "==", false)
         .where("parking_slot_id", "==", loc);
-      rows.onSnapshot((snapshot) => {
-        snapshot.docs.map((doc) => {
+      const ro = rows.onSnapshot((snapshot) => {
+        const sn = snapshot.docs.map((doc) => {
           dayTime.map((day) => {
             const de = assignColl.doc(doc.id).collection("ASSIGN_SCHEDULE");
             de.where("use_day", "==", day.day)
@@ -82,7 +83,13 @@ const AssignResult3 = ({ navigation: { navigate }, route }) => {
               });
           });
         });
+        return () => {
+          sn();
+        };
       });
+      return () => {
+        ro();
+      };
     } catch (error) {
       console.log(error.message);
     }

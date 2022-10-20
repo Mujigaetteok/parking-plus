@@ -11,10 +11,12 @@ import {
 import firestore from "@react-native-firebase/firestore";
 import Icon from "react-native-vector-icons/EvilIcons";
 import Icon2 from "react-native-vector-icons/Ionicons";
+import { useIsFocused } from "@react-navigation/native";
 
 const InfoAssign2 = ({ navigation: { navigate }, route }) => {
   const assignColl = firestore().collection("ASSIGN");
   const [assign, setAssign] = useState([]);
+  const isFocused = useIsFocused();
 
   useEffect(() => {
     const asc = assignColl
@@ -37,7 +39,7 @@ const InfoAssign2 = ({ navigation: { navigate }, route }) => {
     return () => {
       asc();
     };
-  }, []);
+  }, [isFocused]);
 
   const delAlert = (did, id, alertForm) =>
     Alert.alert(

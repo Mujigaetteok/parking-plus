@@ -9,11 +9,14 @@ import {
 import Icon from "react-native-vector-icons/Ionicons";
 import Icon2 from "react-native-vector-icons/Feather";
 import firestore from "@react-native-firebase/firestore";
+import auth from "@react-native-firebase/auth";
+import { useIsFocused } from "@react-navigation/native";
 
 const AssignResult1 = ({ navigation: { navigate } }) => {
-  const uid = 1;
+  const uid = auth().currentUser.uid.toString();
   const memberColl = firestore().collection("MEMBER");
   const assignColl = firestore().collection("ASSIGN");
+  const isFocused = useIsFocused();
   const d = new Date();
   const [users, setUsers] = useState([]);
   const [assigns, setAssigns] = useState([]);
@@ -29,7 +32,7 @@ const AssignResult1 = ({ navigation: { navigate } }) => {
       }));
       setUsers(memArray);
     });
-  }, []);
+  }, [isFocused]);
 
   useEffect(() => {
     assignColl
@@ -43,7 +46,7 @@ const AssignResult1 = ({ navigation: { navigate } }) => {
         }));
         setAssigns(assignArray);
       });
-  }, []);
+  }, [isFocused]);
 
   const term = () => {
     let month = d.getMonth() + 1;

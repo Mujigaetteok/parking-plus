@@ -5,40 +5,70 @@ import {
   View,
   TouchableOpacity,
   ScrollView,
+  Alert,
 } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
 import Icon from "react-native-vector-icons/Ionicons";
 import Icon2 from "react-native-vector-icons/Feather";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 import firestore from "@react-native-firebase/firestore";
+import auth from "@react-native-firebase/auth";
+import { useIsFocused } from "@react-navigation/native";
 
 DropDownPicker.setListMode("SCROLLVIEW");
 
 const AssignForm = ({ navigation: { navigate } }) => {
-  const uid = 1;
+  const uid = auth().currentUser.uid.toString();
   const carColl = firestore().collection("CAR");
   const assignAppColl = firestore().collection("ASSIGN_APPLY");
   const memberColl = firestore().collection("MEMBER");
-
+  const isFocused = useIsFocused();
   const [items, setItems] = useState([]);
   const [users, setUsers] = useState([]);
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
+  const [con, setCon] = useState([]);
+  const [ex, setEx] = useState(false);
 
   const d = new Date();
 
   useEffect(() => {
-    memberColl.where("id", "==", uid.toString()).onSnapshot((snapshot) => {
-      const memArray = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      setUsers(memArray);
-    });
-  }, []);
+    const da = d.getFullYear().toString() + "-" + getMon().toString();
+    const le = assignAppColl
+      .where("member_id", "==", uid.toString())
+      .onSnapshot((snapshot) => {
+        const asArray = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setCon(asArray);
+      });
+    const conN = con.filter((c) => c.apply_term == da);
+    if (conN.length > 0) {
+      setEx(true);
+    }
+    return () => {
+      le();
+    };
+  }, [isFocused]);
 
   useEffect(() => {
-    carColl.onSnapshot((snapshot) => {
+    const le = memberColl
+      .where("id", "==", uid.toString())
+      .onSnapshot((snapshot) => {
+        const memArray = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setUsers(memArray);
+      });
+    return () => {
+      le();
+    };
+  }, [isFocused]);
+
+  useEffect(() => {
+    const le = carColl.onSnapshot((snapshot) => {
       const carArray = snapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
@@ -51,7 +81,10 @@ const AssignForm = ({ navigation: { navigate } }) => {
       }
       setItems(arr);
     });
-  }, []);
+    return () => {
+      le();
+    };
+  }, [isFocused]);
 
   const startDate = () => {
     const last = new Date(
@@ -79,6 +112,9 @@ const AssignForm = ({ navigation: { navigate } }) => {
       month = 1;
     } else {
       month = month + 1;
+    }
+    if (month.toString().length == 1) {
+      month = "0" + month.toString();
     }
     return month;
   };

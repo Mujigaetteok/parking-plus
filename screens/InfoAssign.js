@@ -13,7 +13,7 @@ import { useIsFocused } from "@react-navigation/native";
 import auth from "@react-native-firebase/auth";
 
 const InfoAssign = ({ navigation: { navigate } }) => {
-  const uid = 1;
+  const uid = auth().currentUser.uid.toString();
   const assignColl = firestore().collection("ASSIGN");
   const mon = new Date().getMonth() + 1;
   const year = new Date().getFullYear();
@@ -21,10 +21,8 @@ const InfoAssign = ({ navigation: { navigate } }) => {
   const [assigns, setAssigns] = useState([]);
   const [assignBe, setAssignBe] = useState([]);
   const isFocused = useIsFocused();
-  const user = auth().currentUser;
 
   useEffect(() => {
-    console.log(user.uid);
     setAssigns([]);
     const rows = assignColl
       .where("member_id", "==", uid.toString())
