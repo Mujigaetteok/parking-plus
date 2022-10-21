@@ -68,8 +68,9 @@ function Join({ navigation: { navigate } }) {
       );
       // firestore에 저장
       firestore().collection("MEMBER").add({
-        id: email,
+        id: auth().currentUser.uid,
         name: name,
+        email: email,
         apt_name: aptName,
         dong_no: dongNo,
         hosu_no: hosuNo,
