@@ -255,7 +255,7 @@ const Main = ({ navigation: { navigate } }) => {
           </ImageBackground>
 
           <View style={{ flex: 0.3, backgroundColor: "white" }} />
-          <TouchableOpacity style={styles.carV} onPress={() => navigate("Car")}>
+          <View style={styles.carV}>
             <View style={{ flex: 1 }}>
               <Icon3
                 name="car"
@@ -280,11 +280,11 @@ const Main = ({ navigation: { navigate } }) => {
               <Text style={{ color: "#E2E9FD", fontSize: 15 }}>차량정보</Text>
             </View>
             <View style={styles.otherV}>
-              <View>
+              <TouchableOpacity onPress={() => navigate("Car")}>
                 <Text style={{ color: "#FFFFFF", fontSize: 13 }}>
                   View More
                 </Text>
-              </View>
+              </TouchableOpacity>
               <Icon2
                 name="checksquare"
                 color="white"
@@ -292,7 +292,7 @@ const Main = ({ navigation: { navigate } }) => {
                 style={{ marginHorizontal: 10, marginVertical: 15 }}
               />
             </View>
-          </TouchableOpacity>
+          </View>
         </View>
       </View>
       <View style={{ flex: 1, backgroundColor: "white" }} />
