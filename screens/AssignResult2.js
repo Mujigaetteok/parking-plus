@@ -12,12 +12,15 @@ import Icon from "react-native-vector-icons/Ionicons";
 import Icon2 from "react-native-vector-icons/Feather";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 import firestore from "@react-native-firebase/firestore";
+import auth from "@react-native-firebase/auth";
+import { useIsFocused } from "@react-navigation/native";
 
 DropDownPicker.setListMode("SCROLLVIEW");
 
 const AssignResult2 = ({ navigation: { navigate }, route }) => {
-  const uid = 1;
+  const uid = auth().currentUser.uid.toString();
   const memberColl = firestore().collection("MEMBER");
+  const isFocused = useIsFocused();
   const d = new Date();
   const [users, setUsers] = useState([]);
 
@@ -29,16 +32,25 @@ const AssignResult2 = ({ navigation: { navigate }, route }) => {
       }));
       setUsers(memArray);
     });
-  }, []);
+  }, [isFocused]);
+
+  const getMon = () => {
+    const day = new Date(new Date(new Date().setMonth(d.getMonth() + 2)));
+    let month = day.getMonth().toString();
+    if (month.toString().length == 1) {
+      month = "0" + month.toString();
+    }
+    return month;
+  };
+
+  const getYe = () => {
+    const day = new Date(new Date(new Date().setMonth(d.getMonth() + 2)));
+    let year = day.getFullYear().toString();
+    return year;
+  };
 
   const term = () => {
-    let month = d.getMonth() + 1;
-    if (month === 12) {
-      month = 1;
-    } else {
-      month = month + 1;
-    }
-    return d.getFullYear() + "년 " + month + "월";
+    return getYe() + "년 " + getMon() + "월";
   };
 
   const [week, setWeek] = useState([

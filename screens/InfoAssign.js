@@ -10,9 +10,10 @@ import {
 import firestore from "@react-native-firebase/firestore";
 import Icon from "react-native-vector-icons/AntDesign";
 import { useIsFocused } from "@react-navigation/native";
+import auth from "@react-native-firebase/auth";
 
 const InfoAssign = ({ navigation: { navigate } }) => {
-  const uid = 1;
+  const uid = auth().currentUser.uid.toString();
   const assignColl = firestore().collection("ASSIGN");
   const mon = new Date().getMonth() + 1;
   const year = new Date().getFullYear();

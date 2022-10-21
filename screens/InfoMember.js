@@ -4,10 +4,13 @@ import Icon from "react-native-vector-icons/Octicons";
 import Icon2 from "react-native-vector-icons/Feather";
 import Icon3 from "react-native-vector-icons/Ionicons";
 import firestore from "@react-native-firebase/firestore";
+import auth from "@react-native-firebase/auth";
+import { useIsFocused } from "@react-navigation/native";
 
 const InfoMember = ({ navigation: { navigate } }) => {
-  const uid = 1;
+  const uid = auth().currentUser.uid.toString();
   const memberColl = firestore().collection("MEMBER");
+  const isFocused = useIsFocused();
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
@@ -19,7 +22,7 @@ const InfoMember = ({ navigation: { navigate } }) => {
 
       setUsers(memArray);
     });
-  }, []);
+  }, [isFocused]);
 
   return (
     <ScrollView style={styles.contain}>
@@ -46,6 +49,22 @@ const InfoMember = ({ navigation: { navigate } }) => {
         <Text style={styles.textB}>ID</Text>
         <View style={styles.info}>
           <Icon2
+            name="mail"
+            color="#677191"
+            size={20}
+            style={{ marginRight: 15 }}
+          />
+          {users.map((user, id) => (
+            <Text style={styles.textD} key={id}>
+              {user.email}
+            </Text>
+          ))}
+        </View>
+      </View>
+      <View>
+        <Text style={styles.textB}>Phone</Text>
+        <View style={styles.info}>
+          <Icon2
             name="smartphone"
             color="#677191"
             size={20}
@@ -58,6 +77,7 @@ const InfoMember = ({ navigation: { navigate } }) => {
           ))}
         </View>
       </View>
+
       <View>
         <Text style={styles.textB}>아파트</Text>
         <View style={styles.info}>

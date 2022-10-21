@@ -12,14 +12,18 @@ import Icon2 from "react-native-vector-icons/AntDesign";
 import Icon3 from "react-native-vector-icons/MaterialCommunityIcons";
 import Icon4 from "react-native-vector-icons/Ionicons";
 import firestore from "@react-native-firebase/firestore";
+import auth from "@react-native-firebase/auth";
+import { useIsFocused } from "@react-navigation/native";
 
 const Main = ({ navigation: { navigate } }) => {
-  const uid = 1;
+  const uid = auth().currentUser.uid.toString();
   const memberColl = firestore().collection("MEMBER");
   const carColl = firestore().collection("CAR");
+  const isFocused = useIsFocused();
   const [users, setUsers] = useState([]);
   const [carN, setCarN] = useState();
   const [car, setCar] = useState();
+  const d = new Date();
 
   useEffect(() => {
     memberColl.where("id", "==", uid.toString()).onSnapshot((snapshot) => {
@@ -30,7 +34,67 @@ const Main = ({ navigation: { navigate } }) => {
 
       setUsers(memArray);
     });
-  }, []);
+  }, [isFocused]);
+
+  function Dday() {
+    let diff;
+    if (endDate(0) < d) {
+      diff = startDate(1) - d;
+      return (
+        <Text style={{ color: "#1D1617", fontSize: 14 }}>
+          {startDate(1).getMonth() + 1}월 배정 신청까지{" "}
+          <Text style={{ fontWeight: "bold" }}>
+            {Math.floor(diff / (1000 * 60 * 60 * 24))}
+          </Text>
+          일 남았습니다!
+        </Text>
+      );
+    }
+    if (startDate(0).getDate() > d.getDate()) {
+      diff = startDate(0) - d;
+      return (
+        <Text style={{ color: "#1D1617", fontSize: 14 }}>
+          {startDate(0).getMonth() + 1}월 배정 신청까지{" "}
+          <Text style={{ fontWeight: "bold" }}>
+            {Math.floor(diff / (1000 * 60 * 60 * 24))}
+          </Text>
+          일 남았습니다!
+        </Text>
+      );
+    } else if (startDate(0).getDate() == d.getDate()) {
+      diff = startDate(1) - d;
+      return (
+        <Text style={{ color: "#1D1617", fontSize: 14 }}>
+          {startDate(1).getMonth() + 1}월 배정 신청{" "}
+          <Text style={{ fontWeight: "bold" }}>첫째날</Text>
+          입니다!
+        </Text>
+      );
+    } else if (endDate(0).getDate() == d.getDate()) {
+      diff = startDate(1) - d;
+      return (
+        <Text style={{ color: "#1D1617", fontSize: 14 }}>
+          {startDate(0).getMonth() + 1}월 배정 신청{" "}
+          <Text style={{ fontWeight: "bold" }}>마지막날</Text>
+          입니다!
+        </Text>
+      );
+    } else if (
+      startDate(0).getDate() < d.getDate() &&
+      endDate(0) > d.getDate()
+    ) {
+      diff = endDate(0) - d;
+      return (
+        <Text style={{ color: "#1D1617", fontSize: 14 }}>
+          {startDate(0).getMonth() + 1}월 배정 신청 종료까지{" "}
+          <Text style={{ fontWeight: "bold" }}>
+            {Math.floor(diff / (1000 * 60 * 60 * 24))}
+          </Text>
+          일 남았습니다!
+        </Text>
+      );
+    }
+  }
 
   useEffect(() => {
     carColl.onSnapshot((snapshot) => {
@@ -43,9 +107,24 @@ const Main = ({ navigation: { navigate } }) => {
       if (currentCar.length != 0) {
         setCar(currentCar[0].idnt_no.toString());
       }
-      console.log(car);
     });
-  }, []);
+  }, [isFocused]);
+
+  const startDate = (n) => {
+    const last = new Date(
+      new Date(new Date().setMonth(d.getMonth() + 1 + n)).setDate(0)
+    );
+    const lastDay = new Date(last.setDate(last.getDate() - 13));
+    return lastDay;
+  };
+
+  const endDate = (n) => {
+    const last = new Date(
+      new Date(new Date().setMonth(d.getMonth() + 1 + n)).setDate(0)
+    );
+    const lastDay = new Date(last.setDate(last.getDate() - 7));
+    return lastDay;
+  };
 
   return (
     <View style={styles.contain}>
@@ -136,10 +215,7 @@ const Main = ({ navigation: { navigate } }) => {
       </View>
       <View style={{ flex: 1 }} />
       <View style={styles.form}>
-        <Text style={{ color: "#1D1617", fontSize: 14 }}>
-          3월 배정 신청까지 <Text style={{ fontWeight: "bold" }}>17일</Text>{" "}
-          남았습니다!
-        </Text>
+        <Dday />
         <ImageBackground
           source={require("./Image/5.png")}
           resizeMode="cover"
@@ -179,7 +255,7 @@ const Main = ({ navigation: { navigate } }) => {
           </ImageBackground>
 
           <View style={{ flex: 0.3, backgroundColor: "white" }} />
-          <TouchableOpacity style={styles.carV} onPress={() => navigate("Car")}>
+          <View style={styles.carV}>
             <View style={{ flex: 1 }}>
               <Icon3
                 name="car"
@@ -204,11 +280,11 @@ const Main = ({ navigation: { navigate } }) => {
               <Text style={{ color: "#E2E9FD", fontSize: 15 }}>차량정보</Text>
             </View>
             <View style={styles.otherV}>
-              <View>
+              <TouchableOpacity onPress={() => navigate("Car")}>
                 <Text style={{ color: "#FFFFFF", fontSize: 13 }}>
                   View More
                 </Text>
-              </View>
+              </TouchableOpacity>
               <Icon2
                 name="checksquare"
                 color="white"
@@ -216,7 +292,7 @@ const Main = ({ navigation: { navigate } }) => {
                 style={{ marginHorizontal: 10, marginVertical: 15 }}
               />
             </View>
-          </TouchableOpacity>
+          </View>
         </View>
       </View>
       <View style={{ flex: 1, backgroundColor: "white" }} />

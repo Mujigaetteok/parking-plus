@@ -10,11 +10,14 @@ import {
 } from "react-native";
 import firestore from "@react-native-firebase/firestore";
 import Icon from "react-native-vector-icons/Ionicons";
+import auth from "@react-native-firebase/auth";
+import { useIsFocused } from "@react-navigation/native";
 
 const InfoReserve = ({ navigation: { navigate } }) => {
-  const uid = "1";
+  const uid = auth().currentUser.uid.toString();
   const reserveColl = firestore().collection("RESERVE");
   const [reser, setReser] = useState([]);
+  const isFocused = useIsFocused();
   const d = new Date();
 
   useEffect(() => {
@@ -38,7 +41,7 @@ const InfoReserve = ({ navigation: { navigate } }) => {
     return () => {
       reserc();
     };
-  }, []);
+  }, [isFocused]);
 
   const delAlert = (id, alertForm) =>
     Alert.alert(

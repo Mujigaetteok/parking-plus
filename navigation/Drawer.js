@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   createDrawerNavigator,
   DrawerContentScrollView,
@@ -7,14 +7,32 @@ import {
 import { Text, View } from "react-native";
 import MyInfoStack from "./MyInfoStack";
 import AssignStack from "./AssignStack";
-import Main from "../screens/Main";
 import MainStack from "./MainStack";
 import Map from "../screens/Map";
 import AssignForm from "../screens/AssignForm";
 import ReserveStack from "./ReserveStack";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import firestore from "@react-native-firebase/firestore";
+import auth from "@react-native-firebase/auth";
+import { useIsFocused } from "@react-navigation/native";
 
 function CustomDrawerContent(props) {
+  const uid = auth().currentUser.uid.toString();
+  const memberColl = firestore().collection("MEMBER");
+
+  const isFocused = useIsFocused();
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    memberColl.where("id", "==", uid.toString()).onSnapshot((snapshot) => {
+      const memArray = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+
+      setUsers(memArray);
+    });
+  }, [isFocused]);
+
   return (
     <DrawerContentScrollView {...props}>
       <View
@@ -26,12 +44,22 @@ function CustomDrawerContent(props) {
           backgroundColor: "#F3F6FF",
         }}
       >
-        <Text style={{ color: "#192342", fontSize: 16, fontWeight: "bold" }}>
-          홍길동님
-        </Text>
-        <Text style={{ fontSize: 14, color: "#677191" }}>
-          파플아파트 1단지 101동 101호
-        </Text>
+        {users.map((user, id) => (
+          <Text
+            style={{ color: "#192342", fontSize: 16, fontWeight: "bold" }}
+            key={id}
+          >
+            {user.name}님
+          </Text>
+        ))}
+        {users.map((user, id) => (
+          <Text style={{ fontSize: 14, color: "#677191" }} key={id}>
+            {user.apt_name} {user.dong_no}
+            {"동 "}
+            {user.hosu_no}
+            {"호"}
+          </Text>
+        ))}
       </View>
       <DrawerItemList {...props} />
     </DrawerContentScrollView>
@@ -55,14 +83,6 @@ const Drawer = () => {
           drawerLabelStyle: {
             fontWeight: "bold",
           },
-          headerRight: () => (
-            <Icon
-              name="bell-outline"
-              color="black"
-              size={22}
-              style={{ marginHorizontal: 22 }}
-            ></Icon>
-          ),
         }}
       >
         <DrawerNav.Screen name="홈" component={MainStack} />

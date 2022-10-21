@@ -9,17 +9,17 @@ import {
 import Icon from "react-native-vector-icons/Ionicons";
 import Icon2 from "react-native-vector-icons/Feather";
 import firestore from "@react-native-firebase/firestore";
+import auth from "@react-native-firebase/auth";
+import { useIsFocused } from "@react-navigation/native";
 
 const AssignResult1 = ({ navigation: { navigate } }) => {
-  const uid = 1;
+  const uid = auth().currentUser.uid.toString();
   const memberColl = firestore().collection("MEMBER");
   const assignColl = firestore().collection("ASSIGN");
+  const isFocused = useIsFocused();
   const d = new Date();
   const [users, setUsers] = useState([]);
   const [assigns, setAssigns] = useState([]);
-  const mon = new Date().getMonth() + 2;
-  const year = new Date().getFullYear();
-  const form = year + "-" + (mon < 10 ? "0" + mon : mon) + "-" + "01";
 
   useEffect(() => {
     memberColl.where("id", "==", uid.toString()).onSnapshot((snapshot) => {
@@ -29,9 +29,10 @@ const AssignResult1 = ({ navigation: { navigate } }) => {
       }));
       setUsers(memArray);
     });
-  }, []);
+  }, [isFocused]);
 
   useEffect(() => {
+    const form = getYe() + "-" + getMon() + "-" + "01";
     assignColl
       .where("member_id", "==", uid.toString())
       .where("cncl_status", "==", false)
@@ -43,16 +44,25 @@ const AssignResult1 = ({ navigation: { navigate } }) => {
         }));
         setAssigns(assignArray);
       });
-  }, []);
+  }, [isFocused]);
+
+  const getMon = () => {
+    const day = new Date(new Date(new Date().setMonth(d.getMonth() + 2)));
+    let month = day.getMonth().toString();
+    if (month.toString().length == 1) {
+      month = "0" + month.toString();
+    }
+    return month;
+  };
+
+  const getYe = () => {
+    const day = new Date(new Date(new Date().setMonth(d.getMonth() + 2)));
+    let year = day.getFullYear().toString();
+    return year;
+  };
 
   const term = () => {
-    let month = d.getMonth() + 1;
-    if (month === 12) {
-      month = 1;
-    } else {
-      month = month + 1;
-    }
-    return d.getFullYear() + "년 " + month + "월";
+    return getYe() + "년 " + getMon() + "월";
   };
 
   return (
