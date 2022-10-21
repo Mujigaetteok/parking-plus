@@ -34,14 +34,23 @@ const AssignResult2 = ({ navigation: { navigate }, route }) => {
     });
   }, [isFocused]);
 
-  const term = () => {
-    let month = d.getMonth() + 1;
-    if (month === 12) {
-      month = 1;
-    } else {
-      month = month + 1;
+  const getMon = () => {
+    const day = new Date(new Date(new Date().setMonth(d.getMonth() + 2)));
+    let month = day.getMonth().toString();
+    if (month.toString().length == 1) {
+      month = "0" + month.toString();
     }
-    return d.getFullYear() + "년 " + month + "월";
+    return month;
+  };
+
+  const getYe = () => {
+    const day = new Date(new Date(new Date().setMonth(d.getMonth() + 2)));
+    let year = day.getFullYear().toString();
+    return year;
+  };
+
+  const term = () => {
+    return getYe() + "년 " + getMon() + "월";
   };
 
   const [week, setWeek] = useState([

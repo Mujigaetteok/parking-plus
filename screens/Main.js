@@ -23,8 +23,6 @@ const Main = ({ navigation: { navigate } }) => {
   const [users, setUsers] = useState([]);
   const [carN, setCarN] = useState();
   const [car, setCar] = useState();
-  const [mo, setMo] = useState("");
-  const [day, setDay] = useState("");
   const d = new Date();
 
   useEffect(() => {
@@ -38,19 +36,65 @@ const Main = ({ navigation: { navigate } }) => {
     });
   }, [isFocused]);
 
-  useEffect(() => {
-    if (new Date(startDate(0)) > d) {
-      const m = (d.getMonth() + 1).toString();
-      const da = (new Date(startDate(0)).getDate() - d.getDate()).toString();
-      setMo(m);
-      setDay(da);
-    } else if (new Date(endDate(0)) < d) {
-      const m = (d.getMonth() + 2).toString();
-      const da = (new Date(startDate(1)).getDate() - d.getDate()).toString();
-      setMo(m);
-      setDay(da);
+  function Dday() {
+    let diff;
+    if (endDate(0) < d) {
+      diff = startDate(1) - d;
+      return (
+        <Text style={{ color: "#1D1617", fontSize: 14 }}>
+          {startDate(1).getMonth() + 1}월 배정 신청까지{" "}
+          <Text style={{ fontWeight: "bold" }}>
+            {Math.floor(diff / (1000 * 60 * 60 * 24))}
+          </Text>
+          일 남았습니다!
+        </Text>
+      );
     }
-  }, [isFocused]);
+    if (startDate(0).getDate() > d.getDate()) {
+      diff = startDate(0) - d;
+      return (
+        <Text style={{ color: "#1D1617", fontSize: 14 }}>
+          {startDate(0).getMonth() + 1}월 배정 신청까지{" "}
+          <Text style={{ fontWeight: "bold" }}>
+            {Math.floor(diff / (1000 * 60 * 60 * 24))}
+          </Text>
+          일 남았습니다!
+        </Text>
+      );
+    } else if (startDate(0).getDate() == d.getDate()) {
+      diff = startDate(1) - d;
+      return (
+        <Text style={{ color: "#1D1617", fontSize: 14 }}>
+          {startDate(1).getMonth() + 1}월 배정 신청{" "}
+          <Text style={{ fontWeight: "bold" }}>첫째날</Text>
+          입니다!
+        </Text>
+      );
+    } else if (endDate(0).getDate() == d.getDate()) {
+      diff = startDate(1) - d;
+      return (
+        <Text style={{ color: "#1D1617", fontSize: 14 }}>
+          {startDate(0).getMonth() + 1}월 배정 신청{" "}
+          <Text style={{ fontWeight: "bold" }}>마지막날</Text>
+          입니다!
+        </Text>
+      );
+    } else if (
+      startDate(0).getDate() < d.getDate() &&
+      endDate(0) > d.getDate()
+    ) {
+      diff = endDate(0) - d;
+      return (
+        <Text style={{ color: "#1D1617", fontSize: 14 }}>
+          {startDate(0).getMonth() + 1}월 배정 신청 종료까지{" "}
+          <Text style={{ fontWeight: "bold" }}>
+            {Math.floor(diff / (1000 * 60 * 60 * 24))}
+          </Text>
+          일 남았습니다!
+        </Text>
+      );
+    }
+  }
 
   useEffect(() => {
     carColl.onSnapshot((snapshot) => {
@@ -71,9 +115,7 @@ const Main = ({ navigation: { navigate } }) => {
       new Date(new Date().setMonth(d.getMonth() + 1 + n)).setDate(0)
     );
     const lastDay = new Date(last.setDate(last.getDate() - 13));
-    const mon = lastDay.getMonth() + 1;
-    const format = lastDay.getFullYear() + "." + mon + "." + lastDay.getDate();
-    return format;
+    return lastDay;
   };
 
   const endDate = (n) => {
@@ -81,9 +123,7 @@ const Main = ({ navigation: { navigate } }) => {
       new Date(new Date().setMonth(d.getMonth() + 1 + n)).setDate(0)
     );
     const lastDay = new Date(last.setDate(last.getDate() - 7));
-    const mon = lastDay.getMonth() + 1;
-    const format = lastDay.getFullYear() + "." + mon + "." + lastDay.getDate();
-    return format;
+    return lastDay;
   };
 
   return (
@@ -175,10 +215,7 @@ const Main = ({ navigation: { navigate } }) => {
       </View>
       <View style={{ flex: 1 }} />
       <View style={styles.form}>
-        <Text style={{ color: "#1D1617", fontSize: 14 }}>
-          3월 배정 신청까지 <Text style={{ fontWeight: "bold" }}>17일</Text>{" "}
-          남았습니다!
-        </Text>
+        <Dday />
         <ImageBackground
           source={require("./Image/5.png")}
           resizeMode="cover"

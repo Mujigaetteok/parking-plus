@@ -4,18 +4,18 @@ import { NavigationContainer } from "@react-navigation/native";
 import InNav from "./navigation/InNav";
 import OutNav from "./navigation/OutNav";
 
-import { Alert } from 'react-native';
-import messaging from '@react-native-firebase/messaging';
+import { Alert } from "react-native";
+import messaging from "@react-native-firebase/messaging";
 
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const foregroundListener = useCallback(() => {
-    messaging().onMessage(async message => {
-      console.log(message)
-      Alert.alert('A new FCM message arrived!', JSON.stringify(message));
-    })
-  }, [])
+    messaging().onMessage(async (message) => {
+      console.log(message);
+      Alert.alert("A new FCM message arrived!", JSON.stringify(message));
+    });
+  }, []);
 
   useEffect(() => {
     foregroundListener();
@@ -26,7 +26,6 @@ export default function App() {
         setIsLoggedIn(false);
       }
     });
-
   }, []);
   return (
     <NavigationContainer independent={true}>

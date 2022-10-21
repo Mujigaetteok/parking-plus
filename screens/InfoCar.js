@@ -23,17 +23,18 @@ const InfoCar = ({ navigation: { navigate } }) => {
   const isFocused = useIsFocused();
 
   useEffect(() => {
-    const carc = carColl.onSnapshot((snapshot) => {
-      const carArray = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      const currentCar = carArray.filter((car) => car.member_id == uid);
-      setCars(currentCar);
-      return () => {
-        carArray();
-      };
-    });
+    const carc = carColl
+      .where("member_id", "==", uid.toString())
+      .onSnapshot((snapshot) => {
+        const carArray = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setCars(carArray);
+        return () => {
+          carArray();
+        };
+      });
     return () => {
       carc();
     };

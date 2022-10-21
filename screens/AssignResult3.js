@@ -17,10 +17,8 @@ DropDownPicker.setListMode("SCROLLVIEW");
 const AssignResult3 = ({ navigation: { navigate }, route }) => {
   const uid = auth().currentUser.uid.toString();
   const assignColl = firestore().collection("ASSIGN");
-  const mon = new Date().getMonth() + 2;
-  const year = new Date().getFullYear();
-  const form = year + "-" + (mon < 10 ? "0" + mon : mon) + "-" + "01";
   const loc = route.params.location;
+  const d = new Date();
 
   const [open, setOpen] = useState(false);
   const [opent, setOpent] = useState(false);
@@ -58,6 +56,7 @@ const AssignResult3 = ({ navigation: { navigate }, route }) => {
 
   const dayAdd = async () => {
     try {
+      const form = getYe() + "-" + getMon() + "-" + "01";
       const rows = await assignColl
         .where("member_id", "==", uid.toString())
         .where("start_de", "==", form)
@@ -106,6 +105,21 @@ const AssignResult3 = ({ navigation: { navigate }, route }) => {
     } catch (error) {
       console.log(error.message);
     }
+  };
+
+  const getMon = () => {
+    const day = new Date(new Date(new Date().setMonth(d.getMonth() + 2)));
+    let month = day.getMonth().toString();
+    if (month.toString().length == 1) {
+      month = "0" + month.toString();
+    }
+    return month;
+  };
+
+  const getYe = () => {
+    const day = new Date(new Date(new Date().setMonth(d.getMonth() + 2)));
+    let year = day.getFullYear().toString();
+    return year;
   };
 
   const bottomSheetView = (key) => {
