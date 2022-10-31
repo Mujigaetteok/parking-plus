@@ -13,7 +13,7 @@ export default function App() {
   const foregroundListener = useCallback(() => {
     messaging().onMessage(async (message) => {
       console.log(message);
-      Alert.alert("A new FCM message arrived!", JSON.stringify(message));
+      Alert.alert(JSON.stringify(message.notification.title), JSON.stringify(message.notification.body));
     });
   }, []);
 
