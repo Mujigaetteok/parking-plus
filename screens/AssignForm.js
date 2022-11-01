@@ -101,7 +101,6 @@ const AssignForm = ({ navigation: { navigate } }) => {
     const format = lastDay.getFullYear() + "." + mon + "." + lastDay.getDate();
     return format;
   };
-
   const getMon = () => {
     const day = new Date(new Date(new Date().setMonth(d.getMonth() + 2)));
     let month = day.getMonth().toString();
