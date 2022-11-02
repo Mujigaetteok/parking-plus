@@ -20,7 +20,7 @@ const AssignResult1 = ({ navigation: { navigate } }) => {
   const parkingSlotColl = firestore().collection("PARKING_SLOT");
   const isFocused = useIsFocused();
   const d = new Date();
-  const mon = d.getMonth() + 1;
+  const mon = d.getMonth() + 2;
   const [users, setUsers] = useState([]);
   const [assigns, setAssigns] = useState([]);
   const [slots, setSlots] = useState([]);
