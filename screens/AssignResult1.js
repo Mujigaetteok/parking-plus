@@ -108,16 +108,16 @@ const AssignResult1 = ({ navigation: { navigate } }) => {
 
   const endDate = () => {
     if (
-      new Date().getMonth() + 1 == "01" ||
-      new Date().getMonth() + 1 == "03" ||
-      new Date().getMonth() + 1 == "05" ||
-      new Date().getMonth() + 1 == "07" ||
-      new Date().getMonth() + 1 == "08" ||
-      new Date().getMonth() + 1 == "10" ||
-      new Date().getMonth() + 1 == "12"
+      mon == "01" ||
+      mon == "03" ||
+      mon == "05" ||
+      mon == "07" ||
+      mon == "08" ||
+      mon == "10" ||
+      mon == "12"
     ) {
       return new Date().getFullYear() + "-" + mon + "-31";
-    } else if (new Date().getMonth() + 1 == "02") {
+    } else if (mon == "02") {
       return new Date().getFullYear() + "-" + mon + "-28";
     } else {
       return new Date().getFullYear() + "-" + mon + "-30";
