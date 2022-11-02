@@ -20,6 +20,7 @@ const AssignResult1 = ({ navigation: { navigate } }) => {
   const parkingSlotColl = firestore().collection("PARKING_SLOT");
   const isFocused = useIsFocused();
   const d = new Date();
+  const mon = d.getMonth() + 1;
   const [users, setUsers] = useState([]);
   const [assigns, setAssigns] = useState([]);
   const [slots, setSlots] = useState([]);
@@ -101,7 +102,7 @@ const AssignResult1 = ({ navigation: { navigate } }) => {
   };
 
   const startDate = () => {
-    return new Date().getFullYear() + "-" + new Date().getMonth() + 1 + "-01";
+    return new Date().getFullYear() + "-" + mon + "-01";
     // return new Date(new Date().getFullYear(), new Date().getMonth() + 1, 1); // 2022-11-01
   };
 
@@ -115,11 +116,11 @@ const AssignResult1 = ({ navigation: { navigate } }) => {
       new Date().getMonth() + 1 == "10" ||
       new Date().getMonth() + 1 == "12"
     ) {
-      return new Date().getFullYear() + "-" + new Date().getMonth() + 1 + "-31";
+      return new Date().getFullYear() + "-" + mon + "-31";
     } else if (new Date().getMonth() + 1 == "02") {
-      return new Date().getFullYear() + "-" + new Date().getMonth() + 1 + "-28";
+      return new Date().getFullYear() + "-" + mon + "-28";
     } else {
-      return new Date().getFullYear() + "-" + new Date().getMonth() + 1 + "-30";
+      return new Date().getFullYear() + "-" + mon + "-30";
     }
     // return new Date(new Date(new Date().setMonth(new Date().getMonth() + 1))); // 2022-11-30
   };
@@ -136,7 +137,7 @@ const AssignResult1 = ({ navigation: { navigate } }) => {
         await assignColl.add({
           start_de: startDate(),
           end_de: endDate(),
-          slot_no: slots[d[i]].slot_no,
+          parking_slot_id: slots[d[i]].slot_no,
           member_id: uid,
           cncl_status: false,
         });
