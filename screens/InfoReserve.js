@@ -30,7 +30,9 @@ const InfoReserve = ({ navigation: { navigate } }) => {
           ...doc.data(),
         }));
         const currentReser = reserArray.filter(
-          (re) => d <= new Date(re.use_de)
+          (re) =>
+            d.getMonth() == new Date(re.use_de).getMonth() &&
+            d.getDate() <= new Date(re.use_de).getDate()
         );
         currentReser.sort((a, b) => new Date(a.use_de) - new Date(b.use_de));
         setReser(currentReser);

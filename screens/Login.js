@@ -12,7 +12,6 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
-import Icon from "react-native-vector-icons/Feather";
 
 function Login({ navigation: { navigate } }) {
   const passwordInput = useRef();
@@ -63,14 +62,7 @@ function Login({ navigation: { navigate } }) {
             style={styles.textForm}
             onChangeText={(text) => setEmail(text)}
             onSubmitEditing={onSubmitEmailEditing}
-          >
-            {/* <Icon
-              name="smartphone"
-              color="#677191"
-              size={20}
-              style={{ marginRight: 15 }}
-            /> */}
-          </TextInput>
+          />
           <Text style={styles.label}>Password</Text>
           <TextInput
             ref={passwordInput}
@@ -80,14 +72,7 @@ function Login({ navigation: { navigate } }) {
             returnKeyType="done"
             style={styles.textForm}
             onChangeText={(text) => setPassword(text)}
-          >
-            {/* <Icon
-              name="lock"
-              color="#677191"
-              size={20}
-              style={{ marginRight: 15 }}
-            /> */}
-          </TextInput>
+          />
         </View>
         <TouchableOpacity onPress={() => navigate("Join")}>
           <Text style={styles.textB}>계정이 없으신가요?</Text>
@@ -97,7 +82,6 @@ function Login({ navigation: { navigate } }) {
         <View style={styles.buttonArea}>
           <TouchableOpacity
             style={styles.button}
-            // onPress={() => navigate("Root")}
             onPress={onSubmitPasswordEditing}
           >
             <Text style={styles.buttonTitle}>Login</Text>

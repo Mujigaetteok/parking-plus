@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import Icon2 from "react-native-vector-icons/Feather";
+import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 import firestore from "@react-native-firebase/firestore";
 import auth from "@react-native-firebase/auth";
 import { useIsFocused } from "@react-navigation/native";
@@ -20,11 +21,13 @@ const AssignResult1 = ({ navigation: { navigate } }) => {
   const parkingSlotColl = firestore().collection("PARKING_SLOT");
   const isFocused = useIsFocused();
   const d = new Date();
-  const mon = d.getMonth() + 2;
   const [users, setUsers] = useState([]);
   const [assigns, setAssigns] = useState([]);
   const [slots, setSlots] = useState([]);
   const [count, setCount] = useState(0);
+  const [apply, setApply] = useState([]);
+  const [memA, setMemA] = useState([]);
+  const [checkAss, setCheckAss] = useState([]);
 
   useEffect(() => {
     memberColl.where("id", "==", uid.toString()).onSnapshot((snapshot) => {
@@ -51,9 +54,22 @@ const AssignResult1 = ({ navigation: { navigate } }) => {
       });
   }, [isFocused]);
 
+  useEffect(() => {
+    const form = getYe() + "-" + getMon() + "-" + "01";
+    assignColl
+      .where("cncl_status", "==", false)
+      .where("start_de", "==", form)
+      .onSnapshot((snapshot) => {
+        const ch = snapshot.docs.map((doc) => ({
+          id: doc.id,
+        }));
+        setCheckAss(ch);
+      });
+  }, [isFocused]);
+
   const getMon = () => {
-    const day = new Date(new Date(new Date().setMonth(d.getMonth() + 2)));
-    let month = day.getMonth().toString();
+    const day = new Date(new Date(new Date().setMonth(d.getMonth() + 1)));
+    let month = (day.getMonth() + 1).toString();
     if (month.toString().length == 1) {
       month = "0" + month.toString();
     }
@@ -61,7 +77,7 @@ const AssignResult1 = ({ navigation: { navigate } }) => {
   };
 
   const getYe = () => {
-    const day = new Date(new Date(new Date().setMonth(d.getMonth() + 2)));
+    const day = new Date(new Date(new Date().setMonth(d.getMonth() + 1)));
     let year = day.getFullYear().toString();
     return year;
   };
@@ -71,24 +87,53 @@ const AssignResult1 = ({ navigation: { navigate } }) => {
   };
 
   useEffect(() => {
+    const applyForm = getYe() + "-" + getMon();
     var count = 0;
-    assignApplyColl.get().then((res) => {
-      res.forEach((doc) => {
-        count += doc.data().apply_count;
+    assignApplyColl
+      .where("apply_term", "==", applyForm)
+      .get()
+      .then((res) => {
+        res.forEach((doc) => {
+          count += doc.data().apply_count;
+        });
+        setCount(count);
       });
-      setCount(count);
-      console.log(count);
-    });
+  }, [isFocused]);
+
+  useEffect(() => {
+    const applyForm = getYe() + "-" + getMon();
+    assignApplyColl
+      .where("apply_term", "==", applyForm)
+      .onSnapshot((snapshot) => {
+        const slotsArray = snapshot.docs.map((doc) => ({
+          member_id: doc.data().member_id,
+          apply_count: doc.data().apply_count,
+        }));
+        setApply(slotsArray);
+      });
+  }, [isFocused]);
+
+  useEffect(() => {
+    const applyForm = getYe() + "-" + getMon();
+    var ap = [];
+    assignApplyColl
+      .where("apply_term", "==", applyForm)
+      .onSnapshot((snapshot) => {
+        snapshot.docs.map((doc) => {
+          for (var i = 0; i < doc.data().apply_count; i++) {
+            ap.push(doc.data().member_id);
+          }
+        });
+        setMemA(JSON.parse(JSON.stringify(ap)));
+      });
   }, [isFocused]);
 
   useEffect(() => {
     parkingSlotColl.onSnapshot((snapshot) => {
       const slotsArray = snapshot.docs.map((doc) => ({
-        // id: doc.id,
         slot_no: doc.data().slot_no,
       }));
       setSlots(slotsArray);
-      console.log(slotsArray);
     });
   }, [isFocused]);
 
@@ -97,48 +142,49 @@ const AssignResult1 = ({ navigation: { navigate } }) => {
     while (Array.from(s).length < len) {
       s.add(parseInt(Math.random() * len) + 1);
     }
-    console.log(Array.from(s));
-    addAssign(Array.from(s));
+    return Array.from(s);
   };
 
-  const startDate = () => {
-    return new Date().getFullYear() + "-" + mon + "-01";
-    // return new Date(new Date().getFullYear(), new Date().getMonth() + 1, 1); // 2022-11-01
-  };
-
-  const endDate = () => {
-    if (
-      mon == "01" ||
-      mon == "03" ||
-      mon == "05" ||
-      mon == "07" ||
-      mon == "08" ||
-      mon == "10" ||
-      mon == "12"
-    ) {
-      return new Date().getFullYear() + "-" + mon + "-31";
-    } else if (mon == "02") {
-      return new Date().getFullYear() + "-" + mon + "-28";
-    } else {
-      return new Date().getFullYear() + "-" + mon + "-30";
+  const getRandomIndexCon = (len, p) => {
+    const s = new Set();
+    while (Array.from(s).length < p) {
+      s.add(parseInt(Math.random() * len) + 1);
     }
-    // return new Date(new Date(new Date().setMonth(new Date().getMonth() + 1))); // 2022-11-30
+    return Array.from(s);
   };
 
-  const assignSlots = () => {
-    count <= slots.length
-      ? getRandomIndex(count.length)
-      : getRandomIndex(slots.length);
+  const lowCount = async (count, leng) => {
+    const ran = getRandomIndexCon(leng, count);
+    var coun = 0;
+    for (var i = 0; i < apply.length; i++) {
+      for (var j = 0; j < apply[i].apply_count; j++) {
+        try {
+          coun++;
+          await assignColl.add({
+            start_de: startDate(),
+            end_de: endDate(),
+            parking_slot_id: slots[ran[coun - 1] - 1].slot_no,
+            member_id: apply[i].member_id,
+            cncl_status: false,
+          });
+        } catch (error) {
+          console.log(error.message);
+        }
+      }
+    }
   };
 
-  const addAssign = async (d) => {
-    for (var i = 0; i < d.length; i++) {
+  const moreCount = async (count, leng) => {
+    const ran = getRandomIndex(leng);
+    const cran = getRandomIndexCon(count, leng);
+    for (var i = 0; i < ran.length; i++) {
       try {
+        console.log(memA);
         await assignColl.add({
           start_de: startDate(),
           end_de: endDate(),
-          parking_slot_id: slots[d[i]].slot_no,
-          member_id: uid,
+          parking_slot_id: slots[ran[i] - 1].slot_no,
+          member_id: memA[cran[i] - 1],
           cncl_status: false,
         });
       } catch (error) {
@@ -147,79 +193,121 @@ const AssignResult1 = ({ navigation: { navigate } }) => {
     }
   };
 
+  const startDate = () => {
+    return getYe() + "-" + getMon() + "-01";
+  };
+
+  const endDate = () => {
+    const day = new Date(new Date(new Date().setMonth(d.getMonth() + 2)));
+    const mon = (day.getMonth() + 1).toString();
+    const dayF = day.getFullYear() + "-" + (mon < 10 ? "0" + mon : mon) + "-01";
+    const lastDay = new Date(
+      new Date(dayF).setDate(new Date(dayF).getDate() - 1)
+    );
+    return (
+      lastDay.getFullYear() +
+      "-" +
+      (lastDay.getMonth() + 1).toString() +
+      "-" +
+      lastDay.getDate()
+    );
+  };
+
+  const assignSlots = () => {
+    count <= slots.length
+      ? lowCount(count, slots.length)
+      : moreCount(count, slots.length);
+  };
+
   return (
-    <ScrollView style={styles.contain}>
-      <View style={styles.top}>
-        <Text style={styles.textA}>주차 배정 결과</Text>
+    <View style={styles.contain}>
+      <View style={{ flex: 9, marginBottom: 20 }}>
+        <ScrollView>
+          <View style={styles.top}>
+            <Text style={styles.textA}>주차 배정 결과</Text>
+          </View>
+          <View style={{ marginBottom: 20 }}>
+            <Text style={styles.textB}>아파트</Text>
+            <View style={styles.info}>
+              <Icon
+                name="location-outline"
+                color="#677191"
+                size={20}
+                style={{ marginRight: 15 }}
+              />
+              {users.map((user, id) => (
+                <Text style={styles.textC} key={id}>
+                  {user.apt_name}
+                </Text>
+              ))}
+            </View>
+          </View>
+          <View style={{ marginBottom: 20 }}>
+            <Text style={styles.textB}>기간</Text>
+            <View style={styles.info}>
+              <Icon2
+                name="calendar"
+                color="#677191"
+                size={20}
+                style={{ marginRight: 15 }}
+              />
+              <Text style={styles.textC}>{term()}</Text>
+            </View>
+          </View>
+          <View style={{ marginBottom: 20 }}>
+            <Text style={styles.textB}>주차 공간</Text>
+            <View style={{ height: 10 }} />
+            {assigns.length > 0 ? (
+              assigns.map((as, id) => (
+                <TouchableOpacity
+                  key={id}
+                  style={styles.successLoc}
+                  activeOpacity={0.5}
+                  onPress={() =>
+                    navigate("Day", { location: as.parking_slot_id })
+                  }
+                >
+                  <View style={{ alignItems: "center", flexDirection: "row" }}>
+                    <Icon
+                      name="car-outline"
+                      color="#677191"
+                      size={20}
+                      style={{ marginRight: 15 }}
+                    />
+                    <Text style={styles.textE}>{as.parking_slot_id}</Text>
+                  </View>
+                  <View style={styles.textD}>
+                    <Text style={{ fontSize: 14, color: "white" }}>
+                      Success
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+              ))
+            ) : (
+              <View style={{ alignItems: "center" }}>
+                <Text style={styles.textE}>배정된 공간이 없습니다</Text>
+              </View>
+            )}
+          </View>
+        </ScrollView>
       </View>
-      <View style={{ marginBottom: 20 }}>
-        <Text style={styles.textB}>아파트</Text>
-        <View style={styles.info}>
-          <Icon
-            name="location-outline"
-            color="#677191"
-            size={20}
-            style={{ marginRight: 15 }}
-          />
-          {users.map((user, id) => (
-            <Text style={styles.textC} key={id}>
-              {user.apt_name}
-            </Text>
-          ))}
-        </View>
-      </View>
-      <View style={{ marginBottom: 20 }}>
-        <Text style={styles.textB}>기간</Text>
-        <View style={styles.info}>
-          <Icon2
-            name="calendar"
-            color="#677191"
-            size={20}
-            style={{ marginRight: 15 }}
-          />
-          <Text style={styles.textC}>{term()}</Text>
-        </View>
-      </View>
-      <View style={{ marginBottom: 20 }}>
-        <Text style={styles.textB}>주차 공간</Text>
-        <View style={{ height: 10 }} />
-        {assigns.length > 0 ? (
-          assigns.map((as, id) => (
+      <View style={{ flex: 1 }}>
+        {checkAss.length > 0 ? null : (
+          <View style={styles.buttonArea}>
             <TouchableOpacity
-              key={id}
-              style={styles.successLoc}
-              activeOpacity={0.5}
-              onPress={() => navigate("Day", { location: as.parking_slot_id })}
+              style={styles.button}
+              onPress={() => {
+                assignSlots();
+              }}
             >
-              <View style={{ alignItems: "center", flexDirection: "row" }}>
-                <Icon
-                  name="car-outline"
-                  color="#677191"
-                  size={20}
-                  style={{ marginRight: 15 }}
-                />
-                <Text style={styles.textE}>{as.parking_slot_id}</Text>
-              </View>
-              <View style={styles.textD}>
-                <Text style={{ fontSize: 14, color: "white" }}>Success</Text>
-              </View>
+              <Text style={{ color: "white", fontWeight: "bold" }}>
+                배정 시작
+              </Text>
             </TouchableOpacity>
-          ))
-        ) : (
-          <View style={{ alignItems: "center" }}>
-            <Text style={styles.textE}>배정된 공간이 없습니다</Text>
           </View>
         )}
       </View>
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => {
-          assignSlots();
-        }}
-      >
-        <Text style={{ color: "white", fontWeight: "bold" }}>배정 시작</Text>
-      </TouchableOpacity>
-    </ScrollView>
+    </View>
   );
 };
 
@@ -283,11 +371,14 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: "#192342",
   },
+  buttonArea: {
+    width: "100%",
+    height: hp("5%"),
+  },
   button: {
     backgroundColor: "#567DF4",
     width: "100%",
-    height: 40,
-    marginTop: 200,
+    height: "140%",
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 100,
