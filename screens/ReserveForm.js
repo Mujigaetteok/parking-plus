@@ -7,15 +7,14 @@ import {
   ScrollView,
 } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from "react-native-responsive-screen";
+import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 import firestore from "@react-native-firebase/firestore";
+import auth from "@react-native-firebase/auth";
 
 DropDownPicker.setListMode("SCROLLVIEW");
 
 const ReserveForm = ({ navigation: { navigate }, route }) => {
+  const uid = auth().currentUser.uid.toString();
   const date = route.params.date;
   const spotId = route.params.spotId;
   const startTime = route.params.startTime;
@@ -99,10 +98,12 @@ const ReserveForm = ({ navigation: { navigate }, route }) => {
             <Text style={styles.textB}>시간</Text>
             <View style={styles.successLoc}>
               <View style={{ flexDirection: "row", flex: 1 }}>
-                <View style={{marginTop:10 , marginRight:40,flex:1 }}>
-                  <Text style={{fontSize: 18, fontWeight: "bold",}}>{startTime+":00"}</Text>
+                <View style={{ marginTop: 10, marginRight: 40, flex: 1 }}>
+                  <Text style={{ fontSize: 18, fontWeight: "bold" }}>
+                    {startTime + ":00"}
+                  </Text>
                 </View>
-                <View style={{marginTop:10 , marginRight:30, flex:1 }}>
+                <View style={{ marginTop: 10, marginRight: 30, flex: 1 }}>
                   <Text style={{ fontSize: 18 }}> 부터 </Text>
                 </View>
                 <View style={{ flex: 2 }}>
@@ -136,11 +137,11 @@ const ReserveForm = ({ navigation: { navigate }, route }) => {
                       height: 100,
                     }}
                   />
-                  </View>
-                <View style={{ marginTop:10 ,marginRight:10}}>
+                </View>
+                <View style={{ marginTop: 10, marginRight: 10 }}>
                   <Text style={{ fontSize: 18 }}> 시간 </Text>
                 </View>
-                <View style={{ height: 100}} />
+                <View style={{ height: 100 }} />
               </View>
             </View>
           </View>
@@ -154,14 +155,17 @@ const ReserveForm = ({ navigation: { navigate }, route }) => {
             onPress={() => {
               navigate("Success", { text: "주차 예약이" });
               firestore()
-              .collection('RESERVE')
-              .add({
-                member_id:"asdf",
-                cncl_status: false,
-                start_time: timeValue,
-                end_time: timeValue+ value,
-                parking_slot_id: spotId,
-                use_de: date})}}>
+                .collection("RESERVE")
+                .add({
+                  member_id: uid.toString(),
+                  cncl_status: false,
+                  start_time: timeValue,
+                  end_time: timeValue + value,
+                  parking_slot_id: spotId,
+                  use_de: date,
+                });
+            }}
+          >
             <Text style={styles.buttonTitle}>시간 선택 완료</Text>
           </TouchableOpacity>
         </View>

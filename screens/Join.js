@@ -14,16 +14,9 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
-import BottomSheet from "react-native-gesture-bottom-sheet";
-import Icon from "react-native-vector-icons/Octicons";
-import Icon2 from "react-native-vector-icons/Feather";
-import Icon3 from "react-native-vector-icons/Feather";
-import Icon4 from "react-native-vector-icons/Entypo";
-import Icon5 from "react-native-vector-icons/FontAwesome5";
 import { ScrollView } from "react-native-gesture-handler";
 
 function Join({ navigation: { navigate } }) {
-  const bottomSheet = useRef();
   const emailInput = useRef();
   const passwordInput = useRef();
   const phoneInput = useRef();

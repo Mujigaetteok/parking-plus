@@ -108,8 +108,8 @@ const AssignResult3 = ({ navigation: { navigate }, route }) => {
   };
 
   const getMon = () => {
-    const day = new Date(new Date(new Date().setMonth(d.getMonth() + 2)));
-    let month = day.getMonth().toString();
+    const day = new Date(new Date(new Date().setMonth(d.getMonth() + 1)));
+    let month = (day.getMonth() + 1).toString();
     if (month.toString().length == 1) {
       month = "0" + month.toString();
     }
@@ -117,7 +117,7 @@ const AssignResult3 = ({ navigation: { navigate }, route }) => {
   };
 
   const getYe = () => {
-    const day = new Date(new Date(new Date().setMonth(d.getMonth() + 2)));
+    const day = new Date(new Date(new Date().setMonth(d.getMonth() + 1)));
     let year = day.getFullYear().toString();
     return year;
   };

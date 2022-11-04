@@ -41,7 +41,7 @@ const Main = ({ navigation: { navigate } }) => {
     if (endDate(0) < d) {
       diff = startDate(1) - d;
       return (
-        <Text style={{ color: "#1D1617", fontSize: 14 }}>
+        <Text style={styles.applyBox}>
           {startDate(1).getMonth() + 1}월 배정 신청까지{" "}
           <Text style={{ fontWeight: "bold" }}>
             {Math.floor(diff / (1000 * 60 * 60 * 24))}
@@ -53,7 +53,7 @@ const Main = ({ navigation: { navigate } }) => {
     if (startDate(0).getDate() > d.getDate()) {
       diff = startDate(0) - d;
       return (
-        <Text style={{ color: "#1D1617", fontSize: 14 }}>
+        <Text style={styles.applyBox}>
           {startDate(0).getMonth() + 1}월 배정 신청까지{" "}
           <Text style={{ fontWeight: "bold" }}>
             {Math.floor(diff / (1000 * 60 * 60 * 24))}
@@ -64,7 +64,7 @@ const Main = ({ navigation: { navigate } }) => {
     } else if (startDate(0).getDate() == d.getDate()) {
       diff = startDate(1) - d;
       return (
-        <Text style={{ color: "#1D1617", fontSize: 14 }}>
+        <Text style={styles.applyBox}>
           {startDate(1).getMonth() + 1}월 배정 신청{" "}
           <Text style={{ fontWeight: "bold" }}>첫째날</Text>
           입니다!
@@ -73,7 +73,7 @@ const Main = ({ navigation: { navigate } }) => {
     } else if (endDate(0).getDate() == d.getDate()) {
       diff = startDate(1) - d;
       return (
-        <Text style={{ color: "#1D1617", fontSize: 14 }}>
+        <Text style={styles.applyBox}>
           {startDate(0).getMonth() + 1}월 배정 신청{" "}
           <Text style={{ fontWeight: "bold" }}>마지막날</Text>
           입니다!
@@ -85,7 +85,7 @@ const Main = ({ navigation: { navigate } }) => {
     ) {
       diff = endDate(0) - d;
       return (
-        <Text style={{ color: "#1D1617", fontSize: 14 }}>
+        <Text style={styles.applyBox}>
           {startDate(0).getMonth() + 1}월 배정 신청 종료까지{" "}
           <Text style={{ fontWeight: "bold" }}>
             {Math.floor(diff / (1000 * 60 * 60 * 24))}
@@ -423,6 +423,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#567DF4",
     borderRadius: 25,
     paddingHorizontal: 15,
+  },
+  applyBox: {
+    color: "#1D1617",
+    fontSize: 14,
   },
 });
 
