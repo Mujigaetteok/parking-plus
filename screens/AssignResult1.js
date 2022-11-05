@@ -285,7 +285,13 @@ const AssignResult1 = ({ navigation: { navigate } }) => {
               ))
             ) : (
               <View style={{ alignItems: "center" }}>
-                <Text style={styles.textE}>배정된 공간이 없습니다</Text>
+                {checkAss.length > 0 ? (
+                  <Text style={styles.textE}>배정에 실패하셨습니다</Text>
+                ) : (
+                  <Text style={styles.textE}>
+                    아직 배정이 진행되지 않았습니다
+                  </Text>
+                )}
               </View>
             )}
           </View>
