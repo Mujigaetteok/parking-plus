@@ -254,7 +254,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     backgroundColor: "white",
     borderRadius: 25,
-    shadowColor: "#EDEDED",
+    shadowColor: "#000000",
     ...Platform.select({
       ios: {
         shadowOffset: { width: 10, height: 10 },
